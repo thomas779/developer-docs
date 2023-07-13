@@ -10,7 +10,7 @@ export default [
         {
           title: 'Voltaire Bundler',
           description: 'Get started using Voltaire, an EIP-4337 Compliant Bundler to send UserOperations',
-          to: './bundler/intro',
+          to: './wallets/erc-4337-bundler',
         },
       ],
     },

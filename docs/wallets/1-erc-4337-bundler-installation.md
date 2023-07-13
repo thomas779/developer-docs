@@ -8,7 +8,7 @@ description: Instructions for running Voltaire ERC-4337 Python Bundler
 This guide is intended for developers wishing to spin a instance of Voltaire ERC-4337 Python bundler for handling User Operations. Voltaire is open source and can be found on [github.com/candidelabs/voltaire](https://github.com/candidelabs/voltaire)
 
 :::tip
-Looking for a quick bundler instance? Use one of our [public hosted endpoint](./3-rpc-endpoints.mdx) for your developement
+Looking for a quick bundler instance? Use one of our [public hosted endpoint](./3-erc-4337-bundler-rpc-endpoints.mdx) for your developement
 :::
 
 ## Docker
@@ -19,9 +19,9 @@ The quickest way to get started is to use the docker image. Simply install [dock
 docker run --net=host --rm -ti sherifahmed990/voltaire-bundler:latest --entrypoint $ENTRYPOINT --bundler_secret $BUNDLER_SECRET --rpc_url $RPC_URL --rpc_port $PORT --ethereum_node_url $ETHEREUM_NODE_URL --chain_id $CHAIN_ID --verbose
 ```
 
-| flags            |Comment                                     |
-| -----------------| -------------------------------------------|
-| `--entrypoint`   | Address of the [$ENTRYPOINT](../security/deployment/0-mainnet.md) contract address
+| flags            |Comment                                     
+| -----------------| -------------------------------------------
+| `--entrypoint`   | Address of the entrypoint contract
 |`--bundler_secret`| Private key of the bundler. Use any EOA's to be the `$BUNDLER_SECRET`   and make sure it's funded with some ETH                  
 | `$RPC_URL`       | URL of the rpc endpoint you will be hosting. Use `0.0.0.0` as default
 | `--ethereum_node_url`| Pass the `$ETHEREUM_NODE_URL` of your own instance if you are running a full node [locally](#local-full-node), or a link to a full node endpoint from an [RPC provider](#rpc-provider).
