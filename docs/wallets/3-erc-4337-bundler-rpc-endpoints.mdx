@@ -1,0 +1,111 @@
+---
+slug: rpc-endpoints
+title: Bundler RPC endpoints
+description: Hosted RPC endpoints
+image: "/img/erc4337-bundler.png"
+authors: [sherif]
+---
+
+import { BundlerEndPointTable } from "/src/components/ChainTable";
+const chainList = [
+  {
+    network: "Polygon PoS",
+    logo: "/img/networks/137.png",
+    chainId: 137,
+    chainHandle: "polygon",
+    address: "https://polygon.llamarpc.com",
+    type: "Node & Bundler",
+  },
+  {
+    network: "Ethereum",
+    logo: "/img/networks/1.png",
+    chainId: 1,
+    chainHandle: "ethereum",
+    address: "🔜",
+    type: "",
+  },
+  {
+    network: "Optimism",
+    logo: "/img/networks/10.png",
+    chainId: 10,
+    chainHandle: "optimism",
+    address: "🔜",
+    type: "",
+  },
+];
+const testChainList = [
+  {
+    network: "Sepolia",
+    logo: "/img/networks/1.png",
+    chainId: 11155111,
+    chainHandle: "sepolia",
+    address: "https://sepolia.voltaire.candidewallet.com/rpc",
+    type: "Bundler",
+  },
+  {
+    network: "Goerli",
+    logo: "/img/networks/1.png",
+    chainId: 5,
+    chainHandle: "goerli",
+    address: "https://goerli.voltaire.candidewallet.com/rpc",
+    type: "Bundler",
+  },
+  {
+    network: "Optimism Goerli",
+    logo: "/img/networks/10.png",
+    chainId: 420,
+    chainHandle: "goerli",
+    address: "https://optimism-goerli.voltaire.candidewallet.com/rpc",
+    type: "Bundler",
+  },
+  {
+    network: "Polygon Mumbai",
+    logo: "/img/networks/137.png",
+    chainId: 80001,
+    chainHandle: "mumbai",
+    address: "https://mumbai.voltaire.candidewallet.com/rpc",
+    type: "Bundler",
+  },
+];
+
+# Bundler RPC Endpoints
+
+Voltaire is provided as a free bundler instance on selected networks. 
+
+Looking for unlimited resources? Reach out on [discord](https://discord.gg/NM5HakA9nC), or by email at hello@candidewallet.com 
+## Testnets
+
+<BundlerEndPointTable items={testChainList} />
+
+## Mainnet Networks
+
+<BundlerEndPointTable items={chainList} />
+
+## Partner RPC Providers
+
+<p align="left" style={{
+  width:"250px", 
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
+  }}>
+  <a href="https://blockpi.io" target="_blank">
+    <img src="/img/rpc-providers/blockpi-logo.jpg" target="_blank" style={{ borderRadius: "50%" }} />
+  </a>
+  &nbsp;&nbsp;&nbsp;
+  <a href="https://blockpi.io" target="_blank">
+    <img src="/img/rpc-providers/chainbase-logo.jpg" target="_blank" style={{ borderRadius: "50%" }}/>
+  </a>
+  &nbsp;&nbsp;&nbsp;
+  <a href="https://llamanodes.com/" target="_blank">
+    <img src="/img/rpc-providers/llamanodes-logo-512px.png"/>
+  </a>
+</p>
+
+[BlockPi](https://blockpi.io/) - Distributed multi-chain acceleration layer, solving the RPC requests congestion problem with infinite scalability
+
+[Chainbase](https://chainbase.com) - All-in-one web3 data infrastructure for indexing, transforming, and utilizing large-scale on-chain data 
+
+[LlamaNodes](https://llamanodes.com/) - Fast and secure access to the blockchain designed for Web3 native teams.
+
+

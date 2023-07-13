@@ -1,0 +1,411 @@
+---
+title: Paymaster RPC methods
+description: JSON-RPC API reference for Candide's Verifying Paymaster service
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import { RpcRequestTable } from "/src/components/ChainTable";
+import {
+  paymasterMetadataParameters,
+  tokensParamaters,
+  emptyParams,
+  userOperationParamaters,
+  entrypointParams,
+} from "/src/requestRpcData";
+
+JSON-RPC API reference for Candide's Verifying Paymaster service
+
+## pm_supportedERC20Tokens
+
+Gets supported ERC-20 Tokens for gas payments, along side the paymaster metadata
+
+#### Ivocation
+
+```json
+{ "method": "pm_supportedERC20Tokens", "params": [] }
+```
+
+#### Return
+
+```json
+{ "result": { paymasterMetadata, tokens } }
+```
+
+<Tabs>
+<TabItem value="request" label="Example Request">
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 0,
+  "method": "pm_supportedERC20Tokens",
+  "params": []
+}
+```
+
+</TabItem>
+<TabItem value="response" label="Example Response">
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 0,
+  "result": {
+    "paymasterMetadata": {
+      "name": "CANDIDE Paymaster",
+      "description": "CANDIDE Paymaster a fast, secure and feature-rich 4337 Paymaster",
+      "icons": [],
+      "address": "0x7e3393ebA62DA6f555a5341E079e0F6585CE8c56",
+      "sponsoredEventTopic": "0x13..fa1",
+      "dummyPaymasterAndData": "0x69...135",
+      "tokens": [
+        {
+          "symbol": "DAI",
+          "address": "0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1",
+          "decimal": "0x12",
+          "fee": "0x0",
+          "exchangeRate": "0x0ddeb609310c89b1"
+        }
+      ]
+    }
+  }
+}
+```
+
+</TabItem>
+
+<TabItem value="request type" label="Request Types">
+
+<table>
+  <thead>
+    <th align="left">Paramater</th>
+    <th align="left">Type</th>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="left">[]</td>
+      <td align="left">empty array</td>
+    </tr>
+  </tbody>
+</table>
+
+</TabItem>
+<TabItem value="response type" label="Response Types">
+
+<table>
+  <thead>
+    <th align="left">Paramater</th>
+    <th align="left">Type</th>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="left">paymasterMetadata</td>
+      <td align="left">
+        <p>Object</p>
+        <RpcRequestTable items={paymasterMetadataParameters} />
+      </td>
+    </tr>
+    <tr>
+      <td align="left">tokens</td>
+      <td align="left">
+        <p>Object[]</p>
+        <RpcRequestTable items={tokensParamaters} />
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+</TabItem>
+</Tabs>
+
+## pm_sponsorUserOperation
+
+Sends a UserOperation to a paymaster for off-chain verification. If approved, it will return the paymasterData signature. If the paymaster rejects the UserOperation it should not return a result but a standard JSON-RPC error with the reason.
+
+#### Ivocation
+
+```json
+{ "method": "pm_sponsorUserOperation", "params": [userOperation, entrypoint, context] }
+```
+
+#### Return
+
+```json
+{ "result": paymasterAndData }
+```
+
+<Tabs>
+<TabItem value="request" label="Example Request">
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 0,
+  "method": "pm_sponsorUserOperation",
+    "params": [
+    {
+      sender,
+      nonce,
+      initCode,
+      callData,
+      callGasLimit,
+      verificationGasLimit,
+      preVerificationGas,
+      maxFeePerGas,
+      maxPriorityFeePerGas,
+      paymasterAndData,
+      signature,
+    },
+    entrypoint,
+    context,
+  ]
+}
+```
+
+</TabItem>
+<TabItem value="response" label="Example Response">
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 0,
+  "result": "0x1234...5678" // paymasterAndData
+}
+```
+
+</TabItem>
+
+<TabItem value="request type" label="Request Types">
+
+<table>
+  <thead>
+    <th align="left">Paramater</th>
+    <th align="left">Type</th>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="left">userOperation</td>
+      <td align="left">
+        <p>Object</p>
+        <RpcRequestTable items={userOperationParamaters} />
+      </td>
+    </tr>
+    <tr>
+      <td align="left">entrypoint</td>
+      <td align="left">
+        <table>
+          <thead>
+            <th align="left">Type</th>
+            <th align="left">Description</th>
+          </thead>
+          <tr>
+            <td>
+              <code>string</code>
+            </td>
+            <td>Entrypoint address</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td align="left">context</td>
+      <td align="left">
+        Object: This argument contains information about the specific paymaster
+        implementation you are using
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+</TabItem>
+
+<TabItem value="response type" label="Response Type">
+  <table>
+    <thead>
+      <th align="left">Paramater</th>
+      <th align="left">Type</th>
+      <th align="left">Description</th>
+    </thead>
+    <tbody>
+      <tr>
+        <td align="left">paymasterAndData</td>
+        <td align="left">
+          <code>
+            <font color="#e25894">string</font>
+          </code>
+        </td>
+        <td align="left">
+          Address of paymaster sponsoring the transaction, followed by the
+          paymaster signature
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</TabItem>
+
+</Tabs>
+
+## pm_supportedEntryPoint
+
+Get supported EntryPoint returns the entryPoint address supported by the paymaster
+
+#### Ivocation
+
+```json
+{ "method": "pm_supportedEntryPoint", "params": [] }
+```
+
+#### Return
+
+```json
+{ "result": entrypoint }
+```
+
+<Tabs>
+<TabItem value="example request" label="Example Request">
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 0,
+  "method": "pm_supportedEntryPoint",
+  "params": []
+}
+```
+
+</TabItem>
+
+<TabItem value="example response" label="Example Response">
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 0,
+  "result": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789" // Entrypoint address
+}
+```
+
+</TabItem>
+
+<TabItem value="request type" label="Request Type">
+  <table>
+    <thead>
+      <th align="left">Paramater</th>
+      <th align="left">Type</th>
+    </thead>
+    <tbody>
+      <tr>
+        <td align="left">[]</td>
+        <td align="left">empty array</td>
+      </tr>
+    </tbody>
+  </table>
+</TabItem>
+
+<TabItem value="response type" label="Response Type">
+  <table>
+    <thead>
+      <th align="left">Paramater</th>
+      <th align="left">Type</th>
+      <th align="left">Description</th>
+    </thead>
+    <tbody>
+      <tr>
+        <td align="left">entrypoint</td>
+        <td align="left">
+          <code>
+            <font color="#e25894">string</font>
+          </code>
+        </td>
+        <td align="left">
+          EntryPoint Address that the paymaster is supporting
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  </TabItem>
+</Tabs>
+
+## pm_chainId
+
+Get Chain ID asks the paymaster service to return the chain_id it currently supports
+
+#### Ivocation
+
+```json
+{ "method": "pm_chainId", "params": [] }
+```
+
+#### Return
+
+```json
+{ "result": chainId }
+```
+
+<Tabs>
+<TabItem value="example request" label="Example Request">
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 0,
+  "method": "pm_chainId",
+  "params": []
+}
+```
+
+</TabItem>
+
+<TabItem value="example response" label="Example Response">
+
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 0,
+  "result": 10
+}
+```
+
+</TabItem>
+
+<TabItem value="request type" label="Request Type">
+  <table>
+    <thead>
+      <th align="left">Paramater</th>
+      <th align="left">Type</th>
+    </thead>
+    <tbody>
+      <tr>
+        <td align="left">[]</td>
+        <td align="left">empty array</td>
+      </tr>
+    </tbody>
+  </table>
+</TabItem>
+
+<TabItem value="response type" label="Response Type">
+  <table>
+    <thead>
+      <th align="left">Paramater</th>
+      <th align="left">Type</th>
+      <th align="left">Description</th>
+    </thead>
+    <tbody>
+      <tr>
+        <td align="left">chainId</td>
+        <td align="left">
+          <code>
+            <font color="#e25894">number</font>
+          </code>
+        </td>
+        <td align="left">
+          Chain ID that the paymaster supports
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  </TabItem>
+</Tabs>
+
