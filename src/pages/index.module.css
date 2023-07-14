@@ -39,10 +39,11 @@
   flex-direction: column;
   justify-content: top;
   cursor: pointer;
-  border: 0px solid;
+  border: solid;
   border-radius: 0px;
   background-color: #121213;
-  color: #888;
+  color: white;
+  border-color: black;
 }
 
 .card h2 {
@@ -98,8 +99,8 @@
 }
 
 html[data-theme="light"] .card {
-  background-color: #ececec;
-  color: #888;
+  background-color: white;
+  color: black;
 }
 
 html[data-theme="light"] .card h2 {
@@ -107,13 +108,13 @@ html[data-theme="light"] .card h2 {
 }
 
 html[data-theme="light"] .card:hover {
-  color: #9BBCFD;
-  background-color: #F8ECE1;
+  color: white;
+  background-color: black;
 }
 
 html[data-theme="dark"] .card:hover {
-  color: #1F2546;
-  background-color: #F8ECE1;
+  color: black;
+  background-color: white;
 }
 
 html[data-theme="light"] .card:hover h2 {
@@ -121,7 +122,7 @@ html[data-theme="light"] .card:hover h2 {
 }
 
 html[data-theme="dark"] .card:hover h2 {
-  color: #1F2546;
+  color: black;
 }
 
 html[data-theme="light"] .title {

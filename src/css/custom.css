@@ -17,11 +17,14 @@
   --ifm-color-primary-lighter: #5a91ea; /*rgb(102, 212, 189);*/
   --ifm-color-primary-lightest: #80aaef; /*rgb(146, 224, 208);*/
   --ifm-code-font-size: 95%; /*95%;*/
-  --ifm-footer-background-color: #1F2546;
+}
+
+html[data-theme='dark'] .footer {
+  background: linear-gradient(0deg, rgba(2,0,36,1) 94%, rgba(0,97,255,1) 100%);
 }
 
 html[data-theme='dark'] {
-  --ifm-background-surface-color: #1F2546;
+  --ifm-background-surface-color: rgb(3, 0, 56);
 }
 
 /* Adjust footer link colors */
