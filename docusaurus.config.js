@@ -7,8 +7,8 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'CANDIDE Labs',
-  tagline: 'Building open-source software for ERC-4337 Account Abstraction',
-  url: 'https://docs.candidewallet.com',
+  tagline: 'Building software for ERC-4337 Account Abstraction',
+  url: 'https://docs.candide.network',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -17,7 +17,7 @@ const config = {
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'Candide Labs', // Usually your GitHub org/user name.
-  projectName: 'candide-docs', // Usually your repo name.
+  projectName: 'dev-docs', // Usually your repo name.
 
   // Even if you don't use internalization, you can use this field to set useful
   // metadata like html lang. For example, if your site is Chinese, you may want
@@ -94,7 +94,13 @@ const config = {
           'twitter:card',
         content:
           'summary_large_image'
-      }],
+      },
+      {
+        name: 'keywords', 
+        content:
+          'account abstraction, erc-4337, bundler, paymaster, smart contract wallet, gas sponsorship',
+      },
+      ],
       navbar: {
         title: 'CANDIDE',
         logo: {

@@ -9,7 +9,7 @@ export default function Home() {
   const { siteConfig } = useDocusaurusContext()
   return (
     <Layout
-      title={`${siteConfig.title} Docs for Developpers and Guides for using Wallet`}
+      title={`Account Abstraction Developer Documentation`}
       description="Building open-source software for ERC-4337 Account Abstraction"
     >
       <main>
