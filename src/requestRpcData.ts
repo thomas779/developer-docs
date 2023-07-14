@@ -45,12 +45,12 @@ export const tokensParamaters = [
   },
   {
     key: "decimal",
-    type: "number",
+    type: "string",
     description: "Decimals of token",
   },
   {
     key: "fee",
-    type: "number",
+    type: "string",
     description: "Gas fee in unit of of the token",
   },
   {
@@ -68,57 +68,57 @@ export const userOperationParamaters = [
   },
   {
     key: "nonce",
-    type: "BigNumberish",
+    type: "string",
     description: "Anti-replay parameter (see “Semi-abstracted Nonce Support” )",
   },
   {
     key: "initCode",
-    type: "BytesLike",
+    type: "string",
     description:
       "The initCode of the account (needed if and only if the account is not yet on-chain and needs to be created)",
   },
   {
     key: "callData",
-    type: "BytesLike",
+    type: "string",
     description:
       "The data to pass to the sender during the main execution call",
   },
   {
     key: "callGasLimit",
-    type: "BigNumberish",
+    type: "string",
     description: "The amount of gas to allocate the main execution call",
   },
   {
     key: "verificationGasLimit",
-    type: "BigNumberish",
+    type: "string",
     description: "The amount of gas to allocate for the verification step",
   },
   {
     key: "preVerificationGas",
-    type: "BigNumberish",
+    type: "string",
     description:
       "The amount of gas to pay for to compensate the bundler for pre-verification execution and calldata",
   },
   {
     key: "maxFeePerGas",
-    type: "BigNumberish",
+    type: "string",
     description: "Maximum fee per gas (similar to EIP-1559 max_fee_per_gas)",
   },
   {
     key: "maxPriorityFeePerGas",
-    type: "BigNumberish",
+    type: "string",
     description:
       "Maximum priority fee per gas (similar to EIP-1559 max_priority_fee_per_gas)",
   },
   {
     key: "paymasterAndData",
-    type: "BytesLike",
-    description: "this field is ignore. Add a dummy data, or skip including it",
+    type: "string",
+    description: "this field is ignore. Add a dummy data '0x', or skip including it",
   },
   {
     key: "signature",
-    type: "BytesLike",
-    description: "this field is ignore. Add a dummy data, or skip including it",
+    type: "string",
+    description: "this field is ignore. Add a dummy data '0x', or skip including it",
   },
 ];
 

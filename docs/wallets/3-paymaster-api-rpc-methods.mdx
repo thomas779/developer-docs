@@ -75,22 +75,6 @@ Gets supported ERC-20 Tokens for gas payments, along side the paymaster metadata
 
 </TabItem>
 
-<TabItem value="request type" label="Request Types">
-
-<table>
-  <thead>
-    <th align="left">Paramater</th>
-    <th align="left">Type</th>
-  </thead>
-  <tbody>
-    <tr>
-      <td align="left">[]</td>
-      <td align="left">empty array</td>
-    </tr>
-  </tbody>
-</table>
-
-</TabItem>
 <TabItem value="response type" label="Response Types">
 
 <table>
@@ -121,7 +105,7 @@ Gets supported ERC-20 Tokens for gas payments, along side the paymaster metadata
 
 ## pm_sponsorUserOperation
 
-Sends a UserOperation to a paymaster for off-chain verification. If approved, it will return the paymasterData signature. If the paymaster rejects the UserOperation it should not return a result but a standard JSON-RPC error with the reason.
+Sends a UserOperation to a paymaster for off-chain verification. If approved, it will return the paymasterData. If the paymaster rejects the UserOperation it should not return a result but a standard JSON-RPC error with the reason.
 
 #### Ivocation
 
@@ -145,20 +129,20 @@ Sends a UserOperation to a paymaster for off-chain verification. If approved, it
   "method": "pm_sponsorUserOperation",
     "params": [
     {
-      sender,
-      nonce,
-      initCode,
-      callData,
-      callGasLimit,
-      verificationGasLimit,
-      preVerificationGas,
-      maxFeePerGas,
-      maxPriorityFeePerGas,
-      paymasterAndData,
-      signature,
+      sender: "0x2c298CcaFF..c236fCC66dB2"
+      nonce: "0x17",
+      initCode: "0x",
+      callData: "0xf3....0000",
+      callGasLimit: "0x12a87",
+      verificationGasLimit: "0x1a332",
+      preVerificationGas: "0xe95c",
+      maxFeePerGas: "0x5f4ecdc0",
+      maxPriorityFeePerGas: "0x59682f00",
+      paymasterAndData: "0x",
+      signature: "0x",
     },
-    entrypoint,
-    context,
+    "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+    { "token": "0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1" },
   ]
 }
 ```
@@ -236,8 +220,7 @@ Sends a UserOperation to a paymaster for off-chain verification. If approved, it
           </code>
         </td>
         <td align="left">
-          Address of paymaster sponsoring the transaction, followed by the
-          paymaster signature
+          Paymaster address and data required to pass paymaster contract validation
         </td>
       </tr>
     </tbody>
@@ -286,21 +269,6 @@ Get supported EntryPoint returns the entryPoint address supported by the paymast
 }
 ```
 
-</TabItem>
-
-<TabItem value="request type" label="Request Type">
-  <table>
-    <thead>
-      <th align="left">Paramater</th>
-      <th align="left">Type</th>
-    </thead>
-    <tbody>
-      <tr>
-        <td align="left">[]</td>
-        <td align="left">empty array</td>
-      </tr>
-    </tbody>
-  </table>
 </TabItem>
 
 <TabItem value="response type" label="Response Type">
@@ -364,25 +332,10 @@ Get Chain ID asks the paymaster service to return the chain_id it currently supp
 {
   "jsonrpc": "2.0",
   "id": 0,
-  "result": 10
+  "result": "0x5"
 }
 ```
 
-</TabItem>
-
-<TabItem value="request type" label="Request Type">
-  <table>
-    <thead>
-      <th align="left">Paramater</th>
-      <th align="left">Type</th>
-    </thead>
-    <tbody>
-      <tr>
-        <td align="left">[]</td>
-        <td align="left">empty array</td>
-      </tr>
-    </tbody>
-  </table>
 </TabItem>
 
 <TabItem value="response type" label="Response Type">
@@ -397,7 +350,7 @@ Get Chain ID asks the paymaster service to return the chain_id it currently supp
         <td align="left">chainId</td>
         <td align="left">
           <code>
-            <font color="#e25894">number</font>
+            <font color="#e25894">string</font>
           </code>
         </td>
         <td align="left">
