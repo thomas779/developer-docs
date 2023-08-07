@@ -1,6 +1,7 @@
 ---
 title: Install
 description: Instructions for running Voltaire ERC-4337 Python Bundler
+image: "/img/erc4337-bundler.png"
 ---
 
 # Install
@@ -8,7 +9,7 @@ description: Instructions for running Voltaire ERC-4337 Python Bundler
 This guide is intended for developers wishing to spin a instance of Voltaire ERC-4337 Python bundler for handling User Operations. Voltaire is open source and can be found on [github.com/candidelabs/voltaire](https://github.com/candidelabs/voltaire)
 
 :::tip
-Looking for a quick bundler instance? Use one of our [public hosted endpoint](./3-erc-4337-bundler-rpc-endpoints.mdx) for your developement
+Looking for a quick bundler instance? Use one of our [public hosted endpoints](./3-rpc-endpoints.mdx) for your developement
 :::
 
 ## Docker

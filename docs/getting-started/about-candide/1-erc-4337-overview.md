@@ -1,4 +1,5 @@
 ---
+title: ERC-4337 Overview
 description: Candide is a smart contract wallet
 cover: ../../.gitbook/assets/ERC-4337 and gnosis.jpg
 coverY: 0

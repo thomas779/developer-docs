@@ -8,7 +8,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const config = {
   title: 'CANDIDE Labs',
   tagline: 'Building software for ERC-4337 Account Abstraction',
-  url: 'https://docs.candide.network',
+  url: 'https://docs.candide.dev',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -109,9 +109,14 @@ const config = {
         },
         items: [
           {
-            to: '/wallets/paymaster-api-rpc-methods',
+            to: '/wallet/atelier-intro',
             position: 'left',
-            label: 'Wallets',
+            label: 'Smart Wallets',
+          },
+          {
+            to: '/dapps/getting-started',
+            position: 'left',
+            label: 'Dapps',
           },
           {
             to: '/blog',

@@ -4,8 +4,15 @@ description: A new modular, developer-friendly and lighting-fast Python Bundler 
 image: "/img/erc4337-bundler.png"
 ---
 
-# Introduction
-Voltaire is a new modular, developer-friendly and lighting-fast Python Bundler for Ethereum EIP-4337 Account Abstraction. Voltaire is a fully open-source project designed to operate within the peer-to-peer mempool of UserOperations, facilitating the inclusion of transactions on-chain more quickly and efficiently.
+# Introduction To Voltaire
+
+Voltaire is a modular, developer-friendly and lighting-fast Python Bundler for Ethereum EIP-4337 Account Abstraction. 
+
+:::tip
+Looking for a quick bundler instance? Use one of our [public hosted endpoints](./3-rpc-endpoints.mdx) for your developement
+:::
+
+Voltaire is a fully open-source project designed to operate within the peer-to-peer mempool of UserOperations, facilitating the inclusion of transactions on-chain more quickly and efficiently.
 
 The code is available for free on [Github](https://github.com/candidelabs/voltaire) under a permissive license for anyone to use without any strings attached. We encourage the community to fork it, contribute with docs, issues, pull requests, questions, or even try to break it.
 <p align="center">
@@ -22,7 +29,7 @@ The role of centralized relayers here is replaced with a p2p network of new enti
 
 A Bundler running in a public mempool can be considered a block-builder, or an MEV searcher. As Account Abstraction gains adoption, an increasing part of user transactions would move into bundles. This means that most MEV opportunities will happen in bundles rather than blocks. Any block builder not partnering with a bundler (or becoming one) will be missing out on an increasing portion of the MEV. Bundlers will probably optimize for MEV and make the most of their profits over there.
 
-### Bundlers role: 
+### Bundlers role
 
 - Users can propagate `UserOperations` to a network where any bundler can serve them
 - Bundlers receive and deliver `UserOperations` to the EntryPoint contract but cannot change them

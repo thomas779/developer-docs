@@ -1,21 +1,27 @@
 export default [
     {
-      title: 'Wallets',
+      title: 'Smart Wallets',
       rows: [
         {
           title: 'Paymaster Service',
-          description: "Get Started with CANDIDE's Verifying EIP-4337 Paymaster service",
-          to: './wallets/paymaster-api-rpc-methods',
+          description: "Get Started with Candide's Verifying Paymaster API",
+          to: './wallet/paymaster/rpc-methods',
         },
         {
           title: 'Voltaire Bundler',
-          description: 'Get started using Voltaire, an EIP-4337 Compliant Bundler to send UserOperations',
-          to: './wallets/erc-4337-bundler',
+          description: 'Get started sending to send UserOperations through Voltaire, an EIP-4337 Compliant Bundler',
+          to: './wallet/bundler/rpc-methods',
         },
       ],
     },
     {
       title: 'Dapps',
-      rows: [],
+      rows: [
+        {
+          title: 'Batch Transactions',
+          description: 'Learn how to send a batch of transactions to a smart contract wallet',
+          to: './dapps/guides/batch-transactions',
+        },
+      ],
     }
   ]

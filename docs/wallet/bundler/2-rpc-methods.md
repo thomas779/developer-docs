@@ -1,9 +1,14 @@
 ---
 title: RPC methods
-description: A reference to the supported RPC methods by Voltiare ERC-4337 Bundler.
+description: A reference to the supported RPC methods by Voltiare ERC-4337 Bundler
+image: "/img/erc4337-bundler.png"
 ---
 
 Voltaire Bundler exposes standard JSON-RPC API
+
+:::info
+Get started by getting bundler endpoints for your developement [here](./3-rpc-endpoints.mdx)
+:::
 
 ## eth_ namespace
 
@@ -183,83 +188,6 @@ The method returns the full UserOperation object as well as the entrypoint addre
   "result": ["0x00...", "0x01..."],
 }
 ```
-
-
-## debug namespace
-
-:::info
-Debug namespaces are for developement purposes. The bundler exposes a set of debug methods. These methods are not meant to be used by client applications.
-:::
-
-### Send Bundle Now
-`debug_bundler_sendBundleNow` forces the bundler to execute the entire current mempool. Returns the transaction hash of the bundle submission.
-
-#### Request
-```json
-{
-  "jsonrpc": "2.0",
-  "id": 0,
-  "method": "debug_bundler_sendBundleNow",
-  "params": []
-}
-```
-
-#### Response
-```json
-{
-  "jsonrpc": "2.0",
-  "id": 0,
-  "result": "0x...", // Transaction Hash 
-}
-```
-
-### Clear State
-
-`debug_bundler_clearState` clears the the bundler mempool and reputation data of paymasters/accounts/factories/aggregators.
-
-#### Request
-```json
-{
-  "jsonrpc": "2.0",
-  "id": 0,
-  "method": "debug_bundler_clearState",
-  "params": []
-}
-```
-
-#### Response
-Returns `true` if successful
-```json
-{
-  "jsonrpc": "2.0",
-  "id": 0,
-  "result": true,
-}
-```
-
-### Get Mempool
-`debug_bundler_dumpMempool` returns the current mempool of the bundler, given the entrypoint address
-
-#### Request
-```json
-{
-  "jsonrpc": "2.0",
-  "id": 0,
-  "method": "debug_bundler_dumpMempool",
-  "params": [entryPointAddress]
-}
-```
-#### Response
-
-```json
-{
-  "jsonrpc": "2.0",
-    "id": 0,
-    "result": ... // Mempool
-},
-```
-
-
 
 
 

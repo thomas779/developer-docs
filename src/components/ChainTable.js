@@ -56,7 +56,7 @@ export function BundlerEndPointTable({ items }) {
           <span>{item.network}</span>
         </div>
       )}
-      renderRightItem={(item) => <span>{item.address}</span>}
+      renderRightItem={(item) => <a>{item.address}</a>}
       renterCenterItem={(item) => <span>{item.chainId}</span>}
       renderFarRightItem={(item) => <span>{item.type}</span>}
     />

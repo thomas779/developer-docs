@@ -1,7 +1,7 @@
 ---
 slug: rpc-endpoints
 title: Bundler RPC endpoints
-description: Hosted RPC endpoints
+description: Explore Candide's ERC-4337 Bundler RPC endpoints to enable powerful interactions for smart wallets and seamless blockchain transactions. Learn how to integrate and leverage these endpoints for enhanced Dapp experiences
 image: "/img/erc4337-bundler.png"
 authors: [sherif]
 ---
@@ -13,35 +13,59 @@ const chainList = [
     logo: "/img/networks/137.png",
     chainId: 137,
     chainHandle: "polygon",
-    address: "https://polygon.llamarpc.com",
-    type: "Node & Bundler",
+    address: "https://polygon.voltaire.candidewallet.com/rpc",
+    type: "Bundler",
+  },
+  {
+    network: "Arbitrum One",
+    logo: "/img/networks/42161.png",
+    chainId: 46121,
+    chainHandle: "arbitrum",
+    address: "Available upon request",
+    type: "Bundler",
+  },
+  {
+    network: "Arbitrum Nova",
+    logo: "/img/networks/42170.png",
+    chainId: 42170,
+    chainHandle: "arbitrum",
+    address: "Available upon request",
+    type: "Bundler",
+  },
+  {
+    network: "Avalanche C-Chain",
+    logo: "/img/networks/43114.png",
+    chainId: 43114,
+    chainHandle: "avalanche",
+    address: "Available upon request",
+    type: "Bundler",
+  },
+  {
+    network: "BnB Smart Chain",
+    logo: "/img/networks/56.png",
+    chainId: 56,
+    chainHandle: "bnb",
+    address: "Available upon request",
+    type: "Bundler",
   },
   {
     network: "Ethereum",
     logo: "/img/networks/1.png",
     chainId: 1,
     chainHandle: "ethereum",
-    address: "🔜",
-    type: "",
+    address: "Available upon request",
+    type: "Bundler",
   },
   {
     network: "Optimism",
     logo: "/img/networks/10.png",
     chainId: 10,
     chainHandle: "optimism",
-    address: "🔜",
-    type: "",
+    address: "Available upon request",
+    type: "Bundler",
   },
 ];
 const testChainList = [
-  {
-    network: "Sepolia",
-    logo: "/img/networks/1.png",
-    chainId: 11155111,
-    chainHandle: "sepolia",
-    address: "https://sepolia.voltaire.candidewallet.com/rpc",
-    type: "Bundler",
-  },
   {
     network: "Goerli",
     logo: "/img/networks/1.png",
@@ -66,20 +90,55 @@ const testChainList = [
     address: "https://mumbai.voltaire.candidewallet.com/rpc",
     type: "Bundler",
   },
+  {
+    network: "Sepolia",
+    logo: "/img/networks/1.png",
+    chainId: 11155111,
+    chainHandle: "sepolia",
+    address: "https://sepolia.voltaire.candidewallet.com/rpc",
+    type: "Bundler",
+  },
+  {
+    network: "Arbitrum Goerli",
+    logo: "/img/networks/42161.png",
+    chainId: 421613,
+    chainHandle: "arbitrum",
+    address: "Available upon request",
+    type: "Bundler",
+  },
+  {
+    network: "Avalanche Fuji Testnet",
+    logo: "/img/networks/42170.png",
+    chainId: 43114,
+    chainHandle: "fuji",
+    address: "Available upon request",
+    type: "Bundler",
+  },
+  {
+    network: "BnB Smart Chain Tesnet",
+    logo: "/img/networks/56.png",
+    chainId: 97,
+    chainHandle: "bnb",
+    address: "Available upon request",
+    type: "Bundler",
+  },
 ];
 
 # Bundler RPC Endpoints
 
-Voltaire is provided as a free bundler instance on selected networks. 
+Voltaire is provided as a free bundler instance on selected networks
 
-Looking for unlimited resources? Reach out on [discord](https://discord.gg/NM5HakA9nC), or by email at hello@candidewallet.com 
-## Testnets
-
-<BundlerEndPointTable items={testChainList} />
+:::info
+[Book a meeting](https://cal.com/candidelabs/30mins) now to go live on mainnet
+:::
 
 ## Mainnet Networks
 
 <BundlerEndPointTable items={chainList} />
+
+## Testnet
+
+<BundlerEndPointTable items={testChainList} />
 
 ## Partner RPC Providers
 

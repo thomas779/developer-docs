@@ -16,64 +16,41 @@ const sidebars = {
   // By default, Docusaurus generates a sidebar from the docs folder structure
 
   // But you can create a sidebar manually
-  developSideBar: [
-    'develop/getting-started',
-    {
-      type: 'category',
-      label: 'Integrate Wallet',
-      items: [
-        'develop/wallet/connect-wallet',
-        'develop/wallet/network-support',
-        'develop/wallet/batch-transactions',
-        'develop/wallet/gas-sponsorship',
-        'develop/wallet/modules',
-        'develop/wallet/verify-signatures',
-        'develop/wallet/session-keys'
-      ],
-    },
-  ],
-  gettingStartedSideBar: [
-    'getting-started/intro',
-    {
-      type: 'category',
-      label: 'About CANDIDE',
-      items: [
-        'getting-started/about-candide/overview',
-        'getting-started/about-candide/account-abstraction',
-        'getting-started/about-candide/account-recovery',
-        'getting-started/about-candide/sponsored-transactions',
-        'getting-started/about-candide/batched-transactions',
-        'getting-started/about-candide/modules',
-      ],
-    },
+  dappsSideBar: [
+    'dapps/getting-started',
     {
       type: 'category',
       label: 'Guides',
       items: [
-        'getting-started/guides/setup-a-wallet',
-        'getting-started/guides/deposit-funds',
-        'getting-started/guides/add-recovery-contacts',
-        'getting-started/guides/recover-your-account',
-        'getting-started/guides/help-recover-an-account',
+        'dapps/guides/batch-transactions',
+        'dapps/guides/verify-signatures',
       ],
     },
   ],
-  bundlerSideBar: [
+  walletSideBar: [
+    'wallet/atelier-intro',
+    {
+      type: 'category',
+      label: 'Overview',
+      items: [
+        'wallet/account-abstraction/overview',
+      ],
+    },
     {
       type: 'category',
       label: 'Paymaster',
       items: [
-        'wallets/paymaster-api-rpc-methods',
+        'wallet/paymaster/rpc-methods',
       ],
     },
     {
       type: 'category',
       label: 'Voltaire Bundler',
       items: [
-        'wallets/erc-4337-bundler',
-        'wallets/erc-4337-bundler-installation',
-        'wallets/erc-4337-bundler-rpc-methods',
-        'wallets/erc-4337-bundler-rpc-endpoints',
+        'wallet/bundler/erc-4337-intro',
+        'wallet/bundler/installation',
+        'wallet/bundler/rpc-methods',
+        'wallet/bundler/rpc-endpoints',
       ],
     },
   ]

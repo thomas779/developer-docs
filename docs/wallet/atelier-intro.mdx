@@ -1,0 +1,45 @@
+---
+title: Intro to Candide Atelier
+description: A powerful toolkit to create, customize, and offer smart wallets. Explore ERC-4337 support, account abstraction, paymaster integration, bundler features, and seamless management of smart wallets
+image: "/img/logo/candide-logo-dark-wordmark.svg"
+keywords: [erc-4337, account abstraction, paymaster, bundler, smart wallets]
+sidebar_position: 1
+---
+# Candide Atelier 
+
+Create, customize and offer smart wallets for your users
+
+## Smart Wallets
+
+Candide Atelier is a set of tools that lets you build smart wallets. What are the benefits of smart wallets? 
+
+- **Account Security**: Use different authentication methods to support easy login and recovery features 
+- **Gas Fee Abstraction**: Completely abstract away gas from your users, or let them pay fees in different currencies other than the native.
+- **One-click Interfaces**: Batch transactions or send multiple transactions automatically in a single transaction
+
+Because each account is a smart contract, contracts are programmable. Unlike EOAs (MetaMask-style wallets), which are limited by design.
+
+Candide Atelier leverages [ERC-4337 Account Abstraction](https://eips.ethereum.org/EIPS/eip-4337), the ethereum standard for building censorship resistance smart contract wallets.
+
+## Getting Started
+import CardList from '/src/components/CardList'
+const GETTING_STARTED_ITEMS = [
+  {
+    title: 'Account Abstraction Overview',
+    description: 'Learn about Account Abstraction, and why chose smart wallets over regular wallets',
+    route: '/wallet/account-abstraction/intro',
+  },
+  {
+    title: 'Verifying Paymaster',
+    description: "Learn how to abstract gas away by sponsoring or letting users pay gas in ERC-20",
+    route: '/wallet/paymaster/rpc-methods',
+  },
+  {
+    title: 'Bundler',
+    description: 'Get started sending user operations to Voltaire, a compliant ERC-4337 Bundler',
+    route: '/wallet/bundler/erc-4337-intro',
+  },
+]
+
+<CardList items={GETTING_STARTED_ITEMS} />
+
