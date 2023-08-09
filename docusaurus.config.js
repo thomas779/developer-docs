@@ -89,6 +89,15 @@ const config = {
         disableSwitch: false,
         respectPrefersColorScheme: false,
       },
+      image: 'img/logo/candide-logo-dark-wordmark.svg',
+      announcementBar: {
+        id: 'private_beta_paymaster',
+        content:
+          'We are rolling out a private beta for Candide Paymaster API. Save your spot. <button><a target="_blank" rel="noopener noreferrer" href="https://cal.com/candidelabs/30mins">Book meeting now</a></button>',
+        backgroundColor: '#f0f6ff',
+        textColor: '#091E42',
+        isCloseable: false,
+      },
       metadata: [{
         name:
           'twitter:card',
