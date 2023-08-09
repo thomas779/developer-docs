@@ -164,6 +164,10 @@ const config = {
                 "label": "Twitter",
                 "href": "https://twitter.com/candidelabs"
               },
+              {
+                "label": "Email",
+                "href": "mailto:hello@candidewallet.com"
+              },
             ]
           },
         ],
