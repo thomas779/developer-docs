@@ -40,10 +40,9 @@
   justify-content: top;
   cursor: pointer;
   border: solid;
-  border-radius: 0px;
+  border-radius: 20px;
   background-color: #121213;
   color: white;
-  border-color: black;
 }
 
 .card h2 {
@@ -100,6 +99,7 @@
 
 html[data-theme="light"] .card {
   background-color: white;
+  border-color: black;
   color: black;
 }
 
