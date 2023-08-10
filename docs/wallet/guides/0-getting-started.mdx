@@ -1,0 +1,270 @@
+---
+title: Getting Started
+description: Learn how to create a smart wallet and to send your first erc-4337 user operation 
+keywords: [create-smart-wallet, initCode, userOperation]
+---
+
+# Getting Started
+
+Learn how to create a smart wallet and to send your first user operation
+
+Candide builds open-source software for ERC-4337 account abstraction standard. This guarantees smooth compatibility with any platform that follow the ERC-4337 protocol, fostering effortless integration, and providing the flexibility of independent hosting to avoid any vendor lock-in.
+## Quickstart
+
+### Prerequisites
+
+- Node and a package manager (yarn or npm)
+- Some [Sepolia](https://ethereum.org/en/developers/docs/networks/#sepolia) ETH
+
+:::info
+You can find the full example of this tutorial on [Github](https://github.com/candidelabs/abstractionkit/tree/main/examples/CreateAccountAndSendTransaction)
+:::
+
+### Step 1: Get setup
+
+1. Create a new directory for your project:
+
+```bash
+mkdir smart-wallet-send-transaction
+cd smart-wallet-send-transaction
+```
+
+2. Install required dependencies
+
+- `typescript`, `ts-node`, `dotenv`
+- [`abstractionkit`](https://www.npmjs.com/package/abstractionkit): A JS library for building ERC-4337 user operations
+
+```bash
+npm install typescript ts-node dotenv abstractionkit
+```
+
+3. Configure Environment Variables
+
+Create a .env file in your project directory and add the following environment variables with your own values. We will be using Sepolia Testnet for this example
+
+:::info
+We host free [bundlers](../bundler/rpc-endpoints) endpoints on testnets, you do not need to create an account. [Get in touch](https://cal.com/candidelabs/30mins) if you would like to go live on mainnet
+:::
+
+```bash title=".env"
+CHAIN_ID=11155111
+BUNDLER_URL=https://sepolia.voltaire.candidewallet.com/rpc
+JSON_RPC_NODE_PROVIDER=https://rpc2.sepolia.org
+ENTRYPOINT_ADDRESS=0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789
+
+#account owner privatekey
+PRIVATE_KEY=YOUR_PRIVATE_KEY
+```
+
+3. Create a empty file and a function to run our script
+
+Create a TypeScript file in your project directory and import the necessary dependencies:
+
+```ts title="index.ts"
+async function main(): Promise<void> {
+  // Rest of the code will go here...
+}
+
+main();
+```
+
+### Step 2: Generate Account Address
+
+Let's open up `index.ts`
+
+To generate an account address, we will be using [CandideWallet.sol](https://github.com/candidelabs/CandideWalletContracts/blob/main/contracts/candideWallet/CandideWallet.sol) as our base smart account. It is an account that inherits `Safe` Contracts to be ERC-4337 compatible. We will control the Account with a single EOA signer.
+
+Since this is our first transaction, we will need to deploy the account in the same transaction 
+
+We will generate the `initCode`: The code that creates the bytecode that is stored on-chain to create the account contract. 
+It is only needed if and only if the account is not yet on-chain and needs to be created
+
+```typescript
+import * as dotenv from "dotenv";
+import { Wallet } from "ethers";
+
+import {
+  Bundler,
+  CandideAccount,
+} from "abstractionkit";
+  
+async function main(): Promise<void> {
+  //get vlues from .env
+  dotenv.config();
+  const bundlerUrl = process.env.BUNDLER_URL as string;
+  const entrypointAddress = process.env.ENTRYPOINT_ADDRESS as string;
+  const privateKey = process.env.PRIVATE_KEY as string;
+
+  // Define our Bundler endpoint where we will be sending our userOp
+  const bundler: Bundler = new Bundler(bundlerUrl, entrypointAddress);
+  
+  // Initiate the owner of our Candide Account (EOA)
+  const eoaSigner = new Wallet(privateKey);
+  
+  const smartAccount = new CandideAccount();
+
+  // Generate the new account address and initCode
+  let [newAccountAddress, initCode] = smartAccount.createNewAccount([
+    eoaSigner.address,
+  ]);
+
+  console.log("Account address(sender) : " + newAccountAddress);
+}
+
+main();
+```
+
+Let's run this code with `npx ts-node index.ts`
+
+If everything worked, you will get the address of the account in the console.
+
+```cli
+Account address(sender): 0x32afdcfa1e3bfe70d03ecb55b5c8045c26515c9d
+```
+
+:::info
+Now that you have generated the smart account, go ahead and fund it with some Sepolia ETH.
+
+In another example, we will show you how to sponsor transactions with a paymaster. 
+:::
+
+### Step 3: Generate the callData
+
+The [callData](https://eips.ethereum.org/EIPS/eip-4337#specification) contain the instructions to send our transaction on-chain. This user operation will make a transfer of 5 [wei](https://ethereum.org/en/developers/docs/intro-to-ether/#denominations) to a random address
+
+```ts title="index.ts"
+//send 5 wei to 0x1a02592A3484c2077d2E5D24482497F85e1980C6
+let callData = smartAccount.createSendEthCallData(
+  "0x1a02592A3484c2077d2E5D24482497F85e1980C6", // random address
+  5 // 5 wei
+);
+```
+
+### Step 4: Estimate Gas
+Estimates the gas required for the user operation using the Bundler instance.
+
+1. Add the new imports
+
+```ts title="index.ts"
+import { 
+  Wallet,
+  // highlight-start
+  JsonRpcProvider, 
+  toBeHex,
+  // highlight-end
+} from "ethers";
+import {
+  Bundler,
+  CandideAccount,
+  GasEstimationResult,
+  // highlight-start
+  UserOperation,
+  UserOperationEmptyValues,
+  GasEstimationResult,
+  // highlight-end
+} from "abstractionkit";
+```
+
+2. Construct the user operation and estimate the required gas needed to send it onchain
+
+We will ask the bundler to estimate: 
+
+- `callGasLimit`
+- `preVerificationGas`
+- `verificationGas`
+
+We will ask the rpc node to get the fee per gas for the network:
+- `maxFeePerGas`
+- `maxPriorityFeePerGas`
+
+```ts title="index.ts"
+let user_operation: UserOperation = {
+  ...UserOperationEmptyValues,
+  sender: newAccountAddress,
+  nonce: "0x00",
+  initCode,
+  callData,
+};
+
+let estimation = await bundler.estimateUserOperationGas(user_operation) as GasEstimationResult;
+
+// catch errors if there's any in the estimateUserOperationGas call
+if ("code" in estimation) {
+  console.log(estimation);
+  return
+}
+
+user_operation.callGasLimit = estimation.callGasLimit;
+user_operation.preVerificationGas = toBeHex(estimation.preVerificationGas);
+
+// multiple by three to avoid out of gas error during validation for verificationGas - 
+// note: will be removed once the bundler returns an accurate estimates for verification gas
+user_operation.verificationGasLimit = toBeHex(
+  Math.round(Number(estimation.verificationGas) * 3)
+);
+
+const jsonRpcNodeProvider = process.env.JSON_RPC_NODE_PROVIDER as string;
+const provider = new JsonRpcProvider(jsonRpcNodeProvider);
+const feeData = await provider.getFeeData();
+
+// convert to hex format
+if (feeData.maxFeePerGas && feeData.maxPriorityFeePerGas) {
+  user_operation.maxFeePerGas = toBeHex(feeData.maxFeePerGas);
+  user_operation.maxPriorityFeePerGas = toBeHex(feeData.maxPriorityFeePerGas);
+}
+```
+
+### Step 5: Sign and Submit Transaction
+
+1. Import `getUserOperationHash` and `getBytes`
+
+`getUserOperationHash` is a function that takes the user operation we just constructed and returns its hash
+
+```ts
+import {
+  // highlight-start
+  getBytes,
+  // highlight-end
+} from "ethers"
+
+import {
+  // highlight-start
+  getUserOperationHash,
+  // highlight-end
+} from "abstractionkit"
+```
+
+2. Sign user operation and submit it to the bundler
+```ts
+const chainId = process.env.CHAIN_ID as string;
+
+const user_operation_hash = getUserOperationHash(
+  user_operation,
+  entrypointAddress,
+  chainId
+);
+
+user_operation.signature = await eoaSigner.signMessage(
+  getBytes(user_operation_hash)
+);
+
+const bundlerResponse = await bundler.sendUserOperation(user_operation);
+
+console.log(bundlerResponse, "bundlerResponse");
+
+if ("message" in bundlerResponse && (bundlerResponse.message as string) == "AA21 didn't pay prefund") {
+    console.log("Please fund the new account address with some sepolia eth to pay for gas : " + newAccountAddress);
+  }
+```
+
+Now let's run this code again with `npx ts-node index.ts`
+
+You've now sent your first user operation! If everything went well, you should see the bundler returning a user operation hash
+
+```bash
+{
+  userOperationHash: '0xbaa2e95962df1a1f9982e2f3a703d91bf1efc00746994376892ce8b6ac3fe7cb,
+}
+```
+
+You can lookup the user operation hash on a dedicated ERC-4337 explorer like [JiffyScan](https://jiffyscan.xyz/)

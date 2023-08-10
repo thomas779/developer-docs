@@ -31,6 +31,13 @@ const sidebars = {
     'wallet/atelier-intro',
     {
       type: 'category',
+      label: 'Guides',
+      items: [
+        'wallet/guides/getting-started',
+      ],
+    },
+    {
+      type: 'category',
       label: 'Overview',
       items: [
         'wallet/account-abstraction/overview',
