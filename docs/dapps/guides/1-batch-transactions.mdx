@@ -54,15 +54,13 @@ This is what we're going to do: Build a react dApp that send 1 wei to two differ
 - Node and a package manager (yarn or npm)
 - A account with some Göerli ETH
 
-### Demo
-
 :::info Try it Live
 Try a simple [live demo](https://batch-transactions-demo-web3onboard.netlify.app/) using [Candide Wallet](https://candidewallet.com) and WalletConnect.
 
 Source code can be run under a minute on [Github](https://github.com/candidelabs/batch-transaction-dapp-demo-web3onboard)
 :::
 
-### Get setup
+### Step 1: Get setup
 
 1. Install create-react-app:
 
@@ -160,9 +158,9 @@ export default function App() {
 }
 ```
 
-### Batch Transaction
+### Step2: Batch Transaction
 
-5. Create a new component called BatchTransactions.js. This is where we will include all our logic.
+1. Create a new component called BatchTransactions.js. This is where we will include all our logic.
 
 ```jsx title="/src/BatchTransactions.js"
 import React from "react";
@@ -196,7 +194,7 @@ const BatchTransactions = () => {
 export default BatchTransactions;
 ```
 
-6. Create the function to send the bundle of transactions. We will be sending a self-transfer of 1 wei, 2 times.
+2. Create the function to send the bundle of transactions. We will be sending a self-transfer of 1 wei, 2 times.
 
 ```jsx title="/src/BatchTransactions.js"
 import React from "react";
@@ -292,9 +290,9 @@ Test your app by connecting your wallet, and hitting the Send Bundled Tx button.
 
 The next steps involves tracking the status of the Bundle so you can display to the user once their transaction is succesfully submitted onchain.
 
-### Track Batch Status
+### Step3: Track Batch Status
 
-7. Create a function that checks for the Bundle status using `wallet_getBundleStatus`
+1. Create a function that checks for the Bundle status using `wallet_getBundleStatus`
 
 ```jsx title="/src/BatchTransactions.js"
 import React from "react";
@@ -348,7 +346,7 @@ const BatchTransactions = () => {
 export default BatchTransactions;
 ```
 
-8. Now, if you lost track of the transaction, you can also delegate showing the status inside the wallet by using `wallet_showBundleStatus`
+2. Now, if you lost track of the transaction, you can also delegate showing the status inside the wallet by using `wallet_showBundleStatus`
 
 ```jsx title="/src/BatchTransactions.js"
 import React from "react";
