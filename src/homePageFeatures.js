@@ -3,6 +3,11 @@ export default [
       title: 'Smart Wallets',
       rows: [
         {
+          title: 'Candide Atelier',
+          description: 'Learn how to create, customize and offer smart wallets for your users',
+          to: './wallet/atelier-intro'
+        },
+        {
           title: 'Paymaster Service',
           description: "Get Started with Candide's Verifying Paymaster API",
           to: './wallet/paymaster/rpc-methods',

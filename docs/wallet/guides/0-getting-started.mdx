@@ -79,7 +79,7 @@ Since this is our first transaction, we will need to deploy the account in the s
 We will generate the `initCode`: The code that creates the bytecode that is stored on-chain to create the account contract. 
 It is only needed if and only if the account is not yet on-chain and needs to be created
 
-```typescript
+```ts title="index.ts"
 import * as dotenv from "dotenv";
 import { Wallet } from "ethers";
 
@@ -118,7 +118,7 @@ Let's run this code with `npx ts-node index.ts`
 
 If everything worked, you will get the address of the account in the console.
 
-```cli
+```cli title="Terminal"
 Account address(sender): 0x32afdcfa1e3bfe70d03ecb55b5c8045c26515c9d
 ```
 
@@ -220,7 +220,7 @@ if (feeData.maxFeePerGas && feeData.maxPriorityFeePerGas) {
 
 `getUserOperationHash` is a function that takes the user operation we just constructed and returns its hash
 
-```ts
+```ts title="index.ts"
 import {
   // highlight-start
   getBytes,
@@ -235,7 +235,7 @@ import {
 ```
 
 2. Sign user operation and submit it to the bundler
-```ts
+```ts title="index.ts"
 const chainId = process.env.CHAIN_ID as string;
 
 const user_operation_hash = getUserOperationHash(
@@ -261,7 +261,7 @@ Now let's run this code again with `npx ts-node index.ts`
 
 You've now sent your first user operation! If everything went well, you should see the bundler returning a user operation hash
 
-```bash
+```bash title="Terminal"
 {
   userOperationHash: '0xbaa2e95962df1a1f9982e2f3a703d91bf1efc00746994376892ce8b6ac3fe7cb,
 }

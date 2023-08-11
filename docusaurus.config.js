@@ -165,7 +165,7 @@ const config = {
                 "href": "https://twitter.com/candidelabs"
               },
               {
-                "label": "Email",
+                "label": "hello@candidewallet.com",
                 "href": "mailto:hello@candidewallet.com"
               },
             ]
