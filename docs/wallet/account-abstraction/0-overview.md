@@ -8,7 +8,11 @@ tags: ["4337", account-abstraction]
 
 # Intro to Account Abstraction
 
-Making it possible to use smart contract accounts instead of regular externally owned accounts (EOAs). 
+Making it possible to use smart contract accounts instead of regular externally owned accounts (EOAs).
+
+:::info Did you know?
+A smart account is controlled and separated from the signer, unlike EOAs where the private key is tightly coupled with the account. This is where the term Account Abstraction comes into play. The account is abstracted away from the signer.
+:::
 
 ## The Problem with wallets today 
 Almost every wallet on Ethereum today have limitation in one way or the other.

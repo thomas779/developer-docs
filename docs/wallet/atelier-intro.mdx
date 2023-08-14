@@ -5,21 +5,25 @@ image: "/img/logo/candide-logo-dark-wordmark.svg"
 keywords: [erc-4337, account abstraction, paymaster, bundler, smart wallets]
 sidebar_position: 1
 ---
-# Candide Atelier 
+# Intro to Candide Atelier 
 
 Create, customize and offer smart wallets for your users
 
-## Smart Wallets
+## What is Candide Atelier?
 
-Candide Atelier is a set of tools that lets you build smart wallets. What are the benefits of smart wallets? 
+Candide Atelier is a set of tools that lets you build **smart wallets** powered by [ERC-4337 Account Abstraction](https://eips.ethereum.org/EIPS/eip-4337). We provide:
+
+- @abstractionkit - A TS library to build and send UserOperations
+- Bundler: ERC-4337 nodes on all EVM compatible chains to send UserOperations
+- Paymasters: Off-chain verification API facilitating transaction sponsorship
+
+## Benefits of smart wallets
 
 - **Account Security**: Use different authentication methods to support easy login and recovery features 
 - **Gas Fee Abstraction**: Completely abstract away gas from your users, or let them pay fees in different currencies other than the native.
 - **One-click Interfaces**: Batch transactions or send multiple transactions automatically in a single transaction
 
-Because each account is a smart contract, contracts are programmable. Unlike EOAs (MetaMask-style wallets), which are limited by design.
-
-Candide Atelier leverages [ERC-4337 Account Abstraction](https://eips.ethereum.org/EIPS/eip-4337), the ethereum standard for building censorship resistance smart contract wallets.
+And that's only the tip of the iceberg. Because each account is a smart contract, contracts are programmable and enable arbitrarily advanced transaction functionalities. Unlike EOAs (MetaMask-style wallets), which are limited by design. 
 
 ## Getting Started
 import CardList from '/src/components/CardList'
