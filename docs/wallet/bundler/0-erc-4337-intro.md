@@ -8,7 +8,7 @@ image: "/img/erc4337-bundler.png"
 
 Voltaire is a modular, developer-friendly and lighting-fast Python Bundler for Ethereum EIP-4337 Account Abstraction. 
 
-:::tip
+:::info
 Looking for a quick bundler instance? Use one of our [public hosted endpoints](./3-rpc-endpoints.mdx) for your developement
 :::
 
@@ -45,7 +45,7 @@ The flow of UserOperation can be thought of as the following, from a Bundler per
 5. When it is time to create a bundle, each bundler is free to create a bundle of whatever size and order it likes - from zero to the entire mempool (given tx and block gas limits). This is where flashbot-api for searchers can be integrated.
 6. The benefit of large bundles - is reduced overheads (the constant 21000, some more overhead of EntryPoint itself, and the variable reduction due to using "warm" addresses that are used between the different ops.
 
-## Votlaire 
+## Voltaire 
 
 Voltaire presently has complete coverage of the test suite. While the specification is still under development, all upcoming updates will aim to sustain full compliance coverage.
 
