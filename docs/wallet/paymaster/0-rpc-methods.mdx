@@ -26,7 +26,7 @@ Candide's Verifying Paymaster is currently in private beta. Request an [`API key
 
 Gets supported ERC-20 Tokens for gas payments, along side the paymaster metadata
 
-#### Ivocation
+#### Invocation
 
 ```json
 { "method": "pm_supportedERC20Tokens", "params": [] }
@@ -113,7 +113,7 @@ Gets supported ERC-20 Tokens for gas payments, along side the paymaster metadata
 
 Sends a UserOperation to a paymaster for off-chain verification. If approved, it will return the paymasterData. If the paymaster rejects the UserOperation it should not return a result but a standard JSON-RPC error with the reason.
 
-#### Ivocation
+#### Invocation
 
 ```json
 { "method": "pm_sponsorUserOperation", "params": [userOperation, entrypoint, context] }
@@ -239,7 +239,7 @@ Sends a UserOperation to a paymaster for off-chain verification. If approved, it
 
 Get supported EntryPoint returns the entryPoint address supported by the paymaster
 
-#### Ivocation
+#### Invocation
 
 ```json
 { "method": "pm_supportedEntryPoint", "params": [] }
@@ -305,7 +305,7 @@ Get supported EntryPoint returns the entryPoint address supported by the paymast
 
 Get Chain ID asks the paymaster service to return the chain_id it currently supports
 
-#### Ivocation
+#### Invocation
 
 ```json
 { "method": "pm_chainId", "params": [] }

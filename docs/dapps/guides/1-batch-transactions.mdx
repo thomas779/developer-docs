@@ -412,7 +412,7 @@ These requests are sent to Wallets, not to nodes. These RPC requests are communi
 
 Requests that the wallet deliver a group of function calls on-chain from the user’s wallet.
 
-#### Ivocation
+#### Invocation
 
 ```json
 { "method": "wallet_sendFunctionCallBundle", "params": [{ chainId, from, calls }] }
@@ -473,7 +473,7 @@ Requests that the wallet deliver a group of function calls on-chain from the use
 
 Returns the status of a bundle that was sent via `wallet_sendFunctionCallBundle`. The identifier of the bundle is the value returned from the `wallet_sendFunctionCallBundle` RPC.
 
-#### Ivocation
+#### Invocation
 
 ```json
 { "method": "wallet_getBundleStatus", "params": [userOperationHash] }
@@ -536,7 +536,7 @@ Returns the status of a bundle that was sent via `wallet_sendFunctionCallBundle`
 
 Requests that the wallet present UI showing the status of the given bundle. This allows dapps to delegate the display of the function call status to the wallet, which can most accurately render the current status of the bundle. This RPC is intended to replace the typical user experience of a dapp linking to a block explorer for a given transaction hash.
 
-#### Ivocation
+#### Invocation
 
 ```json
 { "method": "wallet_showBundleStatus", "params": [userOperationHash] }
