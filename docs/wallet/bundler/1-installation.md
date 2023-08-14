@@ -38,7 +38,7 @@ This command will pull the latest docker image and will then start the bundler t
 |`--chain_id`      | Chain ID of the network the bundler will operate in
 |`--verbose`       | To get verbose logs (optional)
 |`--debug`         | Expose _debug rpc namespace for testing (optional)
-| `--unsafe`       | In order to implement the full spec storage access rules and opcode banning, it must run against a go-ethereum or erigon node, which supports `debug_traceCall` with javascript "tracer" Specifically, `hardhat node` and `ganache` do NOT support this API. You can still run the bundler with such nodes, but with `--unsafe` so it would skip these security checks (optional)
+| `--unsafe`       | In order to implement the full spec storage access rules and opcode banning, it must run against a go-ethereum or erigon node, which supports `debug_traceCall` with javascript "tracer". Specifically, `hardhat node`, `ganache`, infura and alchemy nodes do NOT support this API. You can still run the bundler with such nodes, but with `--unsafe` so it would skip these security checks (optional)
 |`--legacy_mode`   | for netwroks that doesn't support EIP-1559 (optional)
 |`--bundle_interval`| Set the bundle interval in seconds for the auto bundle mode - set to zero for manual mode (optional)
 |`--whitelist_entity_storage_access`| list of entities to whitelist for storage access rules (optional)
@@ -51,14 +51,17 @@ To know about all flags:
 docker run --rm -it ghcr.io/candidelabs/voltaire/voltaire-bundler:$VERSION -h
 ```
 ### RPC Provider
-If you want to run voltaire locally and have a paid plan with an RPC provider for a full node that supports supports debug_traceCall with javascript "tracer", you can simple replace `$ETHEREUM_NODE_URL` with the link to the rpc endpoint. If it doesn't support a javascript tracer, you can run with the `--safe` flag for testing purposes. This mode is not meant to be used in production. 
+If you want to run voltaire locally and have a paid plan with an RPC provider for a full node that supports debug_traceCall with javascript "tracer", you can simple replace `$ETHEREUM_NODE_URL` with the link to the rpc endpoint. If it doesn't support a javascript tracer, you can run with the `--unsafe` flag for testing purposes. This mode is not meant to be used in production. 
 
 ### Local Full Node
 If you are running your own full node, simply pass your own node url in `--ethereum_node_url`. If you want to run your own node, which comes with superpowers, follow the instruction below to run GETH [using docker](#start-geth). You can also run a different client implentation.
 
 Voltaire works well with [go-ethereum](https://geth.ethereum.org/) and [erigon](https://github.com/ledgerwatch/erigon/). Contact us if you would like to see Voltaire tested with a different client.
 
-## Ubuntu
+## Development
+
+Ubuntu Instructions
+
 ### Install Poetry
 ```
 curl -sSL https://install.python-poetry.org | python3 -
