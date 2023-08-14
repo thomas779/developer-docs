@@ -16,6 +16,7 @@
   --ifm-color-primary-light: #4e89e8; /*rgb(70, 203, 174);*/
   --ifm-color-primary-lighter: #5a91ea; /*rgb(102, 212, 189);*/
   --ifm-color-primary-lightest: #80aaef; /*rgb(146, 224, 208);*/
+  --docusaurus-highlighted-code-line-bg: rgba(72, 77, 91, 0.12);
   --ifm-code-font-size: 95%; /*95%;*/
 }
 
