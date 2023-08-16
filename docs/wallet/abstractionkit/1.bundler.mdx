@@ -1,0 +1,303 @@
+---
+title: Bundler
+description: Learn how to use AbstractionKit to send ERC-4337 UserOperations to a Bundler
+keywords: [bundler, "4337", "sdk", account-abstraction]
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Bundler
+
+A `Bundler` is a class to an ERC-4337 Bundler JSON-RPC API methods such as estimating user operation gas, and sending user operations.
+
+The `Bundler` class sets up a Bundler Instance with:
+
+1. [Bundler RPC URL](../bundler/rpc-endpoints)
+2. The entrypoint address
+
+## Usage
+
+### Import
+
+```ts
+import { Bundler } from "abstractionkit";
+```
+
+### How to use
+
+Initialize a Bundler with your desired bundler RPC url
+
+```ts
+const bundlerRPC = "https://sepolia.voltaire.candidewallet.com/rpc";
+const entrypointAddress = "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789";
+
+const bundler: Bundler = new Bundler(bundlerRPC, entrypointAddress);
+```
+
+Then you can consume Bundler methods:
+
+```ts
+const entrypointAddresses = await bundler.supportedEntryPoints();
+```
+
+### Paramaters
+
+#### bundlerURL `string`
+
+#### entrypointAddress `string`
+
+## Methods
+
+### chainId
+
+Returns chain ID of the current network that the bundler is operating in
+
+#### Usage
+
+<Tabs>
+<TabItem value="example.ts" label="example.ts">
+
+```ts title="example.ts"
+import { bundler } from "./bundler";
+
+const userOperation = await bundler.chainId();
+```
+
+</TabItem>
+<TabItem value="bundler.ts" label="bundler.ts">
+
+```ts title="bundler.ts"
+import { Bundler } from "abstractionkit";
+
+const bundlerRPC = "https://goerli.voltaire.candidewallet.com/rpc";
+const entrypointAddress = "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789";
+
+const bundler: Bundler = new Bundler(bundlerRPC, entrypointAddress);
+```
+
+</TabItem>
+</Tabs>
+
+#### JSON-RPC Method
+
+[eth_chainId](../bundler/rpc-methods#get-chain-id)
+
+### supportedEntryPoints
+
+Returns the list of the entryPoint addresses supported by the bundler
+
+#### Usage
+
+<Tabs>
+<TabItem value="example.ts" label="example.ts">
+
+```ts title="example.ts"
+import { bundler } from "./bundler";
+
+const entrypointAddresses = await bundler.supportedEntryPoints();
+```
+
+</TabItem>
+<TabItem value="bundler.ts" label="bundler.ts">
+
+```ts title="bundler.ts"
+import { Bundler } from "abstractionkit";
+
+const bundlerRPC = "https://goerli.voltaire.candidewallet.com/rpc";
+const entrypointAddress = "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789";
+
+const bundler: Bundler = new Bundler(bundlerRPC, entrypointAddress);
+```
+
+</TabItem>
+</Tabs>
+
+#### JSON-RPC Method
+
+[eth_supportedEntryPoints](../bundler/rpc-methods#get-supported-entrypoints)
+
+### estimateUserOperationGas
+
+Generates and returns an estimate of how much gas is necessary to allow the user operation to complete, given a UserOperations.
+
+#### Usage
+See a full example in [getting-started guide](../guides/getting-started)
+
+<Tabs>
+<TabItem value="example.ts" label="example.ts">
+
+```ts title="example.ts"
+import { GasEstimationResult, UserOperation } from "abstractionkit";
+
+import { bundler } from "./bundler";
+
+const userOperation: UserOperation = {
+  sender: "0x32afdcfa1e3bfe70d03ecb55b5c8045c26515c9d",
+  nonce: "0x04",
+  initCode: "0x",
+  callData: "0x..",
+  callGasLimit: 0,
+  verificationGasLimit: 0,
+  preVerificationGas: 0,
+  maxFeePerGas: 0,
+  maxPriorityFeePerGas: 0,
+  paymasterAndData: "0x",
+  signature: "0x",
+};
+
+const estimation = (await bundler.estimateUserOperationGas(user_operation)) as GasEstimationResult;
+// estimation return
+{
+  callGasLimit: 82472,
+  preVerificationGas: 56580,
+  verificationGas: 32953,
+  deadline: 281474976710655
+}
+```
+
+</TabItem>
+<TabItem value="bundler.ts" label="bundler.ts">
+
+```ts title="bundler.ts"
+import { Bundler } from "abstractionkit";
+
+const bundlerRPC = "https://goerli.voltaire.candidewallet.com/rpc";
+const entrypointAddress = "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789";
+
+const bundler: Bundler = new Bundler(bundlerRPC, entrypointAddress);
+```
+
+</TabItem>
+</Tabs>
+
+#### JSON-RPC Method
+
+[eth_estimateUserOperationGas](../bundler/rpc-methods#estimate-user-operation-gas)
+
+### sendUserOperation
+Asks the bundler to sign and submit a User Operation
+
+#### Usage
+
+See a full example in [getting-started guide](../guides/getting-started)
+
+<Tabs>
+<TabItem value="example.ts" label="example.ts">
+
+```ts title="example.ts"
+import { GasEstimationResult, UserOperation } from "abstractionkit";
+
+import { bundler } from "./bundler";
+
+const userOperation: UserOperation = {
+  sender: '0x32afdcfa1e3bfe70d03ecb55b5c8045c26515c9d',
+  nonce: '0x05',
+  initCode: '0x',
+  callData: '0x...',
+  callGasLimit: '0x014228',
+  verificationGasLimit: '0x01822b',
+  preVerificationGas: '0xdd04',
+  maxFeePerGas: '0x121dca4f9c',
+  maxPriorityFeePerGas: '0x080e9fd8eb',
+  paymasterAndData: '0x',
+  signature: '0x7b05d313e5fa795c0339b4e162be5f66b9319af7747c0984e95bc03a98116fa04638a0fd293ab5e39459147461617ea6b8b09fcd0ff68eb990ee0330dd4dbbcd1b'
+}
+
+const userOperationHash = (await bundler.sendUserOperation(user_operation));
+// returns useroperation
+{
+  userOperationHash: '0x0ff052095987556f476c6e6b7cdff65cc6191d2cede50a109fe6977c3287fc9a'
+}
+```
+
+</TabItem>
+<TabItem value="bundler.ts" label="bundler.ts">
+
+```ts title="bundler.ts"
+import { Bundler } from "abstractionkit";
+
+const bundlerRPC = "https://goerli.voltaire.candidewallet.com/rpc";
+const entrypointAddress = "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789";
+
+const bundler: Bundler = new Bundler(bundlerRPC, entrypointAddress);
+```
+
+</TabItem>
+</Tabs>
+
+#### JSON-RPC Method
+
+[eth_sendUserOperation](../bundler/rpc-methods#send-user-operation)
+
+### getUserOperationByHash
+
+Returns a UserOperation by its hash returned from sendUserOperation
+
+##### Usage
+
+<Tabs>
+<TabItem value="example.ts" label="example.ts">
+
+```ts title="example.ts"
+import { bundler } from "./bundler";
+
+const userOperationHash = "0xb348b32bc9b9e90620839c3926db401558806b03b2a46dc6de21d3a4ed8412fb";
+const userOperation = await bundler.getUserOperationByHash(userOperationHash);
+```
+
+</TabItem>
+<TabItem value="bundler.ts" label="bundler.ts">
+
+```ts title="bundler.ts"
+import { Bundler } from "abstractionkit";
+
+const bundlerRPC = "https://goerli.voltaire.candidewallet.com/rpc";
+const entrypointAddress = "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789";
+
+const bundler: Bundler = new Bundler(bundlerRPC, entrypointAddress);
+```
+
+</TabItem>
+</Tabs>
+
+#### JSON-RPC Method
+
+[eth_getUserOperationByHash](../bundler/rpc-methods#get-user-operation-by-hash)
+
+### getUserOperationReceipt
+
+Returns the receipt of a UserOperation by its hash returned from `sendUserOperation`
+
+#### Usage
+
+<Tabs>
+<TabItem value="example.ts" label="example.ts">
+
+```ts title="example.ts"
+import { bundler } from "./bundler";
+
+const userOperationHash = "0xb348b32bc9b9e90620839c3926db401558806b03b2a46dc6de21d3a4ed8412fb";
+const userOperationReceipt = await bundler.getUserOperationReceipt(
+  userOperationHash
+);
+```
+
+</TabItem>
+<TabItem value="bundler.ts" label="bundler.ts">
+
+```ts title="bundler.ts"
+import { Bundler } from "abstractionkit";
+
+const bundlerRPC = "https://goerli.voltaire.candidewallet.com/rpc";
+const entrypointAddress = "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789";
+
+const bundler: Bundler = new Bundler(bundlerRPC, entrypointAddress);
+```
+
+</TabItem>
+</Tabs>
+
+#### JSON-RPC Method
+
+[eth_getUserOperationReceipt](../bundler/rpc-methods#get-user-operation-receipt)

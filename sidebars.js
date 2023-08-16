@@ -45,6 +45,14 @@ const sidebars = {
     },
     {
       type: 'category',
+      label: 'SDK',
+      items: [
+        'wallet/abstractionkit/introduction',
+        'wallet/abstractionkit/bundler',
+      ],
+    },
+    {
+      type: 'category',
       label: 'Paymaster',
       items: [
         'wallet/paymaster/rpc-methods',

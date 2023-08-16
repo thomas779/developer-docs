@@ -1,0 +1,39 @@
+---
+title: Intro to AbstractionKit
+description: A simple typescript library to build and send UserOperations
+keywords: [typescript, sdk, userOperation, library]
+---
+
+# Introduction to AbstractionKit
+
+A Typescript Library to easily build and send ERC-4337 UserOperations
+
+AbstractionKit encapsulates the standard's complexities and offers developers unparalleled flexibility to craft smart wallets, without the hassle of intricate details.
+Seamlessly use Smart Accounts Implentations, construct callData, estimate and sponsor gas (completly or with ERC-20 tokens), send UserOps to Bundlers and more – all while benefiting from being type-safe.
+
+- AbstractionKit is agnostic of:
+  - Ethereum interface libraries: ethers, web3.js, viem/wagmi
+  - Bundler implentation: Plug and play from any bundler provider
+  - Paymaster services: use any 3rd party paymaster, or build your own
+
+## Installation
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+<Tabs>
+<TabItem value="npm" label="npm">
+
+```bash
+npm i abstractionkit
+```
+
+</TabItem>
+<TabItem value="yarn" label="yarn">
+
+```bash
+yarn add abstractionkit
+```
+
+</TabItem>
+</Tabs>
