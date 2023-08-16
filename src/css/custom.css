@@ -26,6 +26,7 @@ html[data-theme='dark'] .footer {
 
 html[data-theme='dark'] {
   background: linear-gradient(to right, #10131a 80%, rgba(0, 98, 255, 0.2)) fixed;
+  --docusaurus-highlighted-code-line-bg: rgba(72, 77, 91, 1);
   --ifm-background-surface-color: #0f0f1c;
 }
 
