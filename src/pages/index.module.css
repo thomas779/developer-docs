@@ -34,25 +34,26 @@
   display: flex;
   min-width: 500px;
   min-height: 210px;
-  padding: 1.3rem;
+  padding: 1.7rem;
   margin: 1rem;
   flex-direction: column;
   justify-content: top;
   cursor: pointer;
   border: solid;
   border-radius: 20px;
+  border-width: 1px;
   background-color: #121213;
   color: white;
 }
 
 .card h2 {
   font-weight: 400;
-  font-size: 2rem;
+  font-size: 1.6rem;
   color: white;
 }
 
 .card:hover {
-  color: #9BBCFD;
+  border-color: #9BBCFD;
   background-color: #F8ECE1;
 }
 
@@ -113,16 +114,11 @@ html[data-theme="light"] .card:hover {
 }
 
 html[data-theme="dark"] .card:hover {
-  color: black;
-  background-color: white;
+  background-color: #12121313;
 }
 
 html[data-theme="light"] .card:hover h2 {
   color: white;
-}
-
-html[data-theme="dark"] .card:hover h2 {
-  color: black;
 }
 
 html[data-theme="light"] .title {
