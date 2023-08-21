@@ -141,7 +141,13 @@ let callData = smartAccount.createSendEthCallData(
 ```
 
 ### Step 4: Estimate Gas
-Estimates the gas required for the user operation using the Bundler instance.
+Estimates the gas required for the user operation using the Bundler instance. When estimating gas limits, you have two options:
+   
+a- Apply a multiplier to the gas limit to account for missing paymasterAndData and signature.
+
+b- Alternatively, provide placeholder values that won't trigger reversion in user operations.
+
+For the most precise results, consider re-estimating gas after obtaining initial limits and valid paymasterAndData with a signature. In this example, we follow option **A** by adding a multiplier to the gas limits
 
 1. Add the new imports
 
@@ -194,23 +200,30 @@ if ("code" in estimation) {
   return
 }
 
-user_operation.callGasLimit = estimation.callGasLimit;
-user_operation.preVerificationGas = toBeHex(estimation.preVerificationGas);
+user_operation.callGasLimit = toBeHex(
+  Math.round(Number(estimation.callGasLimit) * 1.2)
+);
 
-// multiple by three to avoid out of gas error during validation for verificationGas - 
-// note: will be removed once the bundler returns an accurate estimates for verification gas
+user_operation.preVerificationGas = toBeHex(
+  Math.round(Number(estimation.preVerificationGas) * 1.2)
+);
+
 user_operation.verificationGasLimit = toBeHex(
-  Math.round(Number(estimation.verificationGas) * 3)
+  Math.round(Number(estimation.verificationGas) * 1.2)
 );
 
 const jsonRpcNodeProvider = process.env.JSON_RPC_NODE_PROVIDER as string;
 const provider = new JsonRpcProvider(jsonRpcNodeProvider);
 const feeData = await provider.getFeeData();
 
-// convert to hex format
 if (feeData.maxFeePerGas && feeData.maxPriorityFeePerGas) {
-  user_operation.maxFeePerGas = toBeHex(feeData.maxFeePerGas);
-  user_operation.maxPriorityFeePerGas = toBeHex(feeData.maxPriorityFeePerGas);
+  user_operation.maxFeePerGas = toBeHex(
+    Math.round(Number(feeData.maxFeePerGas) * 1.5)
+  );
+
+  user_operation.maxPriorityFeePerGas = toBeHex(
+    Math.round(Number(feeData.maxFeePerGas) * 1.5)
+  );
 }
 ```
 
@@ -235,6 +248,7 @@ import {
 ```
 
 2. Sign user operation and submit it to the bundler
+
 ```ts title="index.ts"
 const chainId = process.env.CHAIN_ID as string;
 
@@ -254,7 +268,7 @@ console.log(bundlerResponse, "bundlerResponse");
 
 if ("message" in bundlerResponse && (bundlerResponse.message as string) == "AA21 didn't pay prefund") {
     console.log("Please fund the new account address with some sepolia eth to pay for gas : " + newAccountAddress);
-  }
+}
 ```
 
 Now let's run this code again with `npx ts-node index.ts`
@@ -267,4 +281,6 @@ You've now sent your first user operation! If everything went well, you should s
 }
 ```
 
-You can lookup the user operation hash on a dedicated ERC-4337 explorer like [JiffyScan](https://jiffyscan.xyz/)
+You can lookup the user operation hash on a dedicated ERC-4337 explorer like [JiffyScan](https://jiffyscan.xyz/).
+
+In the next guides, we will show how to abstract away gas by using paymasters.
