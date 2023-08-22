@@ -35,7 +35,7 @@ const config = {
         docs: {
           routeBasePath: '/',
           sidebarPath: require.resolve('./sidebars.js'),
-          editUrl: 'https://github.com/candidelabs/candide-docs/edit/master/website',
+          // editUrl: 'https://github.com/candidelabs/dev-docs/edit/master/website',
         },
         blog: false,
         theme: {
