@@ -87,3 +87,28 @@ export function RpcRequestTable({ items }) {
     />
   );
 }
+
+export function SdkParamsTable({ items }) {
+  return (
+    <Table
+      items={items}
+      leftHeading="Param Name"
+      centerHeading="Param Type"
+      rightHeading="Description"
+      renderLeftItem={(item) => (
+        <code>
+          <font color="#22c916"> {item.key}</font>
+        </code>
+      )}
+      renterCenterItem={(item) => (
+        <code>
+          <font color="#e25894">
+            {" "}
+            {item.type}
+          </font>
+        </code>
+      )}
+      renderRightItem={(item) => <span>{item.description}</span>}
+    />
+  );
+}
