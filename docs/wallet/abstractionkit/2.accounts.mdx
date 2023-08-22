@@ -1,0 +1,206 @@
+---
+title: Smart Accounts
+description: Learn how to offer, deploy and transact with ERC-4337 Smart Accounts
+keywords: [smart-accounts, "4337", sdk, account-abstraction]
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import { SdkParamsTable } from "/src/components/CustomTable";
+import {
+  createNewAccountParam,
+  createNewAccountReturn,
+  createCallDataParam,
+  createCallDataReturn,
+  createEthCallDataParam,
+  createEthCallDataReturn,
+} from "./accountParamAndReturnData";
+
+## Candide Account
+
+A `CandideAccount` is a class that implements [CandideWallet.sol](https://github.com/candidelabs/CandideWalletContracts), a compliant EIP-4337 smart contract account based on Safe v1.4.1 contracts.
+
+### Import
+
+```ts
+import { CandideAccount } from "abstractionkit";
+```
+
+### How to use
+
+Initialize a Candide Account instance
+
+```ts
+const smartAccount = new CandideAccount();
+```
+
+Then you can consume accout methods:
+
+```ts
+import { Wallet } from "ethers";
+
+const eoaSigner = new Wallet(privateKey);
+const [newAccountAddress, initCode] = smartAccount.createNewAccount([
+  eoaSigner,
+]);
+```
+
+# Methods
+
+### createNewAccount
+
+Returns the account address and the initCode needed to deploy the smart account onchain
+
+#### Usage
+
+In this example, we initiate a single owner account.
+
+<Tabs>
+<TabItem value="example.ts" label="example.ts">
+
+```ts title="example.ts"
+import { CandideAccount } from "abstractionkit";
+import { Wallet } from "ethers";
+
+const smartAccount = new CandideAccount();
+const eoaSigner = new Wallet(privateKey);
+
+const [newAccountAddress, initCode] = smartAccount.createNewAccount([
+  eoaSigner,
+]);
+
+console.log("Account address (sender): " + newAccountAddress);
+console.log("initCode: ", initCode);
+```
+
+</TabItem>
+
+<TabItem value="Param type" label="Param Types">
+  <SdkParamsTable items={createNewAccountParam} />
+</TabItem>
+
+<TabItem value="Return Type" label="Return Type">
+  <SdkParamsTable items={createNewAccountReturn} />
+</TabItem>
+
+</Tabs>
+
+<details>
+<summary>Example Response</summary>
+
+```terminal
+Account address(sender) : 0x1a02592A3484c2077d2E5D24482497F85e1980C6
+initCode: 0x...
+```
+
+</details>
+
+#### Source code
+
+[createAccount](https://github.com/candidelabs/abstractionkit/blob/1532fa9b31197bffceaad59150dce8fbc302ec73/src/account/CandideAccount.ts#L54)
+
+### createSendEthCallData
+
+Returns the callData to make an ETH transfer (or any native token ex: MATIC)
+
+#### Usage
+<Tabs>
+<TabItem value="example.ts" label="example.ts">
+
+```ts title="example.ts"
+import { CandideAccount } from "abstractionkit";
+
+const smartAccount = new CandideAccount();
+// highlight-start
+const receivingAddress = "0x1a02592A3484c2077d2E5D24482497F85e1980C6";
+const accountInWei = 5;
+
+const callData = smartAccount.createSendEthCallData(
+  receivingAddress,
+  accountInWei
+);
+
+console.log("callData: ", callData);
+// highlight-end
+```
+
+</TabItem>
+
+<TabItem value="Param type" label="Param Types">
+  <SdkParamsTable items={createEthCallDataParam} />
+</TabItem>
+
+<TabItem value="Return Type" label="Return Type">
+  <SdkParamsTable items={createEthCallDataReturn} />
+</TabItem>
+
+</Tabs>
+
+<details>
+<summary>Example Response</summary>
+
+```terminal
+callData: 0x...
+```
+
+</details>
+
+#### Source code
+
+[createEthCallData](https://github.com/candidelabs/abstractionkit/blob/1532fa9b31197bffceaad59150dce8fbc302ec73/src/account/CandideAccount.ts#L111)
+
+### createCallData
+
+Returns the call data for executing a transaction
+
+#### Usage
+
+This example makes a transfer of 5 wei and pays gas using an ERC-20 token (USDC)
+
+<Tabs>
+<TabItem value="example.ts" label="example.ts">
+
+```ts title="example.ts"
+import { CandideAccount } from "abstractionkit";
+
+const smartAccount = new CandideAccount();
+
+// highlight-start
+let callData = smartAccount.createCallData(
+  "0x1a02592A3484c2077d2E5D24482497F85e1980C6", // To Address
+  5, // value
+  "0x", // data
+  0, // operation
+  "0x3fe285dcd76bcce4ac92d38a6f2f8e964041e020", // candide paymaster address
+  "0x7F5c764cBc14f9669B88837ca1490cCa17c31607", // USDC Token address on Optimism
+  "0xffd4fdfb6ee21e", // approve amount for the paymaster- to pay for gas using erc20 token
+);
+
+console.log("callData: ", callData);
+// highlight-end
+```
+
+</TabItem>
+
+<TabItem value="Param type" label="Param Types">
+  <SdkParamsTable items={createCallDataParam} />
+</TabItem>
+
+<TabItem value="Return Type" label="Return Type">
+  <SdkParamsTable items={createCallDataReturn} />
+</TabItem>
+
+</Tabs>
+
+<details>
+<summary>Example Response</summary>
+
+```terminal
+callData: 0x...
+```
+
+</details>
+
+#### Source code
+
+[createCallData](https://github.com/candidelabs/abstractionkit/blob/1532fa9b31197bffceaad59150dce8fbc302ec73/src/account/CandideAccount.ts#L114)

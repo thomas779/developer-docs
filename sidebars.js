@@ -31,7 +31,7 @@ const sidebars = {
     'wallet/atelier-intro',
     {
       type: 'category',
-      label: 'Overview',
+      label: 'AA Overview',
       items: [
         'wallet/account-abstraction/overview',
       ],
@@ -48,6 +48,7 @@ const sidebars = {
       label: 'SDK',
       items: [
         'wallet/abstractionkit/introduction',
+        'wallet/abstractionkit/accounts',
         'wallet/abstractionkit/bundler',
       ],
     },
