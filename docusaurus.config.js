@@ -148,7 +148,7 @@ const config = {
                 "href": "https://github.com/candidelabs/voltaire"
               },
               {
-                "label": "Open Source Mobile Wallet App",
+                "label": "Mobile App",
                 "href": "https://github.com/candidelabs/candide-mobile-app"
               },
             ],
