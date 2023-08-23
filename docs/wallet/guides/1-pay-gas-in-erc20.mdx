@@ -1,0 +1,641 @@
+---
+title: Pay Gas in ERC-20
+description: Learn how to offer the ability for users to pay gas in ERC-20s using paymasters
+keywords: [paymaster, pay-gas-in-erc20]
+image: /img/network-fees-sponsorship.png
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Pay Gas in ERC-20
+
+Learn how to offer the ability for users to pay gas in ERC-20s using a Paymaster.
+
+If you are coming from the [previous guide](./getting-started), you can skip directly to [step 3](./pay-gas-in-erc20#step-3-generate-the-calldata).
+
+## Quickstart
+
+### Prerequisites
+
+- Node and a package manager (yarn or npm)
+- An API key to access Candide's Paymaster. [Get a API key](https://t.me/heymarcopolo)
+
+:::info
+You can find the full example of this tutorial on [Github](https://github.com/candidelabs/abstractionkit/tree/main/examples/CreateAccountAndSendTransaction)
+:::
+
+### Step 1: Get setup
+
+1. Create a new directory for your project:
+
+```bash
+mkdir smart-wallet-send-transaction
+cd smart-wallet-send-transaction
+```
+
+2. Install required dependencies
+
+- `typescript`, `ts-node`, `dotenv`
+- [`abstractionkit`](https://www.npmjs.com/package/abstractionkit): A JS library for building ERC-4337 user operations
+
+```bash
+npm install typescript ts-node dotenv abstractionkit
+```
+
+3. Configure Environment Variables
+
+Create a .env file in your project directory and add the following environment variables with your own values. We will be using Sepolia Testnet for this example
+
+:::info
+We host free [bundlers](../bundler/rpc-endpoints) endpoints on testnets, you do not need to create an account. [Get in touch](https://cal.com/candidelabs/30mins) if you would like to go live on mainnet
+:::
+
+```bash title=".env"
+CHAIN_ID=11155111
+BUNDLER_URL=https://sepolia.voltaire.candidewallet.com/rpc
+JSON_RPC_NODE_PROVIDER=https://rpc2.sepolia.org
+ENTRYPOINT_ADDRESS=0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789
+
+#account owner privatekey
+PRIVATE_KEY=YOUR_PRIVATE_KEY
+```
+
+3. Create a empty file and a function to run our script
+
+Create a TypeScript file in your project directory and import the necessary dependencies:
+
+```ts title="index.ts"
+async function main(): Promise<void> {
+  // Rest of the code will go here...
+}
+
+main();
+```
+
+### Step 2: Generate Account Address
+
+Let's open up `index.ts`
+
+To generate an account address, we will be using [CandideWallet.sol](https://github.com/candidelabs/abstractionkit/tree/main/examples/CreateAccountAndSendTransactionUsingPaymaster) as our base smart account. It is an account that inherits `Safe` Contracts to be ERC-4337 compatible. We will control the Account with a single EOA signer.
+
+Since this is our first transaction, we will need to deploy the account in the same transaction
+
+We will generate the `initCode`: The code that creates the bytecode that is stored on-chain to create the account contract.
+It is only needed if and only if the account is not yet on-chain and needs to be created
+
+```ts title="index.ts"
+import * as dotenv from "dotenv";
+import { Wallet } from "ethers";
+
+import { Bundler, CandideAccount } from "abstractionkit";
+
+async function main(): Promise<void> {
+  //get values from .env
+  dotenv.config();
+  const bundlerUrl = process.env.BUNDLER_URL as string;
+  const entrypointAddress = process.env.ENTRYPOINT_ADDRESS as string;
+  const privateKey = process.env.PRIVATE_KEY as string;
+
+  // Define our Bundler endpoint where we will be sending our userOp
+  const bundler: Bundler = new Bundler(bundlerUrl, entrypointAddress);
+
+  // Initiate the owner of our Candide Account (EOA)
+  const eoaSigner = new Wallet(privateKey);
+
+  const smartAccount = new CandideAccount();
+
+  // Generate the new account address and initCode
+  let [newAccountAddress, initCode] = smartAccount.createNewAccount([
+    eoaSigner.address,
+  ]);
+
+  console.log("Account address(sender) : " + newAccountAddress);
+}
+
+main();
+```
+
+Let's run this code with `npx ts-node index.ts`
+
+If everything worked, you will get the address of the account in the console.
+
+```cli title="Terminal"
+Account address(sender): 0x32afdcfa1e3bfe70d03ecb55b5c8045c26515c9d
+```
+
+### Step 3: Generate the callData
+
+Now that you have generated the account address, we will go ahead and fund the account with some ERC-20s. In this example, we will be using CTT (Candide Test Token) on Sepolia to show how to pay gas with ERC-20s. [Request some CTT here](https://t.me/heymarcopolo).
+
+:::info
+Candide Verifying Paymaster supports major ERC-20s stablecoins on mainnets. If you want a specific ERC-20 supported, contact us.
+:::
+
+
+This user operation will make a transfer of some 1 decimal of CTT to a random address.
+
+We will be constructing the callData using [createCallData](../abstractionkit/accounts/#createcalldata), which returns the instructions to send our transaction on-chain.
+
+1. Create a new file with erc-20 token abi, and add the new imports
+
+<Tabs>
+<TabItem value="index.ts" label="index.ts">
+
+```ts title="index.ts"
+import {
+  Wallet,
+  // highlight-start
+  JsonRpcProvider,
+  ethers,
+  // highlight-end
+} from "ethers";
+// highlight-start
+import { erc20abi } from "./erc20abi";
+// highlight-end
+```
+
+</TabItem>
+
+<TabItem value="erc20abi.ts" label="erc20abi.ts">
+
+```ts title="erc20abi.ts"
+export const erc20abi = [
+  {
+    constant: true,
+    inputs: [],
+    name: "name",
+    outputs: [
+      {
+        name: "",
+        type: "string",
+      },
+    ],
+    payable: false,
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    constant: false,
+    inputs: [
+      {
+        name: "_spender",
+        type: "address",
+      },
+      {
+        name: "_value",
+        type: "uint256",
+      },
+    ],
+    name: "approve",
+    outputs: [
+      {
+        name: "",
+        type: "bool",
+      },
+    ],
+    payable: false,
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    constant: true,
+    inputs: [],
+    name: "totalSupply",
+    outputs: [
+      {
+        name: "",
+        type: "uint256",
+      },
+    ],
+    payable: false,
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    constant: false,
+    inputs: [
+      {
+        name: "_from",
+        type: "address",
+      },
+      {
+        name: "_to",
+        type: "address",
+      },
+      {
+        name: "_value",
+        type: "uint256",
+      },
+    ],
+    name: "transferFrom",
+    outputs: [
+      {
+        name: "",
+        type: "bool",
+      },
+    ],
+    payable: false,
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    constant: true,
+    inputs: [],
+    name: "decimals",
+    outputs: [
+      {
+        name: "",
+        type: "uint8",
+      },
+    ],
+    payable: false,
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    constant: true,
+    inputs: [
+      {
+        name: "_owner",
+        type: "address",
+      },
+    ],
+    name: "balanceOf",
+    outputs: [
+      {
+        name: "balance",
+        type: "uint256",
+      },
+    ],
+    payable: false,
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    constant: true,
+    inputs: [],
+    name: "symbol",
+    outputs: [
+      {
+        name: "",
+        type: "string",
+      },
+    ],
+    payable: false,
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    constant: false,
+    inputs: [
+      {
+        name: "_to",
+        type: "address",
+      },
+      {
+        name: "_value",
+        type: "uint256",
+      },
+    ],
+    name: "transfer",
+    outputs: [
+      {
+        name: "",
+        type: "bool",
+      },
+    ],
+    payable: false,
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    constant: true,
+    inputs: [
+      {
+        name: "_owner",
+        type: "address",
+      },
+      {
+        name: "_spender",
+        type: "address",
+      },
+    ],
+    name: "allowance",
+    outputs: [
+      {
+        name: "",
+        type: "uint256",
+      },
+    ],
+    payable: false,
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    payable: true,
+    stateMutability: "payable",
+    type: "fallback",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        name: "owner",
+        type: "address",
+      },
+      {
+        indexed: true,
+        name: "spender",
+        type: "address",
+      },
+      {
+        indexed: false,
+        name: "value",
+        type: "uint256",
+      },
+    ],
+    name: "Approval",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        name: "from",
+        type: "address",
+      },
+      {
+        indexed: true,
+        name: "to",
+        type: "address",
+      },
+      {
+        indexed: false,
+        name: "value",
+        type: "uint256",
+      },
+    ],
+    name: "Transfer",
+    type: "event",
+  },
+];
+```
+
+</TabItem>
+</Tabs>
+
+2. Generate the callData using `createCallData()`
+
+```ts title="index.ts"
+const jsonRpcNodeProvider = process.env.JSON_RPC_NODE_PROVIDER as string;
+const provider = new JsonRpcProvider(jsonRpcNodeProvider);
+const CTTAddress = "0x7DdEFA2f027691116D0a7aa6418246622d70B12A"; // ERC-20 Token to test with
+const erc20Contract = new ethers.Contract(CTTAddress, erc20abi, provider);
+
+const transferData = erc20Contract.interface.encodeFunctionData("transfer", [
+  "0x2Ef844456580b6e1E22e1D584EBbC2467D9298B2", // receiving address
+  1,
+]);
+
+const candidePaymasterAddress = "0x3fe285dcd76bcce4ac92d38a6f2f8e964041e020";
+const approveAmountForPaymaster = "0xffd4fdfb6ee21e";
+
+const callData = smartAccount.createCallData(
+  CTTAddress, // CTT Contract Address
+  0, // 0 ETH transfered
+  transferData, // transfer data of CTT
+  0, // Call operation
+  candidePaymasterAddress, // paymaster address
+  CTT, //  ERC-20 Token address
+  approveAmountForPaymaster // approve amount for the paymaster- to pay for gas using erc20 token
+);
+
+console.log("callData: ", callData);
+```
+
+Let's run this code with `npx ts-node index.ts`
+
+If everything worked, you will get the callData in the console
+
+```terminal title="Terminal"
+callData: 0xf34308ef0000000000000000000000007ddefa2f027691116d0a7aa6418246622d70b12a000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003fe285dcd76bcce4ac92d38a6f2f8e964041e0200000000000000000000000007ddefa2f027691116d0a7aa6418246622d70b12a00000000000000000000000000000000000000000000000000ffd4fdfb6ee21e0000000000000000000000000000000000000000000000000000000000000044a9059cbb0000000000000000000000002ef844456580b6e1e22e1d584ebbc2467d9298b2000000000000000000000000000000000000000000000000000000000000000500000000000000000000000000000000000000000000000000000000
+```
+
+### Step 4: Estimate Gas
+
+Estimates the gas required for the user operation using the Bundler instance. As a reminder, when estimating gas limits, you have two options:
+
+**A**. Apply a multiplier to the gas limit to account for missing paymasterAndData and signature.
+
+**B**. Alternatively, provide placeholder values that won't trigger reversion in user operations.
+
+In this example, we follow option **A** by adding a multiplier to the gas limits.
+
+1. Add the new imports
+
+```ts title="index.ts"
+import {
+  Wallet,
+  JsonRpcProvider,
+  ethers,
+  // highlight-start
+  toBeHex,
+  // highlight-end
+} from "ethers";
+import {
+  Bundler,
+  CandideAccount,
+  GasEstimationResult,
+  // highlight-start
+  UserOperation,
+  UserOperationDummyValues,
+  GasEstimationResult,
+  // highlight-end
+} from "abstractionkit";
+```
+
+2. Construct the user operation and estimate the required gas needed to send it onchain
+
+We will ask the bundler to estimate:
+
+- `callGasLimit`
+- `preVerificationGas`
+- `verificationGas`
+
+We will ask the rpc node to get the fee per gas for the network:
+
+- `maxFeePerGas`
+- `maxPriorityFeePerGas`
+
+```ts title="index.ts"
+let user_operation: UserOperation = {
+  ...UserOperationEmptyValues,
+  sender: newAccountAddress,
+  nonce: "0x00", // iterate the nonce if you already submited your first tx
+  initCode, // remove initCode if you already initiated your first tx
+  callData,
+};
+
+let estimation = (await bundler.estimateUserOperationGas(
+  user_operation
+)) as GasEstimationResult;
+
+// catch errors if there's any in the estimateUserOperationGas call
+if ("code" in estimation) {
+  console.log(estimation);
+  return;
+}
+
+user_operation.callGasLimit = toBeHex(
+  Math.round(Number(estimation.callGasLimit) * 1.2)
+);
+
+user_operation.preVerificationGas = toBeHex(
+  Math.round(Number(estimation.preVerificationGas) * 1.2)
+);
+
+user_operation.verificationGasLimit = toBeHex(
+  Math.round(Number(estimation.verificationGas) * 1.2)
+);
+
+const feeData = await provider.getFeeData();
+
+if (feeData.maxFeePerGas && feeData.maxPriorityFeePerGas) {
+  user_operation.maxFeePerGas = toBeHex(
+    Math.round(Number(feeData.maxFeePerGas) * 1.5)
+  );
+
+  user_operation.maxPriorityFeePerGas = toBeHex(
+    Math.round(Number(feeData.maxFeePerGas) * 1.5)
+  );
+}
+```
+
+:::tip
+For the most precise results, consider re-estimating gas after obtaining initial limits and valid paymasterAndData with a signature.
+:::
+
+### Step 5: Get Paymaster Data
+
+1. Import `CandideValidationPaymaster` and `getBytes`
+
+`CandideValidationPaymaster` is an instance of Candide Validation Paymaster
+
+```ts
+import {
+  // highlight-start
+  CandideValidationPaymaster,
+  JsonRpcError,
+  // highlight-end
+} from "abstractionkit";
+
+import {
+  // highlight-start
+  BytesLike,
+  // highlight-end
+} from "ethers";
+```
+
+2. Use the `getPaymasterCallDataForPayingGasWithErc20()` function to get the paymaster data to pay gas in erc-20s using. Don't forget to add your paymaster url in your `.env` file.
+
+<Tabs>
+<TabItem value="index.js" label="index.js">
+
+```ts
+const paymasterRPC = process.env.PAYMASTER_RPC as string;
+
+const paymaster: CandideValidationPaymaster = new CandideValidationPaymaster(
+  entrypointAddress,
+  paymasterRPC
+);
+
+const paymasterAndDataResult = await paymaster.getPaymasterCallDataForPayingGasWithErc20(
+  user_operation,
+  CTTAddress // ERC-20 token to pay gas with
+);
+
+if ("code" in paymasterAndDataResult) {
+  const errorresult = paymasterAndDataResult as JsonRpcError;
+  const errorMessage = errorresult.message;
+  if (
+    errorMessage.includes("validator: token balance lower than the required")
+  ) {
+    console.log(
+      "Please fund the new account address(sender) with some CTT to pay for gas"
+    );
+  }
+  return;
+}
+
+paymasterAndDataResult = paymasterAndDataResult as { paymasterAndData: BytesLike };
+
+user_operation.paymasterAndData = paymasterAndDataResult.paymasterAndData as BytesLike;
+```
+
+</TabItem>
+
+<TabItem value=".env" label=".env">
+
+```env
+PAYMASTER_RPC=your RPC endpoints goes here
+```
+
+</TabItem>
+</Tabs>
+
+### Step 5: Sign and Submit Transaction
+
+1. Import `getUserOperationHash` and `getBytes`
+
+`getUserOperationHash` is a function that takes the user operation we just constructed and returns its hash
+
+```ts title="index.ts"
+import {
+  // highlight-start
+  getBytes,
+  // highlight-end
+} from "ethers";
+
+import {
+  // highlight-start
+  getUserOperationHash,
+  // highlight-end
+} from "abstractionkit";
+```
+
+2. Sign user operation and submit it to the bundler
+
+```ts title="index.ts"
+const chainId = process.env.CHAIN_ID as string;
+
+const user_operation_hash = getUserOperationHash(
+  user_operation,
+  entrypointAddress,
+  chainId
+);
+
+user_operation.signature = await eoaSigner.signMessage(
+  getBytes(user_operation_hash)
+);
+
+const bundlerResponse = await bundler.sendUserOperation(user_operation);
+
+console.log(bundlerResponse, "bundlerResponse");
+```
+
+Now let's run this code again with `npx ts-node index.ts`
+
+You've now sent your first user operation with a paymaster! If everything went well, you should see the bundler returning a user operation hash
+
+```bash title="Terminal"
+{
+  userOperationHash: '0xbaa2e95962df1a1f9982e2f3a703d91bf1efc00746994376892ce8b6ac3fe7cb,
+}
+```
+
+You can lookup the user operation hash on [JiffyScan](https://jiffyscan.xyz/).
+
+In the next guides, we will show how to sponsor gas completely using a paymaster.

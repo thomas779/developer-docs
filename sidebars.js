@@ -41,6 +41,7 @@ const sidebars = {
       label: 'Guides',
       items: [
         'wallet/guides/getting-started',
+        'wallet/guides/pay-gas-in-erc20',
       ],
     },
     {
