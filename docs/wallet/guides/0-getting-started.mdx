@@ -147,7 +147,7 @@ a- Apply a multiplier to the gas limit to account for missing paymasterAndData a
 
 b- Alternatively, provide placeholder values that won't trigger reversion in user operations.
 
-For the most precise results, consider re-estimating gas after obtaining initial limits and valid paymasterAndData with a signature. In this example, we follow option **A** by adding a multiplier to the gas limits
+In this example, we follow option **A** by adding a multiplier to the gas limits
 
 1. Add the new imports
 
@@ -226,6 +226,10 @@ if (feeData.maxFeePerGas && feeData.maxPriorityFeePerGas) {
   );
 }
 ```
+
+:::tip
+For the most precise results, consider re-estimating gas after obtaining initial limits and valid paymasterAndData with a signature. 
+:::
 
 ### Step 5: Sign and Submit Transaction
 
