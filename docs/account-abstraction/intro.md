@@ -1,7 +1,6 @@
 ---
 title: Intro to Account Abstraction
 description: Enabling the use of smart contract accounts over EOAs.
-slug: intro
 image: "/img/erc4337-bundler.png"
 tags: ["4337", account-abstraction]
 ---

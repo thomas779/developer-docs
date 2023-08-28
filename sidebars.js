@@ -16,6 +16,9 @@ const sidebars = {
   // By default, Docusaurus generates a sidebar from the docs folder structure
 
   // But you can create a sidebar manually
+  aaSideBar: [
+    'account-abstraction/intro'
+  ],
   dappsSideBar: [
     'dapps/getting-started',
     {
@@ -29,13 +32,6 @@ const sidebars = {
   ],
   walletSideBar: [
     'wallet/atelier-intro',
-    {
-      type: 'category',
-      label: 'AA Overview',
-      items: [
-        'wallet/account-abstraction/overview',
-      ],
-    },
     {
       type: 'category',
       label: 'Guides',
