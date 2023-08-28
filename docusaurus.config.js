@@ -154,7 +154,7 @@ const config = {
             ],
           },
           {
-            "title": "Contact",
+            "title": "Support",
             "items": [
               {
                 "label": "Discord",
