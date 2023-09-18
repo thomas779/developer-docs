@@ -14,12 +14,13 @@ import {
   emptyParams,
   userOperationParamaters,
   entrypointParams,
+  pm_sponsorUserOperationReturnParams,
 } from "/src/requestRpcData";
 
 JSON-RPC API reference for Candide's Verifying Paymaster service
 
 :::info
-Candide's Verifying Paymaster is currently in private beta. Request an [`API key`](https://twitter.com/candidelabs) or [book a meeting](https://cal.com/candidelabs/30mins) 
+Candide's Verifying Paymaster is currently in private beta. Request an [`API key`](https://twitter.com/candidelabs) or [book a meeting](https://cal.com/candidelabs/30mins)
 :::
 
 ## pm_supportedERC20Tokens
@@ -111,7 +112,18 @@ Gets supported ERC-20 Tokens for gas payments, along side the paymaster metadata
 
 ## pm_sponsorUserOperation
 
-Sends a UserOperation to a paymaster for off-chain verification. If approved, it will return the paymasterData. If the paymaster rejects the UserOperation it should not return a result but a standard JSON-RPC error with the reason.
+Sends a UserOperation to a paymaster for off-chain verification. If approved, it will return the `paymasterData`. It will also return gas overrides when the mode for gas sponsoriship is FREE for the user.
+
+- **Pay Gas in ERC-20s**: No gas overrides are returned
+- **FREE Gas**: it'll provide a mandatory `preVerificationGas`, `maxFeePerGas`, and `maxPriorityFeePerGas` fields.
+
+If the paymaster rejects the UserOperation, it should not return a result but a standard JSON-RPC error with the reason.
+
+:::info
+Any overrides provided in the paymaster result MUST be used in the userop otherwise the paymaster signature won't work.
+:::
+
+
 
 #### Invocation
 
@@ -122,7 +134,16 @@ Sends a UserOperation to a paymaster for off-chain verification. If approved, it
 #### Return
 
 ```json
-{ "result": paymasterAndData }
+{
+  "result": {
+    paymasterAndData,
+    callGasLimit,
+    verificationGasLimit,
+    preVerificationGas,
+    maxFeePerGas,
+    maxPriorityFeePerGas
+  } 
+}
 ```
 
 <Tabs>
@@ -160,7 +181,14 @@ Sends a UserOperation to a paymaster for off-chain verification. If approved, it
 {
   "jsonrpc": "2.0",
   "id": 0,
-  "result": "0x1234...5678" // paymasterAndData
+  "result": {
+    "paymasterAndData": "0x....",
+    "callGasLimit": "0x..",
+    "verificationGasLimit": "0x..",
+    "preVerificationGas": "0x..",
+    "maxFeePerGas": "0x..",
+    "maxPriorityFeePerGas": "0x.."
+  }
 }
 ```
 
@@ -211,26 +239,7 @@ Sends a UserOperation to a paymaster for off-chain verification. If approved, it
 </TabItem>
 
 <TabItem value="response type" label="Response Type">
-  <table>
-    <thead>
-      <th align="left">Paramater</th>
-      <th align="left">Type</th>
-      <th align="left">Description</th>
-    </thead>
-    <tbody>
-      <tr>
-        <td align="left">paymasterAndData</td>
-        <td align="left">
-          <code>
-            <font color="#e25894">string</font>
-          </code>
-        </td>
-        <td align="left">
-          Paymaster address and data required to pass paymaster contract validation
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <RpcRequestTable items={pm_sponsorUserOperationReturnParams} />
 </TabItem>
 
 </Tabs>
@@ -333,7 +342,6 @@ Get Chain ID asks the paymaster service to return the chain_id it currently supp
 
 <TabItem value="example response" label="Example Response">
 
-
 ```json
 {
   "jsonrpc": "2.0",
@@ -367,4 +375,3 @@ Get Chain ID asks the paymaster service to return the chain_id it currently supp
   </table>
   </TabItem>
 </Tabs>
-

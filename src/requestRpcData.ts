@@ -113,12 +113,49 @@ export const userOperationParamaters = [
   {
     key: "paymasterAndData",
     type: "string",
-    description: "this field is ignore. Add a dummy data '0x', or skip including it",
+    description:
+      "this field is ignore. Add a dummy data '0x', or skip including it",
   },
   {
     key: "signature",
     type: "string",
-    description: "this field is ignore. Add a dummy data '0x', or skip including it",
+    description:
+      "this field is ignore. Add a dummy data '0x', or skip including it",
   },
 ];
 
+export const pm_sponsorUserOperationReturnParams = [
+  {
+    key: "paymasterAndData",
+    type: "string",
+    description:
+      "Paymaster address and data required to pass paymaster contract validation",
+  },
+  {
+    key: "callGasLimit",
+    type: "string",
+    description: "The amount of gas to allocate the main execution call",
+  },
+  {
+    key: "verificationGasLimit",
+    type: "string",
+    description: "The amount of gas to allocate for the verification step",
+  },
+  {
+    key: "preVerificationGas",
+    type: "string",
+    description:
+      "The amount of gas to pay for to compensate the bundler for pre-verification execution and calldata",
+  },
+  {
+    key: "maxFeePerGas",
+    type: "string",
+    description: "Maximum fee per gas (similar to EIP-1559 max_fee_per_gas)",
+  },
+  {
+    key: "maxPriorityFeePerGas",
+    type: "string",
+    description:
+      "Maximum priority fee per gas (similar to EIP-1559 max_priority_fee_per_gas)",
+  },
+];

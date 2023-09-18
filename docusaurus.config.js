@@ -128,6 +128,11 @@ const config = {
             label: 'Dapps',
           },
           {
+            to: '/account-abstraction/intro',
+            position: 'right',
+            label: 'Learn AA',
+          },
+          {
             to: '/blog',
             position: 'right',
             label: 'Blog',
@@ -154,7 +159,7 @@ const config = {
             ],
           },
           {
-            "title": "Contact",
+            "title": "Support",
             "items": [
               {
                 "label": "Discord",
