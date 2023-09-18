@@ -20,6 +20,7 @@ If you are coming from the [previous guide](./getting-started), you can skip dir
 
 - Node and a package manager (yarn or npm)
 - An API key to access Candide's Paymaster. [Get a API key](https://t.me/heymarcopolo)
+- Some Candide Test Tokens (CTT). [Request CTT](https://t.me/heymarcopolo)
 
 :::info
 You can find the full example of this tutorial on [Github](https://github.com/candidelabs/abstractionkit/tree/main/examples/CreateAccountAndSendTransaction)
@@ -539,10 +540,10 @@ import {
 } from "ethers";
 ```
 
-2. Use the `getPaymasterCallDataForPayingGasWithErc20()` function to get the paymaster data to pay gas in erc-20s using. Don't forget to add your paymaster url in your `.env` file.
+2. Check for supported erc-20 gas tokens. Don't forget to add your paymaster url in your .env file
 
 <Tabs>
-<TabItem value="index.js" label="index.js">
+<TabItem value="index.ts" label="index.ts">
 
 ```ts
 const paymasterRPC = process.env.PAYMASTER_RPC as string;
@@ -552,9 +553,41 @@ const paymaster: CandideValidationPaymaster = new CandideValidationPaymaster(
   paymasterRPC
 );
 
+const supportedGasTokens = await paymaster.getSupportedERC20Tokens();
+
+if ("code" in supportedGasTokens) {
+    const errorresult = supportedGasTokens as JsonRpcError
+    const errorMessage = errorresult.message
+    console.log(errorMessage);
+    return
+}
+
+const gasToken = supportedGasTokens.tokens.find(token => token.address === CTTAddress.toLowerCase());
+if (!gasToken) {
+    console.log("Gas token selected is not supported");
+    return
+}
+```
+
+</TabItem>
+
+<TabItem value=".env" label=".env">
+
+```env
+PAYMASTER_RPC=your RPC endpoints goes here
+```
+
+</TabItem>
+</Tabs>
+
+
+
+2. Use the `getPaymasterCallDataForPayingGasWithErc20()` function to get the paymaster data to pay gas in CTT
+
+```ts title="index.tx"
 const paymasterAndDataResult = await paymaster.getPaymasterCallDataForPayingGasWithErc20(
   user_operation,
-  CTTAddress // ERC-20 token to pay gas with
+  gasToken.address // ERC-20 token to pay gas with
 );
 
 if ("code" in paymasterAndDataResult) {
@@ -574,17 +607,6 @@ paymasterAndDataResult = paymasterAndDataResult as { paymasterAndData: BytesLike
 
 user_operation.paymasterAndData = paymasterAndDataResult.paymasterAndData as BytesLike;
 ```
-
-</TabItem>
-
-<TabItem value=".env" label=".env">
-
-```env
-PAYMASTER_RPC=your RPC endpoints goes here
-```
-
-</TabItem>
-</Tabs>
 
 ### Step 6: Sign and Submit Transaction
 
