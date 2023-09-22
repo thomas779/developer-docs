@@ -41,6 +41,14 @@ const chainList = [
     type: "Bundler",
   },
   {
+    network: "Base",
+    logo: "/img/networks/8453.png",
+    chainId: 8453,
+    chainHandle: "base",
+    address: "Available upon request",
+    type: "Bundler",
+  },
+  {
     network: "BnB Smart Chain",
     logo: "/img/networks/56.png",
     chainId: 56,
@@ -115,6 +123,14 @@ const testChainList = [
     type: "Bundler",
   },
   {
+    network: "Base Goerli",
+    logo: "/img/networks/8453.png",
+    chainId: 84531,
+    chainHandle: "base-goerli",
+    address: "Available upon request",
+    type: "Bundler",
+  },
+  {
     network: "BnB Smart Chain Tesnet",
     logo: "/img/networks/56.png",
     chainId: 97,
@@ -126,7 +142,11 @@ const testChainList = [
 
 # Bundler RPC Endpoints
 
-Voltaire is provided as a free bundler instance on selected networks. [Book a meeting](https://cal.com/candidelabs/30mins) now to go live on mainnet
+Voltaire is provided as a free bundler instance multichain. [Send a quick message](https://t.me/heymarcopolo) to get access to any of the below.
+
+Before your public launch, we highly recommend that you [book a meeting](https://cal.com/candidelabs/30mins) to go live on mainnet.
+
+If you require a specific chain not listed below, let us know. 
 
 ## Mainnet Networks
 
@@ -136,7 +156,13 @@ Voltaire is provided as a free bundler instance on selected networks. [Book a me
 
 <BundlerEndPointTable items={testChainList} />
 
-## Partner RPC Providers
+## Voltaire with RPC Providers
+
+Once you have built your product in testnet and have all the features you desire, 
+you are ready to transition to the production phase. 
+Below are the RPC providers that run Voltaire Bundler as a Service. They all have a free tier, and a model of pay as you grow. You can learn about their pricing on their website.
+
+List is alphabetically in no particular order.
 
 <p align="left" style={{
   width:"250px", 
@@ -148,19 +174,15 @@ Voltaire is provided as a free bundler instance on selected networks. [Book a me
     <img src="/img/rpc-providers/blockpi-logo.jpg" target="_blank" style={{ borderRadius: "50%" }} />
   </a>
   &nbsp;&nbsp;&nbsp;
-  <a href="https://blockpi.io" target="_blank">
-    <img src="/img/rpc-providers/chainbase-logo.jpg" target="_blank" style={{ borderRadius: "50%" }}/>
-  </a>
-  &nbsp;&nbsp;&nbsp;
   <a href="https://llamanodes.com/" target="_blank">
     <img src="/img/rpc-providers/llamanodes-logo-512px.png"/>
   </a>
 </p>
 
-[BlockPi](https://blockpi.io/) - Distributed multi-chain acceleration layer, solving the RPC requests congestion problem with infinite scalability
+### BlockPi
 
-[Chainbase](https://chainbase.com) - All-in-one web3 data infrastructure for indexing, transforming, and utilizing large-scale on-chain data 
+Once you create an account with BlockPi, you will see the available chains and Bundlers. Select CANDIDE as your option to use Voltaire. Learn more on their Bundler Service [here](https://docs.blockpi.io/guides-for-web-3.0-users/account-abstraction-erc-4337/bundler-service).
 
-[LlamaNodes](https://llamanodes.com/) - Fast and secure access to the blockchain designed for Web3 native teams.
+### LlamaNodes
 
-
+Llamas offer Bundler endpoints both on their public endpoints for the free tier, and on a more generous plan once you create an account. Learn more on their Bundler Service [here](https://llamanodes.notion.site/Account-Abstraction-ERC-4337-c4fae5b887854b0fb68f22c47702cb59).
