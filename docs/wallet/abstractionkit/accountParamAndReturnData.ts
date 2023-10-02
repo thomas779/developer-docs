@@ -98,14 +98,6 @@ export const createCallDataSingleTransactionWithPaymasterReturn = [
   },
 ];
 
-export const createCallDataBatchTransactionParam = [
-  {
-    key: "txs",
-    type: "MetaTransaction[]",
-    description: "",
-  },
-];
-
 export const createCallDataBatchTransactionReturn = [
   {
     key: "callData",

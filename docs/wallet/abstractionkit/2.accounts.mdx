@@ -13,6 +13,7 @@ import {
   metaTransactionType,
   createCallDataSingleTransactionParam,
   createCallDataSingleTransactionReturn,
+  createCallDataBatchTransactionReturn,
   createCallDataParam,
   createCallDataReturn,
   createEthCallDataParam,
@@ -104,7 +105,7 @@ initCode: 0x...
 
 ### createCallDataSingleTransaction
 
-Constructs and return the call data to send a single user operation
+Constructs and return the call data to send a single transaction
 
 #### Usage
 
@@ -176,6 +177,89 @@ callData : 0xf34308ef000000000000000000000000b4fbf271143f4fbf7b91a5ded31805e42b2
 #### Source code
 
 [createCallDataSingleTransaction](https://github.com/candidelabs/abstractionkit/blob/831c665c65eafa012b1ec26210cdd993401fcab3/src/account/Candide/CandideAccount.ts#L189)
+
+### createCallDataBatchTransaction
+
+Constructs and return the call data to send a batch of transcations
+
+#### Usage
+
+In this example, we make a transfer to 2 different random addresses, 1 wei each.
+
+<Tabs>
+<TabItem value="example.ts" label="example.ts">
+
+```ts title="example.ts"
+import {
+  CandideAccount,
+// highlight-start
+  Operation,
+// highlight-end
+} from "abstractionkit";
+import { Wallet } from "ethers";
+
+const smartAccount = new CandideAccount();
+
+// highlight-start
+const tx1 = {
+  to: "0x1a02592A3484c2077d2E5D24482497F85e1980C6",
+  value: 1,
+  data: "0x",
+  operation: Operation.Call,
+};
+const tx1 = {
+  to: "0x3fe285dcd76bcce4ac92d38a6f2f8e964041e020",
+  value: 1,
+  data: "0x",
+  operation: Operation.Call,
+};
+
+const callData = smartAccount.createCallDataBatchTransaction([tx1, tx2]);
+
+console.log("callData: " + callData);
+// highlight-end
+```
+
+</TabItem>
+
+<TabItem value="Param type" label="Param Types">
+  <table>
+    <thead>
+      <th align="left">Param Name</th>
+      <th align="left">Param Type</th>
+      <th aign="left">Description</th>
+    </thead>
+    <tbody>
+      <tr>
+        <td align="left">MetaTransaction[]</td>
+        <td align="left">
+          <p>Object[]</p>
+          <SdkParamsTable items={metaTransactionType} />
+        </td>
+        <td align="left">MetaTransaction is the type of a transaction to construct a Gnosis Safe operation</td>
+      </tr>
+    </tbody>
+  </table>
+</TabItem>
+
+<TabItem value="Return Type" label="Return Type">
+  <SdkParamsTable items={createCallDataBatchTransactionReturn} />
+</TabItem>
+
+</Tabs>
+
+<details>
+<summary>Example Response</summary>
+
+```terminal
+callData : 0xf34308ef000000000000000000000000b4fbf271143f4fbf7b91a5ded31805e42b2208d6000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000e000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+```
+
+</details>
+
+#### Source code
+
+[createCallDataSingleTransaction](https://github.com/candidelabs/abstractionkit/blob/831c665c65eafa012b1ec26210cdd993401fcab3/src/account/Candide/CandideAccount.ts#L225)
 
 ### createSendEthCallData
 
