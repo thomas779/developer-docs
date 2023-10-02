@@ -10,6 +10,9 @@ import { SdkParamsTable } from "/src/components/CustomTable";
 import {
   createNewAccountParam,
   createNewAccountReturn,
+  metaTransactionType,
+  createCallDataSingleTransactionParam,
+  createCallDataSingleTransactionReturn,
   createCallDataParam,
   createCallDataReturn,
   createEthCallDataParam,
@@ -99,11 +102,87 @@ initCode: 0x...
 
 [createAccount](https://github.com/candidelabs/abstractionkit/blob/1532fa9b31197bffceaad59150dce8fbc302ec73/src/account/CandideAccount.ts#L54)
 
+### createCallDataSingleTransaction
+
+Constructs and return the call data to send a single user operation
+
+#### Usage
+
+In this example, we make a transfer of 1 wei to a random address.
+
+<Tabs>
+<TabItem value="example.ts" label="example.ts">
+
+```ts title="example.ts"
+import {
+  CandideAccount,
+// highlight-start
+  Operation,
+// highlight-end
+} from "abstractionkit";
+import { Wallet } from "ethers";
+
+const smartAccount = new CandideAccount();
+
+// highlight-start
+const callData = smartAccount.createCallDataSingleTransaction(
+  to: "0x1a02592A3484c2077d2E5D24482497F85e1980C6",
+  value: 1,
+  data: "0x",
+  operation: Operation.Call,
+);
+
+console.log("callData: " + callData);
+// highlight-end
+```
+
+</TabItem>
+
+<TabItem value="Param type" label="Param Types">
+  <table>
+    <thead>
+      <th align="left">Param Name</th>
+      <th align="left">Param Type</th>
+      <th aign="left">Description</th>
+    </thead>
+    <tbody>
+      <tr>
+        <td align="left">MetaTransaction</td>
+        <td align="left">
+          <p>Object</p>
+          <SdkParamsTable items={metaTransactionType} />
+        </td>
+        <td align="left">MetaTransaction is the type of a transaction to construct a Gnosis Safe operation</td>
+      </tr>
+    </tbody>
+  </table>
+</TabItem>
+
+<TabItem value="Return Type" label="Return Type">
+  <SdkParamsTable items={createCallDataSingleTransactionReturn} />
+</TabItem>
+
+</Tabs>
+
+<details>
+<summary>Example Response</summary>
+
+```terminal
+callData : 0xf34308ef000000000000000000000000b4fbf271143f4fbf7b91a5ded31805e42b2208d6000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000e000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+```
+
+</details>
+
+#### Source code
+
+[createCallDataSingleTransaction](https://github.com/candidelabs/abstractionkit/blob/831c665c65eafa012b1ec26210cdd993401fcab3/src/account/Candide/CandideAccount.ts#L189)
+
 ### createSendEthCallData
 
 Returns the callData to make an ETH transfer (or any native token ex: MATIC)
 
 #### Usage
+
 <Tabs>
 <TabItem value="example.ts" label="example.ts">
 
@@ -173,7 +252,7 @@ let callData = smartAccount.createCallData(
   0, // operation
   "0x3fe285dcd76bcce4ac92d38a6f2f8e964041e020", // candide paymaster address
   "0x7F5c764cBc14f9669B88837ca1490cCa17c31607", // USDC Token address on Optimism
-  "0xffd4fdfb6ee21e", // approve amount for the paymaster- to pay for gas using erc20 token
+  "0xffd4fdfb6ee21e" // approve amount for the paymaster- to pay for gas using erc20 token
 );
 
 console.log("callData: ", callData);
