@@ -83,30 +83,6 @@ export const createCallDataBatchTransactionReturn = [
   },
 ];
 
-export const createCallDataBatchTransactionWithPaymasterParam = [
-  {
-    key: "txs",
-    type: "MetaTransction[]",
-    description: "",
-  },
-  {
-    key: "paymaster",
-    type: "string",
-    description: "Paymaster Address",
-  },
-  {
-    key: "approveToken",
-    type: "string",
-    description:
-      "ERC-20 Token Address to approve spending with the Token Paymaster",
-  },
-  {
-    key: "approveAmount",
-    type: "BigNumberish",
-    description: "Amount of ERC-20 Tokens",
-  },
-];
-
 export const createCallDataBatchTransactionWithPaymasterReturn = [
   {
     key: "callData",

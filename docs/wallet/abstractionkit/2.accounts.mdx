@@ -15,6 +15,7 @@ import {
   createCallDataSingleTransactionReturn,
   createCallDataBatchTransactionReturn,
   createCallDataSingleTransactionWithPaymasterReturn,
+  createCallDataBatchTransactionWithPaymasterReturn,
   createCallDataParam,
   createCallDataReturn,
   createEthCallDataParam,
@@ -211,7 +212,7 @@ const tx1 = {
   data: "0x",
   operation: Operation.Call,
 };
-const tx1 = {
+const tx2 = {
   to: "0x3fe285dcd76bcce4ac92d38a6f2f8e964041e020",
   value: 1,
   data: "0x",
@@ -266,7 +267,7 @@ callData : 0xf34308ef000000000000000000000000b4fbf271143f4fbf7b91a5ded31805e42b2
 
 #### Source code
 
-[createCallDataSingleTransaction](https://github.com/candidelabs/abstractionkit/blob/831c665c65eafa012b1ec26210cdd993401fcab3/src/account/Candide/CandideAccount.ts#L225)
+[createCallDataBatchTransaction](https://github.com/candidelabs/abstractionkit/blob/831c665c65eafa012b1ec26210cdd993401fcab3/src/account/Candide/CandideAccount.ts#L225)
 
 ### createCallDataSingleTransactionWithPaymaster
 
@@ -375,6 +376,120 @@ callData : 0xf34308ef000000000000000000000000b4fbf271143f4fbf7b91a5ded31805e42b2
 #### Source code
 
 [createCallDataSingleTransactionWithPaymaster](https://github.com/candidelabs/abstractionkit/blob/831c665c65eafa012b1ec26210cdd993401fcab3/src/account/Candide/CandideAccount.ts#L171)
+
+### createCallDataBatchTransactionWithPaymaster
+
+Constructs and return the call data to send a batch of transactions with a **Token Paymaster**
+
+#### Usage
+
+In this example, we make a transfer to 2 different random addresses for 1 wei each, and the account pays for gas using CTT
+
+<Tabs>
+<TabItem value="example.ts" label="example.ts">
+
+```ts title="example.ts"
+import {
+  CandideAccount,
+// highlight-start
+  Operation,
+// highlight-end
+} from "abstractionkit";
+import { Wallet } from "ethers";
+
+const smartAccount = new CandideAccount();
+
+const tx1 = {
+  to: "0x1a02592A3484c2077d2E5D24482497F85e1980C6",
+  value: 1,
+  data: "0x",
+  operation: Operation.Call,
+};
+const tx2 = {
+  to: "0x3fe285dcd76bcce4ac92d38a6f2f8e964041e020",
+  value: 1,
+  data: "0x",
+  operation: Operation.Call,
+};
+
+// highlight-start
+const callData = smartAccount.createCallDataBatchTransactionWithPaymaster(
+  txs: [tx1, tx2],
+  paymaster: "0x3fe285dcd76bcce4ac92d38a6f2f8e964041e020", // Candide Paymaster Address
+  approveToken: "0x7DdEFA2f027691116D0a7aa6418246622d70B12A", // CTT ERC-20 Testnet Token address
+  approveAmount: "0xffd4fdfb6ee21e", // approve amount for the paymaster- to pay for gas using erc20 token
+);
+
+console.log("callData: " + callData);
+// highlight-end
+```
+
+</TabItem>
+
+<TabItem value="Param type" label="Param Types">
+  <table>
+    <thead>
+      <th align="left">Param Name</th>
+      <th align="left">Param Type</th>
+      <th aign="left">Description</th>
+    </thead>
+    <tbody>
+      <tr>
+        <td align="left">txs</td>
+        <td align="left">
+          <p>MetaTransaction Object[]</p>
+          <SdkParamsTable items={metaTransactionType} />
+        </td>
+        <td align="left">
+          MetaTransaction is the type of a transaction to construct a Gnosis
+          Safe operation
+        </td>
+      </tr>
+      <tr>
+        <td align="left">paymaster</td>
+        <td align="left">
+          <p>string</p>
+        </td>
+        <td align="left">Paymaster Address</td>
+      </tr>
+      <tr>
+        <td align="left">approveToken</td>
+        <td align="left">
+          <p>string</p>
+        </td>
+        <td align="left">
+          ERC-20 Token Address to approve spending with the Token Paymaster
+        </td>
+      </tr>
+      <tr>
+        <td align="left">approveAmount</td>
+        <td align="left">
+          <p>BigNumberish</p>
+        </td>
+        <td align="left">Amount of ERC-20 Tokens</td>
+      </tr>
+    </tbody>
+  </table>
+</TabItem>
+
+<TabItem value="Return Type" label="Return Type">
+  <SdkParamsTable items={createCallDataBatchTransactionWithPaymasterReturn} />
+</TabItem>
+
+</Tabs>
+
+<details>
+<summary>Example Response</summary>
+
+```terminal
+callData : 0xf34308ef000000000000000000000000b4fbf271143f4fbf7b91a5ded31805e42b2208d6000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000e000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+```
+
+</details>
+
+#### Source code
+
+[createCallDataBatchTransactionWithPaymaster](https://github.com/candidelabs/abstractionkit/blob/831c665c65eafa012b1ec26210cdd993401fcab3/src/account/Candide/CandideAccount.ts#L196)
 
 ### createSendEthCallData
 
