@@ -23,6 +23,7 @@ const sidebars = {
     'dapps/getting-started',
     {
       type: 'category',
+      collapsed: false,
       label: 'Guides',
       items: [
         'dapps/guides/batch-transactions',
@@ -35,6 +36,7 @@ const sidebars = {
     {
       type: 'category',
       label: 'Guides',
+      collapsed: false,
       items: [
         'wallet/guides/getting-started',
         'wallet/guides/send-gasless-tx',
@@ -44,6 +46,7 @@ const sidebars = {
     {
       type: 'category',
       label: 'SDK',
+      collapsed: false,
       items: [
         'wallet/abstractionkit/introduction',
         'wallet/abstractionkit/accounts',
