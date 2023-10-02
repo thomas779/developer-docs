@@ -198,6 +198,7 @@ In this example, we make a transfer to 2 different random addresses, 1 wei each.
 import {
   CandideAccount,
   // highlight-start
+  MetaTransaction,
   Operation,
   // highlight-end
 } from "abstractionkit";
@@ -206,13 +207,13 @@ import { Wallet } from "ethers";
 const smartAccount = new CandideAccount();
 
 // highlight-start
-const tx1 = {
+const tx1: MetaTransaction = {
   to: "0x1a02592A3484c2077d2E5D24482497F85e1980C6",
   value: 1,
   data: "0x",
   operation: Operation.Call,
 };
-const tx2 = {
+const tx2: MetaTransaction = {
   to: "0x3fe285dcd76bcce4ac92d38a6f2f8e964041e020",
   value: 1,
   data: "0x",
@@ -284,6 +285,7 @@ In this example, we make a transfer of 1 wei to a random address, and the accoun
 import {
   CandideAccount,
 // highlight-start
+  MetaTransaction,
   Operation,
 // highlight-end
 } from "abstractionkit";
@@ -291,7 +293,7 @@ import { Wallet } from "ethers";
 
 const smartAccount = new CandideAccount();
 
-const tx = {
+const tx: MetaTransaction = {
   to: "0x1a02592A3484c2077d2E5D24482497F85e1980C6",
   value: 1,
   data: "0x",
@@ -301,9 +303,9 @@ const tx = {
 // highlight-start
 const callData = smartAccount.createCallDataSingleTransactionWithPaymaster(
   tx,
-  paymaster: "0x3fe285dcd76bcce4ac92d38a6f2f8e964041e020", // Candide Paymaster Address
-  approveToken: "0x7DdEFA2f027691116D0a7aa6418246622d70B12A", // CTT ERC-20 Testnet Token address
-  approveAmount: "0xffd4fdfb6ee21e", // approve amount for the paymaster- to pay for gas using erc20 token
+  "0x3fe285dcd76bcce4ac92d38a6f2f8e964041e020", // Candide Paymaster Address
+  "0x7DdEFA2f027691116D0a7aa6418246622d70B12A", // CTT ERC-20 Testnet Token address
+  "0xffd4fdfb6ee21e", // approve amount for the paymaster- to pay for gas using erc20 token
 );
 
 console.log("callData: " + callData);
@@ -321,9 +323,9 @@ console.log("callData: " + callData);
     </thead>
     <tbody>
       <tr>
-        <td align="left">tx</td>
+        <td align="left">MetaTransaction</td>
         <td align="left">
-          <p>MetaTransaction Object</p>
+          <p>Object</p>
           <SdkParamsTable items={metaTransactionType} />
         </td>
         <td align="left">
@@ -332,14 +334,14 @@ console.log("callData: " + callData);
         </td>
       </tr>
       <tr>
-        <td align="left">paymaster</td>
+        <td align="left">Paymaster</td>
         <td align="left">
           <p>string</p>
         </td>
         <td align="left">Paymaster Address</td>
       </tr>
       <tr>
-        <td align="left">approveToken</td>
+        <td align="left">Approve Token</td>
         <td align="left">
           <p>string</p>
         </td>
@@ -348,7 +350,7 @@ console.log("callData: " + callData);
         </td>
       </tr>
       <tr>
-        <td align="left">approveAmount</td>
+        <td align="left">Approve Amount</td>
         <td align="left">
           <p>BigNumberish</p>
         </td>
@@ -392,6 +394,7 @@ In this example, we make a transfer to 2 different random addresses for 1 wei ea
 import {
   CandideAccount,
 // highlight-start
+  MetaTransaction,
   Operation,
 // highlight-end
 } from "abstractionkit";
@@ -399,13 +402,13 @@ import { Wallet } from "ethers";
 
 const smartAccount = new CandideAccount();
 
-const tx1 = {
+const tx1: MetaTransaction = {
   to: "0x1a02592A3484c2077d2E5D24482497F85e1980C6",
   value: 1,
   data: "0x",
   operation: Operation.Call,
 };
-const tx2 = {
+const tx2: MetaTransaction = {
   to: "0x3fe285dcd76bcce4ac92d38a6f2f8e964041e020",
   value: 1,
   data: "0x",
@@ -414,10 +417,10 @@ const tx2 = {
 
 // highlight-start
 const callData = smartAccount.createCallDataBatchTransactionWithPaymaster(
-  txs: [tx1, tx2],
-  paymaster: "0x3fe285dcd76bcce4ac92d38a6f2f8e964041e020", // Candide Paymaster Address
-  approveToken: "0x7DdEFA2f027691116D0a7aa6418246622d70B12A", // CTT ERC-20 Testnet Token address
-  approveAmount: "0xffd4fdfb6ee21e", // approve amount for the paymaster- to pay for gas using erc20 token
+  [tx1, tx2],
+  "0x3fe285dcd76bcce4ac92d38a6f2f8e964041e020", // Candide Paymaster Address
+  "0x7DdEFA2f027691116D0a7aa6418246622d70B12A", // CTT ERC-20 Testnet Token address
+  "0xffd4fdfb6ee21e", // approve amount for the paymaster- to pay for gas using erc20 token
 );
 
 console.log("callData: " + callData);
@@ -435,9 +438,9 @@ console.log("callData: " + callData);
     </thead>
     <tbody>
       <tr>
-        <td align="left">txs</td>
+        <td align="left">MetaTransactions</td>
         <td align="left">
-          <p>MetaTransaction Object[]</p>
+          <p> MetaTransaction Object[]</p>
           <SdkParamsTable items={metaTransactionType} />
         </td>
         <td align="left">
@@ -446,14 +449,14 @@ console.log("callData: " + callData);
         </td>
       </tr>
       <tr>
-        <td align="left">paymaster</td>
+        <td align="left">Paymaster</td>
         <td align="left">
           <p>string</p>
         </td>
         <td align="left">Paymaster Address</td>
       </tr>
       <tr>
-        <td align="left">approveToken</td>
+        <td align="left">Approve Token</td>
         <td align="left">
           <p>string</p>
         </td>
@@ -462,7 +465,7 @@ console.log("callData: " + callData);
         </td>
       </tr>
       <tr>
-        <td align="left">approveAmount</td>
+        <td align="left">Approve Amount</td>
         <td align="left">
           <p>BigNumberish</p>
         </td>
