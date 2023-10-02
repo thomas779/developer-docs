@@ -8,7 +8,8 @@ export const createNewAccountParam = [
   {
     key: "threshold (optional)",
     type: "BigNumberish",
-    description: "Pass the threshold of the account. That's the minimum number of owners that needs to approve a transaction. Default to 1",
+    description:
+      "Pass the threshold of the account. That's the minimum number of owners that needs to approve a transaction. Default to 1",
   },
   {
     key: "c2nonce (optional)",
@@ -29,6 +30,121 @@ export const createNewAccountReturn = [
     type: "[string,BytesLike]",
     description:
       "Returns an array that includes the sender (account address) and the factory generator function callData for the initCode",
+  },
+];
+
+export const metaTransactionType = [
+  {
+    key: "to",
+    type: "string",
+    description: "To address",
+  },
+  {
+    key: "value",
+    type: "BigNumberish",
+    description: "value transfered if making a transfer",
+  },
+  {
+    key: "data",
+    type: "BytesLike",
+    description: "callData",
+  },
+  {
+    key: "operation",
+    type: "Operation: enum",
+    description: "0 for a Call, and 1 for a Delegate Call",
+  },
+];
+
+export const createCallDataSingleTransactionReturn = [
+  {
+    key: "callData",
+    type: "BytesLike",
+    description:
+      "CallData to be includes in the user operation to send a single transaction",
+  },
+];
+
+export const createCallDataSingleTransactionWithPaymasterParam = [
+  {
+    key: "tx",
+    type: "MetaTransction",
+    description: "",
+  },
+  {
+    key: "paymaster",
+    type: "string",
+    description: "Paymaster Address",
+  },
+  {
+    key: "approveToken",
+    type: "string",
+    description:
+      "ERC-20 Token Address to approve spending with the Token Paymaster",
+  },
+  {
+    key: "approveAmount",
+    type: "BigNumberish",
+    description: "Amount of ERC-20 Tokens",
+  },
+];
+
+export const createCallDataSingleTransactionWithPaymasterReturn = [
+  {
+    key: "callData",
+    type: "BytesLike",
+    description:
+      "Calldata to be included in the user operation to send a single transaction with a Token Paymaster",
+  },
+];
+
+export const createCallDataBatchTransactionParam = [
+  {
+    key: "txs",
+    type: "MetaTransaction[]",
+    description: "",
+  },
+];
+
+export const createCallDataBatchTransactionReturn = [
+  {
+    key: "callData",
+    type: "BytesLike",
+    description:
+      "Calldata to be included in the user operation to send a batch of transactions",
+  },
+];
+
+export const createCallDataBatchTransactionWithPaymasterParam = [
+  {
+    key: "txs",
+    type: "MetaTransction[]",
+    description: "",
+  },
+  {
+    key: "paymaster",
+    type: "string",
+    description: "Paymaster Address",
+  },
+  {
+    key: "approveToken",
+    type: "string",
+    description:
+      "ERC-20 Token Address to approve spending with the Token Paymaster",
+  },
+  {
+    key: "approveAmount",
+    type: "BigNumberish",
+    description: "Amount of ERC-20 Tokens",
+  },
+];
+
+export const createCallDataBatchTransactionWithPaymasterReturn = [
+  {
+    key: "callData",
+    type: "BytesLike",
+    description:
+      "Calldata to be included in the user operation to send a batch of transactions with the Token Paymaster",
   },
 ];
 
