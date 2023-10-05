@@ -47,7 +47,7 @@ import { Wallet } from "ethers";
 
 const eoaSigner = new Wallet(privateKey);
 const [newAccountAddress, initCode] = smartAccount.createNewAccount([
-  eoaSigner,
+  eoaSigner.address,
 ]);
 ```
 
@@ -72,7 +72,7 @@ const smartAccount = new CandideAccount();
 const eoaSigner = new Wallet(privateKey);
 
 const [newAccountAddress, initCode] = smartAccount.createNewAccount([
-  eoaSigner,
+  eoaSigner.address,
 ]);
 
 console.log("Account address (sender): " + newAccountAddress);

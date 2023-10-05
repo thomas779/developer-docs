@@ -62,7 +62,7 @@ const supportedGasTokens = await paymaster.getSupportedERC20Tokens();
 
 **FREE Gas Mode**: Takes a userOperation, and returns `paymasterAndData` to execute a transaction gasless. 
 
-It may or pay not return a mandatory preVerificationGas, maxFeePerGas, and maxPriorityFeePerGas.
+It **may or may not** return a mandatory preVerificationGas, maxFeePerGas, and maxPriorityFeePerGas.
 
 :::info
 Any gas overrides provided in the paymaster result MUST be used in the userop otherwise the paymaster signature won't work.
