@@ -124,7 +124,7 @@ export const userOperationParamaters = [
   },
 ];
 
-export const pm_sponsorUserOperationReturnParams = [
+export const pm_sponsorUserOperationWithGasReturnParams = [
   {
     key: "paymasterAndData",
     type: "string",
@@ -159,3 +159,13 @@ export const pm_sponsorUserOperationReturnParams = [
       "Maximum priority fee per gas (similar to EIP-1559 max_priority_fee_per_gas)",
   },
 ];
+
+export const pm_sponsorUserOperationWithoutGasReturnParam = [
+  {
+    key: "paymasterAndData",
+    type: "string",
+    description:
+      "Paymaster address and data required to pass paymaster contract validation",
+  },
+];
+

@@ -1,0 +1,258 @@
+---
+title: Paymaster
+description: Learn how to use AbstractionKit to sponsor gas using an ERC-4337 verifying paymaster
+keywords: [paymaster, "verifying", "sdk", gas-abstraction, sponsor-gas]
+image: /img/network-fees-sponsorship.png
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import { RpcRequestTable } from "/src/components/CustomTable";
+import {
+  paymasterMetadataParameters,
+  tokensParamaters,
+  emptyParams,
+  userOperationParamaters,
+  entrypointParams,
+  pm_sponsorUserOperationWithoutGasReturnParam,
+  pm_sponsorUserOperationWithGasReturnParams
+} from "/src/requestRpcData";
+
+A `CandideValidationPaymaster` is a class to an ERC-4337 Paymaster that interacts with Candide verifying paymaster API.
+
+The `CandideValidationPaymaster` class sets up a Paymaster Instance with:
+
+1. Paymaster URL `string`
+
+2. Entrypoint address `string`
+
+## Usage
+
+### Import
+
+```ts
+import { CandideValidationPaymaster } from "abstractionkit";
+```
+
+### How to use
+
+Initialize a Paymaster with your RPC url
+
+```ts title="paymaster.ts"
+import { CandideValidationPaymaster } from "abstractionkit";
+
+const paymasterRpc = "https://api.candide.dev/paymaster/v1/$network/$apikey";
+const entrypointAddress = "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789";
+
+const paymaster: CandideValidationPaymaster = new CandideValidationPaymaster(
+  entrypointAddress,
+  paymasterRPC
+);
+```
+
+Then you can consume Paymaster methods:
+
+```ts
+const supportedGasTokens = await paymaster.getSupportedERC20Tokens();
+```
+
+## Methods
+
+### getPaymasterCallDataForGaslessTx
+
+**FREE Gas Mode**: Takes a userOperation, and returns `paymasterAndData` to execute a transaction gasless. 
+
+It may or pay not return a mandatory preVerificationGas, maxFeePerGas, and maxPriorityFeePerGas.
+
+:::info
+Any gas overrides provided in the paymaster result MUST be used in the userop otherwise the paymaster signature won't work.
+:::
+
+#### Usage
+
+<Tabs>
+<TabItem value="example.ts" label="example.ts">
+
+```ts title="example.ts"
+import { paymaster } from "./paymaster";
+
+const paymasterResult = await paymaster.getPaymasterCallDataForGaslessTx(
+  user_operation,
+);
+```
+
+</TabItem>
+<TabItem value="Param type" label="Param Types">
+<table>
+  <thead>
+    <th align="left">Paramater</th>
+    <th align="left">Type</th>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="left">userOperation</td>
+      <td align="left">
+        <p>Object</p>
+        <RpcRequestTable items={userOperationParamaters} />
+      </td>
+    </tr>
+  </tbody>
+</table>
+</TabItem>
+<TabItem value="response type" label="Response Type">
+  <RpcRequestTable items={pm_sponsorUserOperationWithGasReturnParams} />
+</TabItem>
+</Tabs>
+
+<details>
+<summary>Example Response</summary>
+
+```ts
+{
+  paymasterAndData: '0x3fE285DcD76BCcE4Ac92d38A6F2F8E964041e0200000000000000000000000000000000000000000030000651ea90c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000a9fc88a3820801d1559ada307455ff4b3410fd2b8a642d695990a86003eb502a7c87419454ead7ce12f5ba9bb961141f52a8cc944b95ceebab95438b28f025731c'
+}
+```
+
+</details>
+
+### getSupportedERC20Tokens
+
+Returns the ERC-20 Tokens that the paymaster accepts as gas tokens on the current network
+
+#### Usage
+
+<Tabs>
+<TabItem value="example.ts" label="example.ts">
+
+```ts title="example.ts"
+import { paymaster } from "./paymaster.ts";
+
+const supportedGasTokens = await paymaster.getSupportedERC20Tokens();
+```
+
+</TabItem>
+
+<TabItem value="response type" label="Response Types">
+<table>
+  <thead>
+    <th align="left">Paramater</th>
+    <th align="left">Type</th>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="left">tokens</td>
+      <td align="left">
+        <p>Object[]</p>
+        <RpcRequestTable items={tokensParamaters} />
+      </td>
+    </tr>
+    <tr>
+      <td align="left">paymasterMetadata</td>
+      <td align="left">
+        <p>Object</p>
+        <RpcRequestTable items={paymasterMetadataParameters} />
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+</TabItem>
+</Tabs>
+
+<details>
+<summary>Example Response</summary>
+
+```ts
+{
+  tokens: [
+    {
+      symbol: 'CTT',
+      address: '0x7ddefa2f027691116d0a7aa6418246622d70b12a',
+      decimal: '0x12',
+      fee: '0x0',
+      exchangeRate: '0x0de0d1c4e668f68a'
+    }
+  ],
+  paymasterMetadata: {
+    name: 'CANDIDE Paymaster',
+    description: 'CANDIDE Paymaster a fast, secure and feature-rich 4337 Paymaster',
+    icons: [],
+    address: '0x3fE285DcD76BCcE4Ac92d38A6F2F8E964041e020',
+    sponsoredEventTopic: '0xa050a122b4c0e369e3385eb6b7cccd8019638b2764de67bec0af99130ddf8471',
+    dummyPaymasterAndData: '0x3fE285DcD76BCcE4Ac92d38A6F2F8E964041e0207ddefa2f027691116d0a7aa6418246622d70b12a0100000000ffff000000000000000000000000000000000000000000000000000000000000ffff000000000000000000000000000000000000000000000000000000000000ffff010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101011c'
+  }
+}
+```
+
+</details>
+
+### getPaymasterCallDataForPayingGasWithErc20
+
+**Pay Gas in ERC-20s** mode: This method takes a useroperation and a token address, and returns `paymasterAndData` along with the gas values to sponsor a user operation using erc-20 tokens
+
+#### Usage
+
+<Tabs>
+<TabItem value="example.ts" label="example.ts">
+
+```ts title="example.ts"
+import { paymaster } from "./paymaster";
+
+const erc20TokenAddress = "0x7DdEFA2f027691116D0a7aa6418246622d70B12A";
+
+const paymasterResult = await paymaster.getPaymasterCallDataForGaslessTx(
+  user_operation,
+  erc20TokenAddress,
+);
+```
+
+</TabItem>
+<TabItem value="Param type" label="Param Types">
+<table>
+  <thead>
+    <th align="left">Paramater</th>
+    <th align="left">Type</th>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="left">userOperation</td>
+      <td align="left">
+        <p>Object</p>
+        <RpcRequestTable items={userOperationParamaters} />
+      </td>
+    </tr>
+    <tr>
+      <td align="left">tokenAddress</td>
+      <td align="left">
+        <table>
+          <thead>
+            <th align="left">Type</th>
+            <th align="left">Description</th>
+          </thead>
+          <tr>
+            <td>
+              <code>string</code>
+            </td>
+            <td>Token Address selected from getSupportedERC20Tokens()</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</TabItem>
+<TabItem value="response type" label="Response Type">
+  <RpcRequestTable items={pm_sponsorUserOperationWithoutGasReturnParam} />
+</TabItem>
+</Tabs>
+
+<details>
+<summary>Example Response</summary>
+
+```ts
+{
+  paymasterAndData: '0x3fE285DcD76BCcE4Ac92d38A6F2F8E964041e0207ddefa2f027691116d0a7aa6418246622d70b12a000000651ea34800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000de077f372a8c4c30bf6f1934b8ac0441dc6d8470f386567d904454c6e12bb9a6634b03879c1b59a612329a6e7e26db4218dead2aea2d8b58662e03956fc964c5e07a57059f336d71c'
+}
+```
+
+</details>

@@ -14,7 +14,7 @@ import {
   emptyParams,
   userOperationParamaters,
   entrypointParams,
-  pm_sponsorUserOperationReturnParams,
+  pm_sponsorUserOperationWithGasReturnParams,
 } from "/src/requestRpcData";
 
 JSON-RPC API reference for Candide's Verifying Paymaster service
@@ -239,7 +239,7 @@ Any gas overrides provided in the paymaster result MUST be used in the userop ot
 </TabItem>
 
 <TabItem value="response type" label="Response Type">
-  <RpcRequestTable items={pm_sponsorUserOperationReturnParams} />
+  <RpcRequestTable items={pm_sponsorUserOperationWithGasReturnParams} />
 </TabItem>
 
 </Tabs>
