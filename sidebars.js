@@ -70,6 +70,15 @@ const sidebars = {
         'wallet/bundler/rpc-endpoints',
       ],
     },
+    {
+      type: 'category',
+      collapsed: false,
+      label: 'Technical Reference',
+      items: [
+        'wallet/technical-reference/deployments', 
+        'wallet/technical-reference/error-codes',
+      ]
+    }
   ]
 };
 

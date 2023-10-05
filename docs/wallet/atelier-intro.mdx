@@ -5,7 +5,7 @@ image: "/img/logo/candide-logo-dark-wordmark.svg"
 keywords: [erc-4337, account abstraction, paymaster, bundler, smart wallets]
 sidebar_position: 1
 ---
-# Intro to Candide Atelier 
+# Intro to Candide Atelier
 
 Create, customize and offer smart wallets for your users
 
@@ -19,26 +19,42 @@ Candide Atelier is a set of tools that lets you build **smart wallets** powered 
 
 ## Benefits of smart wallets
 
-- **Account Security**: Use different authentication methods to support easy login and recovery features 
+- **Account Security**: Use different authentication methods to support easy login and recovery features
 - **Gas Fee Abstraction**: Completely abstract away gas from your users, or let them pay fees in different currencies other than the native.
 - **One-click Interfaces**: Batch transactions or send multiple transactions automatically in a single transaction
 
-And that's only the tip of the iceberg. Because each account is a smart contract, contracts are programmable and enable arbitrarily advanced transaction functionalities. Unlike EOAs (MetaMask-style wallets), which are limited by design. 
+And that's only the tip of the iceberg. Because each account is a smart contract, contracts are programmable and enable arbitrarily advanced transaction functionalities. Unlike EOAs (MetaMask-style wallets), which are limited by design.
+
+## Chains supported
+
+Candide Atelier is available on all major EVM equivalent networks. If you would like to see a network supported, [reach out to us](https://t.me/heymarcopolo).
+
+import {NetworkList} from "/src/components/NetworkList";
+
+<NetworkList />
 
 ## Getting Started
-import CardList from '/src/components/CardList'
+
+import CardList from "/src/components/CardList";
 const GETTING_STARTED_ITEMS = [
   {
-    title: 'Send your first transaction',
-    description: 'Learn how to create a smart wallet and to send your first erc-4337 user operation',
-    route: '/wallet/guides/getting-started',
+    title: "Send your First Transaction",
+    description:
+      "Learn how to create a smart wallet and to send your first erc-4337 user operation",
+    route: "/wallet/guides/getting-started",
   },
   {
-    title: 'Pay Gas in ERC-20',
-    description: "Learn how to abstract gas away by letting users pay gas in ERC-20",
-    route: '/wallet/guides/pay-gas-in-erc20',
+    title: "Send a Gasless Transaction",
+    description: "Learn how to send gasless transactions using a paymaster",
+    route: "/wallet/guides/getting-started",
   },
-]
+  {
+    title: "Pay Gas in ERC-20",
+    description:
+      "Learn how to abstract gas away by letting users pay gas in ERC-20",
+    route: "/wallet/guides/pay-gas-in-erc20",
+  },
+];
 
 <CardList items={GETTING_STARTED_ITEMS} />
 
