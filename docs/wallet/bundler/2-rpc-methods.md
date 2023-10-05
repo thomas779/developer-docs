@@ -3,6 +3,7 @@ title: RPC methods
 description: A reference to the supported RPC methods by Voltiare ERC-4337 Bundler
 image: "/img/erc4337-bundler.png"
 ---
+# Bundler RPC methods
 
 Voltaire Bundler exposes standard JSON-RPC API
 

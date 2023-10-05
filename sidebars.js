@@ -51,23 +51,7 @@ const sidebars = {
         'wallet/abstractionkit/introduction',
         'wallet/abstractionkit/accounts',
         'wallet/abstractionkit/bundler',
-      ],
-    },
-    {
-      type: 'category',
-      label: 'Paymaster',
-      items: [
-        'wallet/paymaster/rpc-methods',
-      ],
-    },
-    {
-      type: 'category',
-      label: 'Voltaire Bundler',
-      items: [
-        'wallet/bundler/erc-4337-intro',
-        'wallet/bundler/installation',
-        'wallet/bundler/rpc-methods',
-        'wallet/bundler/rpc-endpoints',
+        'wallet/abstractionkit/paymaster',
       ],
     },
     {
@@ -78,7 +62,24 @@ const sidebars = {
         'wallet/technical-reference/deployments', 
         'wallet/technical-reference/error-codes',
       ]
-    }
+    },
+    {
+      type: 'category',
+      label: 'Paymaster API',
+      items: [
+        'wallet/paymaster/rpc-methods',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Bundler (Advanced)',
+      items: [
+        'wallet/bundler/erc-4337-intro',
+        'wallet/bundler/installation',
+        'wallet/bundler/rpc-methods',
+        'wallet/bundler/rpc-endpoints',
+      ],
+    },
   ]
 };
 
