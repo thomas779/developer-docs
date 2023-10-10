@@ -132,16 +132,6 @@ export const pm_sponsorUserOperationWithGasReturnParams = [
       "Paymaster address and data required to pass paymaster contract validation",
   },
   {
-    key: "callGasLimit",
-    type: "string",
-    description: "The amount of gas to allocate the main execution call",
-  },
-  {
-    key: "verificationGasLimit",
-    type: "string",
-    description: "The amount of gas to allocate for the verification step",
-  },
-  {
     key: "preVerificationGas",
     type: "string",
     description:

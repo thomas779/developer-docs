@@ -117,7 +117,7 @@ Gets supported ERC-20 Tokens for gas payments, along side the paymaster metadata
 Sends a UserOperation to a paymaster for off-chain verification. If approved, it will return the `paymasterData`. It will also return gas overrides when the mode for gas sponsoriship is FREE for the user.
 
 - **Pay Gas in ERC-20s**: No gas overrides are returned
-- **FREE Gas**: it'll provide a mandatory `preVerificationGas`, `maxFeePerGas`, and `maxPriorityFeePerGas` fields.
+- **FREE Gas**: it **may or may not** provide mandatory `preVerificationGas`, `maxFeePerGas`, and `maxPriorityFeePerGas` fields.
 
 If the paymaster rejects the UserOperation, it should not return a result but a standard JSON-RPC error with the reason.
 
@@ -139,8 +139,6 @@ Any gas overrides provided in the paymaster result MUST be used in the userop ot
 {
   "result": {
     paymasterAndData,
-    callGasLimit,
-    verificationGasLimit,
     preVerificationGas,
     maxFeePerGas,
     maxPriorityFeePerGas
@@ -185,8 +183,6 @@ Any gas overrides provided in the paymaster result MUST be used in the userop ot
   "id": 0,
   "result": {
     "paymasterAndData": "0x....",
-    "callGasLimit": "0x..",
-    "verificationGasLimit": "0x..",
     "preVerificationGas": "0x..",
     "maxFeePerGas": "0x..",
     "maxPriorityFeePerGas": "0x.."
