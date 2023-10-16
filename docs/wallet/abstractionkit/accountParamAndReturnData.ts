@@ -160,3 +160,49 @@ export const createCallDataReturn = [
     description: "Call Data",
   },
 ];
+
+// Simple Account
+export const createNewSimpleAccountParam = [
+  {
+    key: "owner",
+    type: "string",
+    description:
+      "Pass the owner address of the account. The SimpleAccount can only single owner account",
+  },
+  {
+    key: "c2nonce (optional)",
+    type: "BigNumberish",
+    description: "Default to 0",
+  },
+];
+
+export const createCallDataSimpleAccountParam = [
+  {
+    key: "To Address",
+    type: "string",
+    description: "To address (Smart contract or account)",
+  },
+  {
+    key: "Value",
+    type: "BigNumberish",
+    description: "Value of ETH being transfered in this transaction",
+  },
+  {
+    key: "Data",
+    type: "BytesLike",
+    description: "Data",
+  },
+];
+
+export const createCallDataSimpleAccountBatchParam = [
+  {
+    key: "To Addresses",
+    type: "string[]",
+    description: "To addresses (Smart contracts or accounts)",
+  },
+  {
+    key: "Data",
+    type: "BytesLike[]",
+    description: "Data",
+  },
+];
