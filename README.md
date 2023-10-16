@@ -1,4 +1,4 @@
-# CANDIDE Wallet Documentation Website
+# CANDIDE Developer Documentation Website
 
 ![Alt text](./static/img/1500x500.jpeg "CANDIDE LOGO")
 
