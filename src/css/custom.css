@@ -41,3 +41,29 @@ html[data-theme='dark'] {
   text-decoration: underline;
 }
 
+/* sidebar non collapsible categories */
+
+.category-not-collapsible > .menu__list {
+  padding-left: 0rem;
+}
+
+.category-not-collapsible > .menu__list-item-collapsible:hover {
+  background: transparent;
+}
+
+.menu__list > .theme-doc-sidebar-item-category-level-1 {
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.menu__list > .theme-doc-sidebar-item-category-level-1:last-of-type {
+  border: none;
+}
+
+.theme-doc-sidebar-item-category-level-1 > .menu__list-item-collapsible .menu__link {
+  color: var(--top-category-label-color);
+  text-transform: uppercase;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}

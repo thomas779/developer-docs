@@ -6,7 +6,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'CANDIDE Labs',
+  title: 'Candide',
   tagline: 'Building software for ERC-4337 Account Abstraction',
   url: 'https://docs.candide.dev',
   baseUrl: '/',
@@ -86,7 +86,7 @@ const config = {
     ({
       colorMode: {
         defaultMode: 'dark',
-        disableSwitch: false,
+        disableSwitch: true,
         respectPrefersColorScheme: false,
       },
       image: 'img/logo/candide-logo-dark-wordmark.svg',
@@ -95,7 +95,7 @@ const config = {
         content:
           'We are rolling out a private beta for Candide Paymaster API. Save your spot. <button><a target="_blank" rel="noopener noreferrer" href="https://cal.com/candidelabs/30mins">Book meeting now</a></button>',
         backgroundColor: '#f0f6ff',
-        textColor: '#091E42',
+        textColor: '#000000',
         isCloseable: false,
       },
       metadata: [{
@@ -111,9 +111,9 @@ const config = {
       },
       ],
       navbar: {
-        title: 'CANDIDE',
+        title: 'Candide',
         logo: {
-          alt: 'CANDIDE logo',
+          alt: 'Candide logo',
           src: 'img/logo-dark.png',
         },
         items: [

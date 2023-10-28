@@ -3,19 +3,19 @@ export default [
       title: 'Smart Wallets',
       rows: [
         {
-          title: 'Candide Atelier',
-          description: 'Learn how to create, customize and offer smart wallets for your users',
+          title: 'Guides',
+          description: 'Step by step guides on how to create, customize and offer smart wallets for your users',
           to: './wallet/atelier-intro'
         },
         {
-          title: 'Paymaster Service',
-          description: "Get Started with Candide's Verifying Paymaster API",
-          to: './wallet/paymaster/rpc-methods',
+          title: 'Abstraction Kit',
+          description: "A Typescript Library to easily build and send ERC-4337 UserOperations",
+          to: './wallet/abstractionkit/introduction',
         },
         {
-          title: 'Voltaire Bundler',
-          description: 'Get started sending to send UserOperations through Voltaire, an EIP-4337 Compliant Bundler',
-          to: './wallet/bundler/rpc-methods',
+          title: 'Paymaster API',
+          description: 'Connect to an extensive network of third-party gas sponsors, with the most customizable gas policies.',
+          to: './wallet/paymaster/rpc-methods',
         },
       ],
     },

@@ -10,8 +10,8 @@ export default function Home() {
   const { siteConfig } = useDocusaurusContext()
   return (
     <Layout
-      title={`Account Abstraction Developer Documentation`}
-      description="Building open-source software for ERC-4337 Account Abstraction"
+      title={`Atelier Documentation`}
+      description="Candide Atelier is a set of open-source tools that lets you build smart wallets powered by ERC-4337 Account Abstraction"
     >
       <Banner />
       <main>

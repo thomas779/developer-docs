@@ -7,10 +7,10 @@ const Banner = () => {
   return (
     <div className={styles.banner__container}>
       <div className={styles.banner__text}>
-        <h2>Candide.Dev</h2>
+        <h2>Atelier</h2>
         <p>
           Candide provides toolkits to build and leverage smart
-          wallets. Build on robust Account Abstraction Infrastructure on all EVM.
+          wallets. Build on robust Account Infrastructure on all EVM.
         </p>
         {/* <a href="./wallet/guides/getting-started">
           Get started

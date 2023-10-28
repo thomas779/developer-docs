@@ -36,7 +36,8 @@ const sidebars = {
     {
       type: 'category',
       label: 'Guides',
-      collapsed: false,
+      collapsible: false,
+      className: 'category-not-collapsible',
       items: [
         'wallet/guides/getting-started',
         'wallet/guides/send-gasless-tx',
@@ -45,34 +46,99 @@ const sidebars = {
     },
     {
       type: 'category',
-      label: 'SDK',
-      collapsed: false,
+      label: 'SDK Reference',
+      collapsible: false,
+      className: 'category-not-collapsible',
       items: [
         'wallet/abstractionkit/introduction',
-        'wallet/abstractionkit/accounts',
+        {
+          type: 'category',
+          label: 'Smart Accounts',
+          collapsed: true,
+          items: [
+            'wallet/abstractionkit/candide-account',
+            'wallet/abstractionkit/simple-account',
+          ],
+        },
         'wallet/abstractionkit/bundler',
         'wallet/abstractionkit/paymaster',
       ],
     },
     {
       type: 'category',
-      collapsed: false,
-      label: 'Technical Reference',
-      items: [
-        'wallet/technical-reference/deployments', 
-        'wallet/technical-reference/error-codes',
-      ]
-    },
-    {
-      type: 'category',
       label: 'Paymaster API',
+      className: 'category-not-collapsible',
+      collapsible: false,
       items: [
         'wallet/paymaster/rpc-methods',
       ],
     },
     {
       type: 'category',
+      collapsible: false,
+      className: 'category-not-collapsible',
+      label: 'Technical Reference',
+      items: [
+        'wallet/technical-reference/deployments', 
+        {
+          type: 'category',
+          label: 'Error Codes',
+          collapsed: true,
+          items: [
+            {
+              type: 'category',
+              label: 'Bundler',
+              collapsed: true,
+              items: [
+                'wallet/technical-reference/bundler-error-codes',
+                'wallet/technical-reference/-32500-transaction-rejected-by-entrypoint-simulation',
+                'wallet/technical-reference/-32501-transaction-rejected-by-paymaster',
+                'wallet/technical-reference/-32502-transaction-rejected-by-opcode-validation',
+                'wallet/technical-reference/-32503-useroperation-out-of-time-range',
+                'wallet/technical-reference/-32504-paymaster-or-aggregator-throttled-or-banned',
+                'wallet/technical-reference/-32505-stake-or-delay-too-low',
+                'wallet/technical-reference/-32506-unsupported-aggregator',
+                'wallet/technical-reference/-32507-invalid-siganture',
+                'wallet/technical-reference/-32521-transaction-reverted',
+                'wallet/technical-reference/-32602-invalid-useroperation',
+
+              ],
+            },
+            {
+              type: 'category',
+              label: 'Entrypoint',
+              collapsed: true,
+              items: [
+                'wallet/technical-reference/entrypoint-error-codes',
+                'wallet/technical-reference/aa10-sender-already-constructed',
+                'wallet/technical-reference/aa13-initCode-failed-or-oog',
+                'wallet/technical-reference/aa14-initcode-must-return-sender',
+                'wallet/technical-reference/aa15-initcode-must-create-sender',
+                'wallet/technical-reference/aa20-account-not-deployed',
+                'wallet/technical-reference/aa22-expired-or-not-due',
+                'wallet/technical-reference/aa21-didnt-pay-prefund',
+                'wallet/technical-reference/aa23-reverted-or-oog',
+                'wallet/technical-reference/aa24-signature-error',
+                'wallet/technical-reference/aa25-invalid-account-nonce',
+                'wallet/technical-reference/aa30-paymaster-not-deployed',
+                'wallet/technical-reference/aa31-paymaster-deposit-too-low',
+                'wallet/technical-reference/aa32-paymaster-expired-or-not-due',
+                'wallet/technical-reference/aa33-reverted-or-oog',
+                'wallet/technical-reference/aa34-signature-error',
+                'wallet/technical-reference/aa40-over-verificationgaslimit',
+                'wallet/technical-reference/aa41-too-little-verificationgas',
+                'wallet/technical-reference/aa50-postop-reverted',
+                'wallet/technical-reference/aa51-prefund-below-actualgascost',
+              ],
+            },
+          ],
+        },
+      ]
+    },
+    {
+      type: 'category',
       label: 'Bundler (Advanced)',
+      collapsed: true,
       items: [
         'wallet/bundler/erc-4337-intro',
         'wallet/bundler/installation',
