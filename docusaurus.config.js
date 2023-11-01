@@ -93,7 +93,7 @@ const config = {
       announcementBar: {
         id: 'private_beta_paymaster',
         content:
-          'We are rolling out a private beta for Candide Paymaster API. Save your spot. <button><a target="_blank" rel="noopener noreferrer" href="https://cal.com/candidelabs/30mins">Book meeting now</a></button>',
+          'AbstractionKit is in active developement. Join our chat to priotirise your feature requests <button><a target="_blank" rel="noopener noreferrer" href="https://discord.gg/wxxP4ZhtbB">Join Discord</a></button>',
         backgroundColor: '#f0f6ff',
         textColor: '#000000',
         isCloseable: false,
