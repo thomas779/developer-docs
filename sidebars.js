@@ -66,11 +66,22 @@ const sidebars = {
     },
     {
       type: 'category',
-      label: 'Paymaster API',
+      label: 'Paymaster',
       className: 'category-not-collapsible',
       collapsible: false,
       items: [
         'wallet/paymaster/rpc-methods',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Bundler',
+      className: 'category-not-collapsible',
+      collapsible: false,
+      collapsed: false,
+      items: [
+        'wallet/bundler/rpc-methods',
+        'wallet/bundler/rpc-endpoints',
       ],
     },
     {
@@ -142,8 +153,6 @@ const sidebars = {
       items: [
         'wallet/bundler/erc-4337-intro',
         'wallet/bundler/installation',
-        'wallet/bundler/rpc-methods',
-        'wallet/bundler/rpc-endpoints',
       ],
     },
   ]
