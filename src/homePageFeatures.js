@@ -13,7 +13,7 @@ export default [
           to: './wallet/abstractionkit/introduction',
         },
         {
-          title: 'Paymaster API',
+          title: 'Paymaster',
           description: 'Connect to an extensive network of third-party gas sponsors, with the most customizable gas policies.',
           to: './wallet/paymaster/rpc-methods',
         },
