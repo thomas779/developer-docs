@@ -144,7 +144,7 @@ const config = {
         apiKey: 'f33da551293ed37d9539e857a94d18eb',
         indexName: 'candide',
         insights: true,
-        contextualSearch: true,
+        contextualSearch: false,
         trailingSlash: true,
         // // Optional: Specify domains where the navigation should occur through window.location instead on history.push. Useful when our Algolia config crawls multiple documentation sites and we want to navigate with window.location.href to them.
         // externalUrlRegex: 'external\\.com|domain\\.com',
@@ -194,8 +194,8 @@ const config = {
                 "href": "https://twitter.com/candidelabs"
               },
               {
-                "label": "hello@candidewallet.com",
-                "href": "mailto:hello@candidewallet.com"
+                "label": "team@candidelabs.com",
+                "href": "mailto:team@candidelabs.com"
               },
             ]
           },
