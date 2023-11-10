@@ -12,7 +12,7 @@ import TabItem from "@theme/TabItem";
 
 Learn how to offer the ability for users to pay gas in ERC-20s using a Paymaster.
 
-If you are coming from the [previous guide](./getting-started), you can skip directly to [step 3](./pay-gas-in-erc20#step-3-generate-the-calldata).
+If you are coming from the [previous guide](../getting-started), you can skip directly to [step 3](./#step-3-generate-the-calldata).
 
 <img src="/img/network-fees-sponsorship.png" style={{ width: "300px" }} />
 
@@ -21,7 +21,7 @@ If you are coming from the [previous guide](./getting-started), you can skip dir
 ### Prerequisites
 
 - Node and a package manager (yarn or npm)
-- An API key to access Candide's Paymaster. [Get a API key](https://t.me/heymarcopolo)
+- An API key to access Candide's Paymaster. [Visit dashboard](https://dashboard.candide.dev)
 - Some Candide Test Tokens (CTT). [Request CTT](https://t.me/heymarcopolo)
 
 :::info
@@ -51,7 +51,7 @@ npm install typescript ts-node dotenv abstractionkit
 Create a .env file in your project directory and add the following environment variables with your own values. We will be using Sepolia Testnet for this example
 
 :::info
-We host free [bundlers](../bundler/rpc-endpoints) endpoints on testnets, you do not need to create an account. [Get in touch](https://cal.com/candidelabs/30mins) if you would like to go live on mainnet
+We host free [bundlers](../../bundler/rpc-endpoints) endpoints on testnets, you do not need to create an account. [Get in touch](https://cal.com/candidelabs/30mins) if you would like to go live on mainnet
 :::
 
 ```bash title=".env"
@@ -138,7 +138,7 @@ Candide Verifying Paymaster supports major ERC-20s stablecoins on mainnets. If y
 
 This user operation will make a transfer of some 1 decimal of CTT to a random address.
 
-We will be constructing the callData using [createCallData](../abstractionkit/candide-account/#createcalldata), which returns the instructions to send our transaction on-chain.
+We will be constructing the callData using [createCallData](../../abstractionkit/candide-account/#createcalldata), which returns the instructions to send our transaction on-chain.
 
 1. Create a new file with erc-20 token abi, and add the new imports
 

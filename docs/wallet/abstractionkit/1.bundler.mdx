@@ -13,7 +13,7 @@ A `Bundler` is a class to an ERC-4337 Bundler JSON-RPC API methods such as estim
 
 The `Bundler` class sets up a Bundler Instance with:
 
-1. [Bundler RPC URL](../bundler/rpc-endpoints)
+1. [Bundler RPC URL](../../bundler/rpc-endpoints)
 2. The entrypoint address
 
 ## Usage
@@ -90,7 +90,7 @@ const bundler: Bundler = new Bundler(bundlerRPC, entrypointAddress);
 
 #### JSON-RPC Method
 
-[eth_chainId](../bundler/rpc-methods#get-chain-id)
+[eth_chainId](../../bundler/rpc-methods#get-chain-id)
 
 ### supportedEntryPoints
 
@@ -135,14 +135,14 @@ const bundler: Bundler = new Bundler(bundlerRPC, entrypointAddress);
 
 #### JSON-RPC Method
 
-[eth_supportedEntryPoints](../bundler/rpc-methods#get-supported-entrypoints)
+[eth_supportedEntryPoints](../../bundler/rpc-methods#get-supported-entrypoints)
 
 ### estimateUserOperationGas
 
 Generates and returns an estimate of how much gas is necessary to allow the user operation to complete, given a UserOperations.
 
 #### Usage
-See a full example in [getting-started guide](../guides/getting-started)
+See a full example in [getting-started guide](../../guides/getting-started)
 
 <Tabs>
 <TabItem value="example.ts" label="example.ts">
@@ -200,14 +200,14 @@ const bundler: Bundler = new Bundler(bundlerRPC, entrypointAddress);
 
 #### JSON-RPC Method
 
-[eth_estimateUserOperationGas](../bundler/rpc-methods#estimate-user-operation-gas)
+[eth_estimateUserOperationGas](../../bundler/rpc-methods#estimate-user-operation-gas)
 
 ### sendUserOperation
 Asks the bundler to sign and submit a User Operation
 
 #### Usage
 
-See a full example in [getting-started guide](../guides/getting-started)
+See a full example in [getting-started guide](../../guides/getting-started)
 
 <Tabs>
 <TabItem value="example.ts" label="example.ts">
@@ -262,7 +262,7 @@ const bundler: Bundler = new Bundler(bundlerRPC, entrypointAddress);
 
 #### JSON-RPC Method
 
-[eth_sendUserOperation](../bundler/rpc-methods#send-user-operation)
+[eth_sendUserOperation](../../bundler/rpc-methods#send-user-operation)
 
 ### getUserOperationByHash
 
@@ -323,7 +323,7 @@ const bundler: Bundler = new Bundler(bundlerRPC, entrypointAddress);
 
 #### JSON-RPC Method
 
-[eth_getUserOperationByHash](../bundler/rpc-methods#get-user-operation-by-hash)
+[eth_getUserOperationByHash](../../bundler/rpc-methods#get-user-operation-by-hash)
 
 ### getUserOperationReceipt
 
@@ -390,4 +390,4 @@ const bundler: Bundler = new Bundler(bundlerRPC, entrypointAddress);
 
 #### JSON-RPC Method
 
-[eth_getUserOperationReceipt](../bundler/rpc-methods#get-user-operation-receipt)
+[eth_getUserOperationReceipt](../../bundler/rpc-methods#get-user-operation-receipt)

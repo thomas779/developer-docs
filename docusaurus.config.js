@@ -13,6 +13,7 @@ const config = {
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
+  trailingSlash: true,
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
@@ -72,7 +73,7 @@ const config = {
         showReadingTime: true,
         postsPerPage: 3,
         blogTitle: 'Engineering Blog',
-        blogDescription: 'CANDIDE Engineering Blog',
+        blogDescription: 'Candide Engineering Blog',
         /**
          * Path to data on filesystem relative to site dir.
          */

@@ -71,6 +71,7 @@ const sidebars = {
       collapsible: false,
       items: [
         'wallet/paymaster/rpc-methods',
+        'wallet/paymaster/tokens-supported',
       ],
     },
     {

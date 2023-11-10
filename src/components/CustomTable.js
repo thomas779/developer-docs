@@ -112,3 +112,31 @@ export function SdkParamsTable({ items }) {
     />
   );
 }
+
+export function PaymasterSupportedToken({ items }) {
+  return (
+    <Table
+      items={items}
+      leftHeading="Token"
+      rightHeading="Address"
+      renderLeftItem={(item) => (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-start center",
+          }}
+        >
+          <img
+            src={item.logo}
+            style={{
+              width: "25px",
+              marginRight: "10px",
+            }}
+          />
+          <span>{item.token}</span>
+        </div>
+      )}
+      renderRightItem={(item) => <a>{item.address}</a>}
+    />
+  );
+}

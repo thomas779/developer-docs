@@ -43,7 +43,7 @@ npm install typescript ts-node dotenv abstractionkit
 Create a .env file in your project directory and add the following environment variables with your own values. We will be using Sepolia Testnet for this example
 
 :::info
-We host free [bundlers](../bundler/rpc-endpoints) endpoints on testnets, you do not need to create an account. [Get in touch](https://cal.com/candidelabs/30mins) if you would like to go live on mainnet
+We host free [bundlers](../../bundler/rpc-endpoints) endpoints on testnets, you do not need to create an account. [Get in touch](https://cal.com/candidelabs/30mins) if you would like to go live on mainnet
 :::
 
 ```bash title=".env"
@@ -130,7 +130,7 @@ In another example, we will show you how to sponsor transactions with a paymaste
 
 ### Step 3: Generate the callData
 
-We will be constructing the callData using [createSendEthCallData](../abstractionkit/candide-account/#createcalldata), which returns the instructions to send our transaction on-chain. This user operation will make a transfer of 5 wei to a random address
+We will be constructing the callData using [createSendEthCallData](../../abstractionkit/candide-account/#createcalldata), which returns the instructions to send our transaction on-chain. This user operation will make a transfer of 5 wei to a random address
 
 ```ts title="index.ts"
 //send 5 wei to 0x1a02592A3484c2077d2E5D24482497F85e1980C6

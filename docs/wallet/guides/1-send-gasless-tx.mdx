@@ -12,19 +12,22 @@ import TabItem from "@theme/TabItem";
 
 Learn how to send gasless transactions using a paymaster. 
 
-If you are coming from the [previous guide](./getting-started), you can skip directly to [step 5](./send-gasless-tx#step-5-get-paymaster-data).
+If you are coming from the [previous guide](../getting-started), you can skip directly to [step 5](./#step-5-get-paymaster-data).
 
 <img src="/img/gasless-transaction-screen.png" style={{ width: "300px" }} />
 
 ## Quickstart
-Learn how to send gasless transactions using a paymaster.
 ### Prerequisites
 
 - Node and a package manager (yarn or npm)
-- An API key to access Candide's Paymaster. [Get a API key](https://t.me/heymarcopolo)
+- An API key to Candide's Paymaster. [Visit Dashboard](https://dashboard.candide.dev)
+- Special access to a global policy. [Send us telegram message](https://t.me/heymarcopolo)
+- If you need, the full example of this tutorial on [Github](https://github.com/candidelabs/abstractionkit/tree/main/examples/CandideAccountExamples/CreateAccountAndSendGaslessTransaction)
 
 :::info
-You can find the full example of this tutorial on [Github](https://github.com/candidelabs/abstractionkit/tree/main/examples/CandideAccountExamples/CreateAccountAndSendGaslessTransaction)
+Gas is currently sponsored by Candide. In the next major release, wallets will get access to policies established by dapps on mainnet. 
+
+Anyone will be able to setup a gas policies for users of wallets with Candide's Paymaster.
 :::
 
 ### Step 1: Get setup
@@ -50,7 +53,7 @@ npm install typescript ts-node dotenv abstractionkit
 Create a .env file in your project directory and add the following environment variables with your own values. We will be using Sepolia Testnet for this example
 
 :::info
-We host free [bundlers](../bundler/rpc-endpoints) endpoints on testnets, you do not need to create an account. [Get in touch](https://cal.com/candidelabs/30mins) if you would like to go live on mainnet
+We host free [bundlers](../../bundler/rpc-endpoints) endpoints on testnets, you do not need to create an account. [Get in touch](https://cal.com/candidelabs/30mins) if you would like to go live on mainnet
 :::
 
 ```bash title=".env"
@@ -128,7 +131,7 @@ Account address(sender): 0x32afdcfa1e3bfe70d03ecb55b5c8045c26515c9d
 
 ### Step 3: Generate the callData
 
-We will be constructing the callData using [createSendEthCallData](../abstractionkit/candide-account/#createcalldata), which returns the instructions to send our transaction on-chain. This user operation will make a transfer of 5 wei to a random address
+We will be constructing the callData using [createSendEthCallData](../../abstractionkit/candide-account/#createcalldata), which returns the instructions to send our transaction on-chain. This user operation will make a transfer of 5 wei to a random address
 
 ```ts title="index.ts"
 //send 5 wei to 0x1a02592A3484c2077d2E5D24482497F85e1980C6
@@ -267,7 +270,7 @@ PAYMASTER_RPC=your RPC endpoints goes here
 </Tabs>
 
 
-2. Check for sponsorship eligibility to see if gas policy allows to sponsor this user operation. If `paymasterAndData` is returned, then it is a success. The sdk uses the method [`pm_sponsorUserOperation`](../paymaster/rpc-methods#pm_sponsoruseroperation).
+2. Check for sponsorship eligibility to see if gas policy allows to sponsor this user operation. If `paymasterAndData` is returned, then it is a success. The sdk uses the method [`pm_sponsorUserOperation`](../../paymaster/rpc-methods#pm_sponsoruseroperation).
 
 ```ts
 const paymasterResult = await paymaster.getPaymasterCallDataForGaslessTx(

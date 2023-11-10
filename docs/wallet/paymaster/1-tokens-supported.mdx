@@ -1,0 +1,43 @@
+---
+title: Tokens Supported
+description: List of ERC-20 Token accepted for Candide's Paymaster. Learn about sponsoring gas, and how to enable gas payments in stablecoins
+image: "/img/network-fees-sponsorship.png"
+keywords: [paymaster, gas sponsorship, pay gas in stablecoin]
+---
+
+import { PaymasterSupportedToken } from "/src/components/CustomTable";
+const polygonList = [{
+    token: "USD Coin (PoS) (USDC.e)",
+    logo: "/img/tokens/usdc-logo.svg",
+    address: "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+}]
+const celoList =[{
+    token: "cUSD",
+    logo: "/img/tokens/cUSD.png",
+    address: "0x765de816845861e75a25fca122bb6898b8b1282a",
+},
+{
+    token: "cEUR",
+    logo: "/img/tokens/cEUR.png",
+    address: "0xd8763cba276a3738e6de85b4b3bf5fded6d6ca73",
+}];
+const optimismList= [{
+    token: "USDC Bridged",
+    logo: "/img/tokens/usdc-logo.svg",
+    address: "0x7F5c764cBc14f9669B88837ca1490cCa17c31607",
+}];
+
+List of ERC-20 Tokens accepted by Candide's Paymaster
+
+:::info
+If you would like to see a token or network supported, [reach out on telegram] and we will add it.
+:::
+
+## Celo Mainnet
+<PaymasterSupportedToken items={celoList} />
+
+## Optimism Mainnet
+<PaymasterSupportedToken items={optimismList} />
+
+## Polygon POS Mainnet
+<PaymasterSupportedToken items={polygonList} />
