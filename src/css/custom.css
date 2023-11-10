@@ -9,31 +9,32 @@
 @tailwind utilities;
 
 :root {
-  --ifm-color-primary: #3578e5; /*#25c2a0;*/
-  --ifm-color-primary-dark: #1d68e1; /*rgb(33, 175, 144);*/
-  --ifm-color-primary-darker: #1b62d4; /*rgb(31, 165, 136);*/
-  --ifm-color-primary-darkest: #1751af; /*rgb(26, 136, 112);*/
-  --ifm-color-primary-light: #4e89e8; /*rgb(70, 203, 174);*/
-  --ifm-color-primary-lighter: #5a91ea; /*rgb(102, 212, 189);*/
-  --ifm-color-primary-lightest: #80aaef; /*rgb(146, 224, 208);*/
+  --ifm-color-primary: #E70073; /*#25c2a0;*/
+  --ifm-color-primary-dark: #b10058; /*rgb(33, 175, 144);*/
+  --ifm-color-primary-darker: #7e003f; /*rgb(31, 165, 136);*/
+  --ifm-color-primary-darkest: #430021; /*rgb(26, 136, 112);*/
+  --ifm-color-primary-light: #430021; /*rgb(70, 203, 174);*/
+  --ifm-color-primary-lighter: #b10058; /*rgb(102, 212, 189);*/
+  --ifm-color-primary-lightest: #E70073; /*rgb(146, 224, 208);*/
   --docusaurus-highlighted-code-line-bg: rgba(72, 77, 91, 0.12);
+  --top-category-label-color: #6f6f6f;
   --ifm-code-font-size: 95%; /*95%;*/
 }
 
 html[data-theme='dark'] .footer {
-  background: linear-gradient(0deg, rgba(0, 12, 24, 1) 99.6%, rgba(0,97,255,1) 100%);
+  background: linear-gradient(0deg, rgba(0, 0, 0, 1) 99.6%, rgba(231, 0, 115,1) 100%);
 }
 
 html[data-theme='dark'] {
-  background: linear-gradient(to right, #10131a 80%, rgba(0, 98, 255, 0.2)) fixed;
+  background: linear-gradient(to right, #000000 50%, rgba(231, 0, 115, 0.1)) fixed;
   --docusaurus-highlighted-code-line-bg: rgba(72, 77, 91, 1);
-  --ifm-background-surface-color: #0f0f1c;
-  --ifm-background-color: #10131a;
+  --ifm-background-surface-color: #000000;
+  --ifm-background-color: #000000;
 }
 
 /* Adjust footer link colors */
 #__docusaurus > footer > div > div.text--center > div > a {
-  color: #3578e5; /* Match primary color */
+  color: #E70073; /* Match primary color */
 }
 
 #__docusaurus > footer > div > div.text--center > div > a:hover {

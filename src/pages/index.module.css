@@ -3,6 +3,10 @@
  * and scoped locally.
  */
 
+ p a {
+  text-decoration: underline;
+}
+
 .heroBanner {
   padding: 4rem 0;
   text-align: center;
@@ -53,7 +57,7 @@
 }
 
 .card:hover {
-  border-color: #9BBCFD;
+  border-color: var(--ifm-color-primary-lightest);
   background-color: #F8ECE1;
 }
 
@@ -64,7 +68,7 @@
 .card:before {
   content: "\27F6";
   font-size: 1.45rem;
-  color: white;
+  color: var(--ifm-color-primary-lighter);
   opacity: 0;
   height: 0;
   width: 0;

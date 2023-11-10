@@ -112,7 +112,7 @@ const config = {
       },
       ],
       navbar: {
-        title: 'Candide',
+        title: 'Atelier',
         logo: {
           alt: 'Candide logo',
           src: 'img/logo-dark.png',
