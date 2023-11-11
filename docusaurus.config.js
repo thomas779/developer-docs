@@ -90,7 +90,7 @@ const config = {
         disableSwitch: true,
         respectPrefersColorScheme: false,
       },
-      image: 'img/logo/candide-logo-dark-wordmark.svg',
+      image: 'img/logo/posters/atelier-meta.png',
       announcementBar: {
         id: 'private_beta_paymaster',
         content:

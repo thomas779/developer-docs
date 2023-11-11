@@ -1,7 +1,7 @@
 ---
 title: Install
 description: Instructions for running Voltaire ERC-4337 Python Bundler
-image: "/img/erc4337-bundler.png"
+image: /img/posters/abstractionkit-meta.png
 ---
 
 # Install & Self-host Voltaire 

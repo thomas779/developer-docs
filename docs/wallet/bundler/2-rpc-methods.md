@@ -1,7 +1,7 @@
 ---
 title: RPC methods
 description: A reference to the supported RPC methods by Voltiare ERC-4337 Bundler
-image: "/img/erc4337-bundler.png"
+image: /img/posters/voltaire-meta.png
 ---
 # Bundler RPC methods
 

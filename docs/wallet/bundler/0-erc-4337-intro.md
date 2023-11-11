@@ -1,7 +1,7 @@
 ---
 title: Intro
 description: A new modular, developer-friendly and lighting-fast Python Bundler for Ethereum EIP-4337 Account Abstraction
-image: "/img/erc4337-bundler.png"
+image: /img/posters/voltaire-meta.png
 ---
 
 # Introduction To Voltaire
