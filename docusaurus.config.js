@@ -90,7 +90,7 @@ const config = {
         disableSwitch: true,
         respectPrefersColorScheme: false,
       },
-      image: 'img/logo/posters/atelier-meta.png',
+      image: 'img/posters/atelier-meta.png',
       announcementBar: {
         id: 'private_beta_paymaster',
         content:
@@ -103,7 +103,7 @@ const config = {
         name:
           'twitter:card',
         content:
-          'summary_large_image'
+          'summary_large_image',
       },
       {
         name: 'keywords', 
