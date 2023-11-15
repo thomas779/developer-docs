@@ -15,9 +15,6 @@ Looking for a quick bundler instance? Use one of our [public hosted endpoints](.
 Voltaire is a fully open-source project designed to operate within the peer-to-peer mempool of UserOperations, facilitating the inclusion of transactions on-chain more quickly and efficiently.
 
 The code is available for free on [Github](https://github.com/candidelabs/voltaire) under a permissive license for anyone to use without any strings attached. We encourage the community to fork it, contribute with docs, issues, pull requests, questions, or even try to break it.
-<p align="center">
-  <img src="/img/erc4337-bundler.png" />
-</p>
 
 ## ERC-4337 Account Abstraction
 
