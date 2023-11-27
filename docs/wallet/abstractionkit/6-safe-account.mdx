@@ -22,10 +22,12 @@ import {
   createEthCallDataReturn,
 } from "./accountParamAndReturnData";
 
-The `SafeAccount` uses the original Safe Singlton and adds ERC-4337 functionality using a sepcial FallBack Handler Module.
+The `SafeAccount` uses the original Safe Singleton and adds ERC-4337 functionality using a sepcial fallback handler module.
 
 :::caution
-The details of the implementation is currently being tested and is in active developement. If you would like to try it out, pull AbstractionKit locally from github and checkout on the [Safe branch](https://github.com/candidelabs/abstractionkit/tree/safe).
+The implementation details are currently undergoing testing and active development. To try it out, pull AbstractionKit locally from GitHub and switch to the [Safe branch](https://github.com/candidelabs/abstractionkit/tree/safe).
+
+Alternatively, you can use the Candide Account until the fallback version is officially published. The only distinction between Candide Account and Safe Account is the import name of the account. All other functions remain the same, as both utilize Safe contracts.
 :::
 
 ### Import
