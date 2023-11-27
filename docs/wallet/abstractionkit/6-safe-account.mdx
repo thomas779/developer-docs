@@ -1,8 +1,8 @@
 ---
-title: Candide Account
-description: Learn how to offer, deploy and transact with ERC-4337 Smart Accounts
+title: Safe Account
+description: Learn how to offer, deploy and transact with Safe Accounts using ERC-4337
 image: /img/posters/abstractionkit-meta.png
-keywords: [smart-accounts, "4337", sdk, account-abstraction]
+keywords: [safe-account, "4337", sdk, account-abstraction, gnosis-safe]
 ---
 
 import Tabs from "@theme/Tabs";
@@ -22,22 +22,24 @@ import {
   createEthCallDataReturn,
 } from "./accountParamAndReturnData";
 
-The `CandideAccount` implements [CandideWallet.sol](https://github.com/candidelabs/CandideWalletContracts/blob/main/contracts/candideWallet/CandideWallet.sol), an EIP-4337 smart contract account that inherits Safe Contracts and adds ERC-4337 functionality. It uses the least modifications to the underlying contracts to be 4337 compliant.
+The `SafeAccount` uses the original Safe Singlton and adds ERC-4337 functionality using a sepcial FallBack Handler Module.
 
-Learn more in details in [Unbundling Candide core wallet contract](/blog/unbundling-candide-core-wallet-contract).
+:::caution
+The details of the implementation is currently being tested and is in active developement. If you would like to try it out, pull AbstractionKit locally from github and checkout on the [Safe branch](https://github.com/candidelabs/abstractionkit/tree/safe).
+:::
 
 ### Import
 
 ```ts
-import { CandideAccount } from "abstractionkit";
+import { SafeAccount } from "abstractionkit";
 ```
 
 ### How to use
 
-Initialize a Candide Account instance
+Initialize a Safe Account instance
 
 ```ts
-const smartAccount = new CandideAccount();
+const smartAccount = new SafeAccount();
 ```
 
 Then you can consume accout methods:
@@ -65,10 +67,10 @@ In this example, we initiate a single owner account.
 <TabItem value="example.ts" label="example.ts">
 
 ```ts title="example.ts"
-import { CandideAccount } from "abstractionkit";
+import { SafeAccount } from "abstractionkit";
 import { Wallet } from "ethers";
 
-const smartAccount = new CandideAccount();
+const smartAccount = new SafeAccount();
 const eoaSigner = new Wallet(privateKey);
 
 const [newAccountAddress, initCode] = smartAccount.createNewAccount([
@@ -118,14 +120,14 @@ In this example, we make a transfer of 1 wei to a random address.
 
 ```ts title="example.ts"
 import {
-  CandideAccount,
+  SafeAccount,
   // highlight-start
   Operation,
   // highlight-end
 } from "abstractionkit";
 import { Wallet } from "ethers";
 
-const smartAccount = new CandideAccount();
+const smartAccount = new SafeAccount();
 
 // highlight-start
 const callData = smartAccount.createCallDataSingleTransaction({
@@ -196,7 +198,7 @@ In this example, we make a transfer to 2 different random addresses, 1 wei each.
 
 ```ts title="example.ts"
 import {
-  CandideAccount,
+  SafeAccount,
   // highlight-start
   MetaTransaction,
   Operation,
@@ -204,7 +206,7 @@ import {
 } from "abstractionkit";
 import { Wallet } from "ethers";
 
-const smartAccount = new CandideAccount();
+const smartAccount = new SafeAccount();
 
 // highlight-start
 const tx1: MetaTransaction = {
@@ -283,7 +285,7 @@ In this example, we make a transfer of 1 wei to a random address, and the accoun
 
 ```ts title="example.ts"
 import {
-  CandideAccount,
+  SafeAccount,
   // highlight-start
   MetaTransaction,
   Operation,
@@ -291,7 +293,7 @@ import {
 } from "abstractionkit";
 import { Wallet } from "ethers";
 
-const smartAccount = new CandideAccount();
+const smartAccount = new SafeAccount();
 
 const tx: MetaTransaction = {
   to: "0x1a02592A3484c2077d2E5D24482497F85e1980C6",
@@ -392,7 +394,7 @@ In this example, we make a transfer to 2 different random addresses for 1 wei ea
 
 ```ts title="example.ts"
 import {
-  CandideAccount,
+  SafeAccount,
   // highlight-start
   MetaTransaction,
   Operation,
@@ -400,7 +402,7 @@ import {
 } from "abstractionkit";
 import { Wallet } from "ethers";
 
-const smartAccount = new CandideAccount();
+const smartAccount = new SafeAccount();
 
 const tx1: MetaTransaction = {
   to: "0x1a02592A3484c2077d2E5D24482497F85e1980C6",
@@ -504,9 +506,9 @@ Returns the callData to make an ETH transfer (or any native token ex: MATIC)
 <TabItem value="example.ts" label="example.ts">
 
 ```ts title="example.ts"
-import { CandideAccount } from "abstractionkit";
+import { SafeAccount } from "abstractionkit";
 
-const smartAccount = new CandideAccount();
+const smartAccount = new SafeAccount();
 // highlight-start
 const receivingAddress = "0x1a02592A3484c2077d2E5D24482497F85e1980C6";
 const accountInWei = 5;
@@ -557,9 +559,9 @@ This example makes a transfer of 5 wei and pays gas using an ERC-20 token (USDC)
 <TabItem value="example.ts" label="example.ts">
 
 ```ts title="example.ts"
-import { CandideAccount } from "abstractionkit";
+import { SafeAccount } from "abstractionkit";
 
-const smartAccount = new CandideAccount();
+const smartAccount = new SafeAccount();
 
 // highlight-start
 let callData = smartAccount.createCallData(

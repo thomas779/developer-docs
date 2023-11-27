@@ -57,6 +57,7 @@ const sidebars = {
           collapsed: true,
           items: [
             'wallet/abstractionkit/candide-account',
+            'wallet/abstractionkit/safe-account',
             'wallet/abstractionkit/simple-account',
           ],
         },
