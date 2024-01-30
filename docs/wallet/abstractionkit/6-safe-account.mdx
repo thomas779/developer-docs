@@ -26,13 +26,13 @@ import {
 
 The `SafeAccount` uses the original Safe Singleton and adds ERC-4337 functionality using a fallback handler module. The contracts have been developed by the Safe Team, has been audited by Ackee Blockchain. To learn more about the contracts and audits, visit [Safe's github](https://github.com/safe-global/safe-modules/tree/main/modules/4337).
 
-### Import
+## Import
 
 ```ts
 import { SafeAccountV0_2_0 as SafeAccount } from "abstractionkit";
 ```
 
-### How to use
+## How to use
 
 Initialize a new Safe Account and calculate its address:
 
@@ -43,7 +43,7 @@ const smartAccount = SafeAccount.initializeNewAccount([ownerPublicAddress]);
 const accountAddress = smartAccount.accountAddress;
 ```
 
-# Methods
+## Methods
 
 The **Essentials** methods provides all necessary functionalities with support for overrides, offering a streamlined approach. 
 
@@ -199,7 +199,6 @@ let userOperation = await smartAccount.createUserOperation(
   [transaction, transaction], // batch transactions to mint 2 NFTs
   jsonRpcNodeProvider,
   bundlerUrl,
-  { initCode: initCode } // only needed for the first userOp to deploy the account
 )
 // highlight-end
 
