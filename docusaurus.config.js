@@ -175,12 +175,16 @@ const config = {
             "title": "Github",
             "items": [
               {
-                "label": "Smart Contract Accounts",
-                "href": "https://github.com/candidelabs/CandideWalletContracts"
+                "label": "AbstractionKit",
+                "href": "https://github.com/candidelabs/abstractionkit"
               },
               {
                 "label": "Voltaire Bundler",
                 "href": "https://github.com/candidelabs/voltaire"
+              },
+              {
+                "label": "Account Recovery Contract",
+                "href": "https://github.com/candidelabs/CandideWalletContracts/blob/main/contracts/modules/social_recovery/SocialRecoveryModule.sol"
               },
               {
                 "label": "Mobile App",
