@@ -1,40 +1,32 @@
 ---
-title: Pay Gas in ERC-20
-description: Learn how to offer the ability for users to pay gas in ERC-20s using paymasters
-keywords: [paymaster, pay-gas-in-erc20]
-image: /img/network-fees-sponsorship.png
+title: Multisig Wallet
+description: Learn how to create a multisig wallet and sign with all parties a userOperation
+keywords: [create-smart-wallet, multisig, userOperation]
 ---
 
-import Tabs from "@theme/Tabs";
-import TabItem from "@theme/TabItem";
+# Multisig Wallet
 
-# Pay Gas in ERC-20
+Learn how to create a multisig wallet and sign with all parties a userOperation.
 
-Learn how to offer the ability for users to pay gas in ERC-20s using a Paymaster.
+If you are coming from the [getting-started](../getting-started) guide, you only a few changes to the Safe Ownership. Follow the highlighted code in this tutorial to see the diff. 
 
-If you are coming from the [previous guide](../send-gasless-tx), you only need adjust the paymaster step. Skip directly to [step 5](./#step-5-get-paymaster-data).
-
-<img src="/img/network-fees-sponsorship.png" style={{ width: "300px" }} />
 
 ## Quickstart
 
 ### Prerequisites
 
 - Node and a package manager (yarn or npm)
-- An API key to access Candide's Paymaster. [Visit dashboard](https://dashboard.candide.dev)
-- Some Candide Test Tokens (CTT). Request CTT on [discord](https://discord.gg/22Xps7M5CJ) or [telegram](https://t.me/heymarcopolo)
+- Some [Sepolia](https://ethereum.org/en/developers/docs/networks/#sepolia) ETH
+- If you need, the full example of this tutorial on [Github](https://github.com/candidelabs/abstractionkit/tree/main/examples/SafeAccountExamples/CreateAccountAndSendTransactionMultiSigners)
 
-:::info
-You can find the full example of this tutorial on [Github](https://github.com/candidelabs/abstractionkit/tree/main/examples/CandideAccountExamples/CreateAccountAndSendTransactionUsingPaymaster)
-:::
 
 ### Step 1: Get setup
 
 1. Create a new directory for your project:
 
 ```bash
-mkdir smart-wallet-pay-gas-erc20
-cd smart-wallet-pay-gas-erc20
+mkdir safe-smart-multisig
+cd safe-smart-multisig
 ```
 
 2. Install required dependencies
@@ -51,14 +43,19 @@ Create a .env file in your project directory and add the following environment v
 We host free [bundlers](../../bundler/rpc-endpoints) endpoints, you do not need to create an account.
 :::
 
-```bash title=".env"
+```title=".env"
 CHAIN_ID=11155111
 BUNDLER_URL=https://sepolia.voltaire.candidewallet.com/rpc
 JSON_RPC_NODE_PROVIDER=https://rpc2.sepolia.org
 
+// highlight-start
 #account owner pub & private key
-PRIVATE_KEY=YOUR_PRIVATE_KEY
-PUBLIC_ADDRESS=YOUR_PUBLIC_KEY
+PUBLIC_ADDRESS1=
+PRIVATE_KEY1=
+
+PUBLIC_ADDRESS2=
+PRIVATE_KEY2=
+// highlight-end
 ```
 
 3. Create a empty file and a function to run our script
@@ -75,7 +72,7 @@ main();
 
 Let's open up `index.ts`
 
-To generate an account address, we will be using the [Safe Module/Fallback](https://github.com/safe-global/safe-modules/blob/main/modules/4337/contracts/Safe4337Module.sol) as our base smart account. An extension to the Safe contract that implements the ERC4337 interface. We will control the Account with a single EOA owner.
+To generate an account address, we will be using the [Safe Module/Fallback](https://github.com/safe-global/safe-modules/blob/main/modules/4337/contracts/Safe4337Module.sol) as our base smart account. An extension to the Safe contract that implements the ERC4337 interface. We will control the Account with a two EOA owners.
 
 Since this is our first transaction, we will need to deploy the account in the same transaction 
 
@@ -86,11 +83,19 @@ import { SafeAccountV0_2_0 as SafeAccount } from "abstractionkit";
 async function main(): Promise<void> {
   //get values from .env
   dotenv.config();
+  
+  //highlight-start
+  const ownerPublicAddress1 = process.env.PUBLIC_ADDRESS1 as string;
+  const ownerPublicAddress2 = process.env.PUBLIC_ADDRESS2 as string;
+  //highlight-end
 
-  const ownerPublicAddress = process.env.PUBLIC_ADDRESS as string
   const smartAccount = SafeAccount.initializeNewAccount(
-      [ownerPublicAddress],
+    //highlight-start
+    [ownerPublicAddress1, ownerPublicAddress2],
+    { threshold: 2 }
+    //highlight-end
   )
+  
   console.log("Account address(sender) : " + smartAccount.accountAddress);
 }
 
@@ -105,18 +110,20 @@ If everything worked, you will get the address of the account in the console.
 Account address(sender): 0x32afdcfa1e3bfe70d03ecb55b5c8045c26515c9d
 ```
 
+:::tip
+Now that you have generated the smart account, go ahead and fund it with some Sepolia ETH here.
+:::
+
 ### Step 3: Generate the callData
 
 We will be creating two transactions to mint 2 NFTs. You can use your fav library (like ethers or viem) to construct the calldata.
 
 ```ts title="index.ts"
 import {
-  SafeAccountV0_2_0 as SafeAccount
-  // highlight-start
+  ...
   MetaTransaction,
   getFunctionSelector,
   createCallData,
-  // highlight-end
 } from "abstractionkit";
 
 const nftContractAddress = "0x9a7af758aE5d7B6aAE84fe4C5Ba67c041dFE5336";
@@ -140,10 +147,16 @@ const transaction2 :MetaTransaction ={
     data: mintTransactionCallData,
 }
 ```
+
 ### Step 4: Create UserOperation
-Now the fun part. Call `createUserOperation`, which will determine the nonce, fetch the gas prices, estimate gas limits and return a userop to be signed.
+Now the fun part. Call `createUserOperation`, which will determine the nonce, fetch the gas prices, estimate gas limits and return a userop to be signed. Use `calculateUserOperationMaxGasCost` to calculate its cost.
 
 ```ts title="index.ts"
+import {
+  ...
+  calculateUserOperationMaxGasCost
+} from "abstractionkit";
+
 const jsonRpcNodeProvider = process.env.JSON_RPC_NODE_PROVIDER as string
 const bundlerUrl = process.env.BUNDLER_URL as string
 
@@ -151,69 +164,23 @@ let userOperation = await smartAccount.createUserOperation(
   [transaction1, transaction2], // you can batch multiple transactions to be executed in one userop
   jsonRpcNodeProvider, // the node rpc is used to fetch the current nonce and fetch gas prices.
   bundlerUrl, // the bundler rpc is used to estimate the gas limits
+  // highlight-start
+  { numberOfSigners: 2 } // set the number of signers for accurate gas estimation
+  // highlight-end
 )
+
+const cost = calculateUserOperationMaxGasCost(userOperation)
+console.log("This useroperation may cost upto : " + cost + " wei")
+console.log("Please fund the sender account : " + userOperation.sender +" with more than " + cost + " wei")
 ```
 
 :::info
 You can override any of the returned values using the overrides parameter.
 :::
 
-### Step 5: Get Paymaster Data
+### Step 6: Sign and Submit
 
-1. Import `CandidePaymaster`, and initiate an instance with its URL. You can get a free API key on the [dashboard](https://dashboard.candide.dev).
-
-
-<Tabs>
-<TabItem value="index.ts" label="index.ts">
-
-```ts
-import {
-  ...
-  // highlight-start
-  CandidePaymaster,
-  // highlight-end
-} from "abstractionkit";
-
-const paymasterRPC = process.env.PAYMASTER_RPC as string;
-const tokenAddress = process.env.TOKEN_ADDRESS as string;
-
-const paymaster: CandidePaymaster = new CandidePaymaster(paymasterRPC)
-
-const userOperation = await paymaster.createTokenPaymasterUserOperation(
-    smartAccount,
-    userOperation,
-    tokenAddress,
-    bundlerUrl,
-)
-
-const cost = await paymaster.calculateUserOperationErc20TokenMaxGasCost(
-    userOperation,
-    tokenAddress
-)
-
-console.log("This useroperation may cost upto : " + cost + " wei in CTT token")
-console.log("Please fund the sender account : " + userOperation.sender +" with more than "+ cost + " wei CTT token")
-```
-
-</TabItem>
-
-<TabItem value=".env" label=".env">
-
-```env
-PAYMASTER_RPC=https://api.candide.dev/paymaster/$version/$network/$apikey
-TOKEN_ADDRESS=0xFa5854FBf9964330d761961F46565AB7326e5a3b # CTT address on sepolia
-```
-
-</TabItem>
-</Tabs>
-
-:::info
-Don't forget to fund the account with ERC-20s to pay for gas. We are using Candide Test Tokens (CTT). Request some on [telegram](https://t.me/heymarcopolo) or [discord](https://discord.gg/22Xps7M5CJ).
-:::
-
-### Step 5: Sign and Submit
-
-1. Call `signUserOperation`, which will create a signature for the private key provided of the owner of the Safe.
+1. Call `signUserOperation`, which will create a signature for the private keys provided of the owners of the Safe.
 
 ```ts title="index.ts"
 const chainId = process.env.CHAIN_ID as string;
@@ -221,7 +188,9 @@ const privateKey = process.env.PRIVATE_KEY as string;
 
 userOperation.signature = smartAccount.signUserOperation(
   userOperation,
-  [privateKey],
+  // highlight-start
+  [privateKey1, privateKey2],
+  // highlight-end
   chainId,
 )
 ```
@@ -229,20 +198,15 @@ userOperation.signature = smartAccount.signUserOperation(
 2. Use the Bundler RPC to send the userop to the bundler with `sendUserOperation`, and await the return `SendUseroperationResponse` object to confirm the on-chain inclusion of the user operation. 
 
 ```ts title="index.ts"
-// highlight-start
 const sendUserOperationResponse = await smartAccount.sendUserOperation(userOperation, bundlerUrl)
-// highlight-end
 
 console.log("UserOperation sent. Waiting to be included ......")
 ```
 
 
-
 3. Track the userOperation and wait its inclusion onchain 
 ```ts
-// highlight-start
 let userOperationReceiptResult = await sendUserOperationResponse.included()
-// highlight-end
 
 console.log("Useroperation receipt received.")
 console.log(userOperationReceiptResult)
@@ -253,9 +217,10 @@ if (userOperationReceiptResult.success) {
     console.log("Useroperation execution failed")
 }
 ```
+
 Now let's run this code again with `npx ts-node index.ts`
 
-You've now sent your first user operation with a token paymaster! If everything went well, you should see the bundler returning a user operation receipt
+You've now sent your first user operation with a multisig wallet! If everything went well, you should see the bundler returning a user operation receipt
 
 <details>
 <summary>Result</summary>
@@ -288,4 +253,7 @@ Useroperation receipt received.
 }
 Two Nfts were minted. The transaction hash is : 0xf43576a07f39660737a342c99a187eb70ac59d89bc0df92ff3c1bb8a8da370aa
 ```
+
 </details>
+
+You can lookup the user operation hash on a dedicated ERC-4337 explorer like [JiffyScan](https://jiffyscan.xyz/).

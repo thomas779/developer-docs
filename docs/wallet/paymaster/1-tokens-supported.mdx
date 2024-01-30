@@ -6,12 +6,12 @@ keywords: [paymaster, gas sponsorship, pay gas in stablecoin]
 ---
 
 import { PaymasterSupportedToken } from "/src/components/CustomTable";
-const polygonList = [{
+export const polygonList = [{
     token: "USD Coin (PoS) (USDC.e)",
     logo: "/img/tokens/usdc-logo.svg",
     address: "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
 }]
-const celoList =[{
+export const celoList =[{
     token: "cUSD",
     logo: "/img/tokens/cUSD.png",
     address: "0x765de816845861e75a25fca122bb6898b8b1282a",
@@ -21,10 +21,31 @@ const celoList =[{
     logo: "/img/tokens/cEUR.png",
     address: "0xd8763cba276a3738e6de85b4b3bf5fded6d6ca73",
 }];
-const optimismList= [{
+export const optimismList= [{
     token: "USDC Bridged",
     logo: "/img/tokens/usdc-logo.svg",
     address: "0x7F5c764cBc14f9669B88837ca1490cCa17c31607",
+}];
+export const sepoliaList= [{
+    token: "Candide Test Token",
+    logo: "/img/logo/candide_logo_icon.png",
+    address: "0xFa5854FBf9964330d761961F46565AB7326e5a3b",
+}];
+export const optimismSepoliaList= [{
+    token: "Candide Test Token",
+    logo: "/img/logo/candide_logo_icon.png",
+    address: "0xE0BD422189D77cD1AC77C520B363a7FA649FFdf1",
+}];
+export const arbitrumSepoliaList= [{
+    token: "Candide Test Token",
+    logo: "/img/logo/candide_logo_icon.png",
+    address: "0xE0BD422189D77cD1AC77C520B363a7FA649FFdf1",
+}];
+
+export const mumbaiList= [{
+    token: "Candide Test Token",
+    logo: "/img/logo/candide_logo_icon.png",
+    address: "0x7DdEFA2f027691116D0a7aa6418246622d70B12A",
 }];
 
 List of ERC-20 Tokens accepted by Candide's Paymaster
@@ -33,11 +54,29 @@ List of ERC-20 Tokens accepted by Candide's Paymaster
 If you would like to see a token or network supported, [reach out on telegram](https://t.me/heymarcopolo) and we will add it.
 :::
 
-## Celo Mainnet
+## Mainnets
+### Celo Mainnet
 <PaymasterSupportedToken items={celoList} />
 
-## Optimism Mainnet
+### Optimism Mainnet
 <PaymasterSupportedToken items={optimismList} />
 
-## Polygon POS Mainnet
+### Polygon POS Mainnet
 <PaymasterSupportedToken items={polygonList} />
+
+## Testnets
+
+### Arbitrum Sepolia
+<PaymasterSupportedToken items={arbitrumSepoliaList} />
+
+### Mumbai
+<PaymasterSupportedToken items={mumbaiList} />
+
+### Sepolia
+<PaymasterSupportedToken items={sepoliaList} />
+
+### Optimism Sepolia
+<PaymasterSupportedToken items={optimismSepoliaList} />
+
+
+

@@ -94,7 +94,7 @@ const config = {
       announcementBar: {
         id: 'private_beta_paymaster',
         content:
-          'AbstractionKit is in active developement. Join our chat to priotirise your feature requests <button><a target="_blank" rel="noopener noreferrer" href="https://discord.gg/wxxP4ZhtbB">Join Discord</a></button>',
+          'AbstractionKit now supports the Safe Account. Join our chat for dev support <button><a target="_blank" rel="noopener noreferrer" href="https://discord.gg/wxxP4ZhtbB">Join Discord</a></button>',
         backgroundColor: '#f0f6ff',
         textColor: '#000000',
         isCloseable: false,
@@ -127,6 +127,11 @@ const config = {
             to: '/dapps/getting-started',
             position: 'left',
             label: 'Dapps',
+          },
+          {
+            to: 'https://dashboard.candide.dev',
+            position: 'right',
+            label: 'Dashboard',
           },
           {
             to: '/account-abstraction/intro',

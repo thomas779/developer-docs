@@ -159,3 +159,62 @@ export const pm_sponsorUserOperationWithoutGasReturnParam = [
   },
 ];
 
+export const pm_supportedEntryPointReturnParam = [
+  {
+    key: "entrypoint",
+    type: "string",
+    description:
+      "EntryPoint Address that the paymaster is supporting",
+  },
+];
+
+export const jsonRpcErrorType = [
+  {
+    key: "code",
+    type: "number",
+    description: "JSON RPC error code",
+  },
+  {
+    key: "message",
+    type: "string",
+    description: "JSON RPC error message description",
+  },
+];
+
+export const bundlerJsonRpcErrorType = [
+  {
+    key: "code",
+    type: "number",
+    description: "Bundler RPC error code",
+  },
+  {
+    key: "message",
+    type: "string",
+    description: "Bundler RPC error message description",
+  },
+];
+
+export const sendUseroperationResponseType = [
+  {
+    key: "userOperationHash",
+    type: "string",
+    description:
+      "The hash over the userOp (except signature), entryPoint and chainId",
+  },
+  {
+    key: "bundler",
+    type: "Bundler",
+    description: "The Bundler class",
+  },
+  {
+    key: "entrypointAddress",
+    type: "string",
+    description: "The entrypoint address where the useroperation got executed",
+  },
+  {
+    key: "included()",
+    type: "Promise<UserOperationReceiptResult | BundlerJsonRpcError>",
+    description:
+      "Waits for the user operation to be included onchain and returns the user operation receipt on success, or the bundler error on failture",
+  },
+];

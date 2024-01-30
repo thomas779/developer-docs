@@ -52,14 +52,14 @@ export const metaTransactionType = [
   {
     key: "operation",
     type: "Operation: enum",
-    description: "0 for a Call, and 1 for a Delegate Call",
+    description: "Default to 0 for a Call. 1 for a Delegate Call. Optional",
   },
 ];
 
 export const createCallDataSingleTransactionReturn = [
   {
     key: "callData",
-    type: "BytesLike",
+    type: "string",
     description:
       "CallData to be includes in the user operation to send a single transaction",
   },
@@ -77,7 +77,7 @@ export const createCallDataSingleTransactionWithPaymasterReturn = [
 export const createCallDataBatchTransactionReturn = [
   {
     key: "callData",
-    type: "BytesLike",
+    type: "string",
     description:
       "Calldata to be included in the user operation to send a batch of transactions",
   },
@@ -204,5 +204,86 @@ export const createCallDataSimpleAccountBatchParam = [
     key: "Data",
     type: "BytesLike[]",
     description: "Data",
+  },
+];
+
+export const initCodeOverrides = [
+  {
+    key: "threshold",
+    type: "number",
+    description:
+      "The minimum number of owners needed to approve a transaction. Default to 1",
+  },
+  {
+    key: "c2nonce",
+    type: "bigint",
+    description: "To generate different sender addresses from the same owners. Default to 0",
+  },
+  {
+    key: "singletonAddress",
+    type: "string",
+    description: "Safe contract singleton address",
+  },
+  {
+    key: "safeAccountFactoryAddress",
+    type: "string",
+    description: "Safe Factory address",
+  },
+  {
+    key: "safe4337ModuleAddress",
+    type: "string",
+    description: "Safe 4337 module address",
+  },
+  {
+    key: "addModuleLibAddress",
+    type: "string",
+    description: "addModuleLib address",
+  },
+];
+
+export const createUserOperationOverrides = [
+  {
+    key: "nonce",
+    type: "string",
+    description: "Anti-replay parameter (see “Semi-abstracted Nonce Support” )",
+  },
+  {
+    key: "initCode",
+    type: "string",
+    description:
+      "The initCode of the account, only needed if the account is not yet on-chain and needs to be created",
+  },
+  {
+    key: "callData",
+    type: "string",
+    description:
+      "The data to pass to the sender during the main execution call",
+  },
+  {
+    key: "callGasLimit",
+    type: "string",
+    description: "The amount of gas to allocate the main execution call",
+  },
+  {
+    key: "verificationGasLimit",
+    type: "string",
+    description: "The amount of gas to allocate for the verification step",
+  },
+  {
+    key: "preVerificationGas",
+    type: "string",
+    description:
+      "The amount of gas to pay for to compensate the bundler for pre-verification execution and calldata",
+  },
+  {
+    key: "maxFeePerGas",
+    type: "string",
+    description: "Maximum fee per gas (similar to EIP-1559 max_fee_per_gas)",
+  },
+  {
+    key: "maxPriorityFeePerGas",
+    type: "string",
+    description:
+      "Maximum priority fee per gas (similar to EIP-1559 max_priority_fee_per_gas)",
   },
 ];

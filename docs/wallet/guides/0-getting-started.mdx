@@ -15,27 +15,22 @@ Candide builds open-source software for ERC-4337 account abstraction standard. T
 
 - Node and a package manager (yarn or npm)
 - Some [Sepolia](https://ethereum.org/en/developers/docs/networks/#sepolia) ETH
+- If you need, the full example of this tutorial on [Github](https://github.com/candidelabs/abstractionkit/tree/main/examples/SafeAccountExamples/CreateAccountAndSendTransaction)
 
-:::info
-You can find the full example of this tutorial on [Github](https://github.com/candidelabs/abstractionkit/tree/main/examples/CandideAccountExamples/CreateAccountAndSendTransaction)
-:::
 
 ### Step 1: Get setup
 
 1. Create a new directory for your project:
 
 ```bash
-mkdir smart-wallet-send-transaction
-cd smart-wallet-send-transaction
+mkdir safe-batch-mint
+cd safe-batch-mint
 ```
 
 2. Install required dependencies
 
-- `typescript`, `ts-node`, `dotenv`
-- [`abstractionkit`](https://www.npmjs.com/package/abstractionkit): A JS library for building ERC-4337 user operations
-
 ```bash
-npm install typescript ts-node dotenv abstractionkit
+yarn add abstractionkit
 ```
 
 3. Configure Environment Variables
@@ -43,22 +38,20 @@ npm install typescript ts-node dotenv abstractionkit
 Create a .env file in your project directory and add the following environment variables with your own values. We will be using Sepolia Testnet for this example
 
 :::info
-We host free [bundlers](../../bundler/rpc-endpoints) endpoints on testnets, you do not need to create an account. [Get in touch](https://cal.com/candidelabs/30mins) if you would like to go live on mainnet
+We host free [bundlers](../../bundler/rpc-endpoints) endpoints, you do not need to create an account.
 :::
 
 ```bash title=".env"
 CHAIN_ID=11155111
 BUNDLER_URL=https://sepolia.voltaire.candidewallet.com/rpc
 JSON_RPC_NODE_PROVIDER=https://rpc2.sepolia.org
-ENTRYPOINT_ADDRESS=0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789
 
-#account owner privatekey
+#account owner pub & private key
 PRIVATE_KEY=YOUR_PRIVATE_KEY
+PUBLIC_ADDRESS=YOUR_PUBLIC_KEY
 ```
 
 3. Create a empty file and a function to run our script
-
-Create a TypeScript file in your project directory and import the necessary dependencies:
 
 ```ts title="index.ts"
 async function main(): Promise<void> {
@@ -72,43 +65,23 @@ main();
 
 Let's open up `index.ts`
 
-To generate an account address, we will be using [CandideWallet.sol](https://github.com/candidelabs/CandideWalletContracts/blob/main/contracts/candideWallet/CandideWallet.sol) as our base smart account. It is an account that inherits `Safe` Contracts to be ERC-4337 compatible. We will control the Account with a single EOA signer.
+To generate an account address, we will be using the [Safe Module/Fallback](https://github.com/safe-global/safe-modules/blob/main/modules/4337/contracts/Safe4337Module.sol) as our base smart account. An extension to the Safe contract that implements the ERC4337 interface. We will control the Account with a single EOA owner.
 
 Since this is our first transaction, we will need to deploy the account in the same transaction 
 
-We will generate the `initCode`: The code that creates the bytecode that is stored on-chain to create the account contract. 
-It is only needed if and only if the account is not yet on-chain and needs to be created
-
 ```ts title="index.ts"
 import * as dotenv from "dotenv";
-import { Wallet } from "ethers";
-
-import {
-  Bundler,
-  CandideAccount,
-} from "abstractionkit";
+import { SafeAccountV0_2_0 as SafeAccount } from "abstractionkit";
   
 async function main(): Promise<void> {
   //get values from .env
   dotenv.config();
-  const bundlerUrl = process.env.BUNDLER_URL as string;
-  const entrypointAddress = process.env.ENTRYPOINT_ADDRESS as string;
-  const privateKey = process.env.PRIVATE_KEY as string;
 
-  // Define our Bundler endpoint where we will be sending our userOp
-  const bundler: Bundler = new Bundler(bundlerUrl, entrypointAddress);
-  
-  // Initiate the owner of our Candide Account (EOA)
-  const eoaSigner = new Wallet(privateKey);
-  
-  const smartAccount = new CandideAccount();
-
-  // Generate the new account address and initCode
-  let [newAccountAddress, initCode] = smartAccount.createNewAccount([
-    eoaSigner.address,
-  ]);
-
-  console.log("Account address(sender) : " + newAccountAddress);
+  const ownerPublicAddress = process.env.PUBLIC_ADDRESS as string
+  const smartAccount = SafeAccount.initializeNewAccount(
+      [ownerPublicAddress],
+  )
+  console.log("Account address(sender) : " + smartAccount.accountAddress);
 }
 
 main();
@@ -122,169 +95,161 @@ If everything worked, you will get the address of the account in the console.
 Account address(sender): 0x32afdcfa1e3bfe70d03ecb55b5c8045c26515c9d
 ```
 
-:::info
-Now that you have generated the smart account, go ahead and fund it with some Sepolia ETH.
+:::tip
+Now that you have generated the smart account, go ahead and fund it with some Sepolia ETH here.
 
 In another example, we will show you how to sponsor transactions with a paymaster. 
 :::
 
 ### Step 3: Generate the callData
 
-We will be constructing the callData using [createSendEthCallData](../../abstractionkit/candide-account/#createcalldata), which returns the instructions to send our transaction on-chain. This user operation will make a transfer of 5 wei to a random address
+We will be creating two transactions to mint 2 NFTs. You can use your fav library (like ethers or viem) to construct the calldata.
 
 ```ts title="index.ts"
-//send 5 wei to 0x1a02592A3484c2077d2E5D24482497F85e1980C6
-let callData = smartAccount.createSendEthCallData(
-  "0x1a02592A3484c2077d2E5D24482497F85e1980C6", // random address
-  5 // 5 wei
-);
-```
-
-### Step 4: Estimate Gas
-Estimates the gas required for the user operation using the Bundler instance. When estimating gas limits, you have two options:
-   
-a- Apply a multiplier to the gas limit to account for missing paymasterAndData and signature.
-
-b- Alternatively, provide placeholder values that won't trigger reversion in user operations.
-
-In this example, we follow option **A** by adding a multiplier to the gas limits
-
-1. Add the new imports
-
-```ts title="index.ts"
-import { 
-  Wallet,
-  // highlight-start
-  JsonRpcProvider, 
-  toBeHex,
-  // highlight-end
-} from "ethers";
 import {
-  Bundler,
-  CandideAccount,
-  GasEstimationResult,
+  SafeAccountV0_2_0 as SafeAccount
   // highlight-start
-  UserOperation,
-  UserOperationEmptyValues,
-  GasEstimationResult,
+  MetaTransaction,
+  getFunctionSelector,
+  createCallData,
   // highlight-end
 } from "abstractionkit";
+
+const nftContractAddress = "0x9a7af758aE5d7B6aAE84fe4C5Ba67c041dFE5336";
+const mintFunctionSignature =  'mint(address)';
+const mintFunctionSelector =  getFunctionSelector(mintFunctionSignature);
+const mintTransactionCallData = createCallData(
+  mintFunctionSelector, 
+  ["address"], 
+  [smartAccount.accountAddress]
+);
+
+const transaction1 :MetaTransaction ={
+    to: nftContractAddress,
+    value: 0n,
+    data: mintTransactionCallData, 
+}
+
+const transaction2 :MetaTransaction ={
+    to: nftContractAddress, 
+    value: 0n,
+    data: mintTransactionCallData,
+}
 ```
 
-2. Construct the user operation and estimate the required gas needed to send it onchain
-
-We will ask the bundler to estimate: 
-
-- `callGasLimit`
-- `preVerificationGas`
-- `verificationGas`
-
-We will ask the rpc node to get the fee per gas for the network:
-- `maxFeePerGas`
-- `maxPriorityFeePerGas`
+### Step 4: Create UserOperation
+Now the fun part. Call `createUserOperation`, which will determine the nonce, fetch the gas prices, estimate gas limits and return a userop to be signed. Use `calculateUserOperationMaxGasCost` to calculate its cost.
 
 ```ts title="index.ts"
-let user_operation: UserOperation = {
-  ...UserOperationEmptyValues,
-  sender: newAccountAddress,
-  nonce: "0x00",
-  initCode,
-  callData,
-};
+import {
+  ...
+  // highlight-start
+  calculateUserOperationMaxGasCost
+  // highlight-end
+} from "abstractionkit";
 
-let estimation = await bundler.estimateUserOperationGas(user_operation) as GasEstimationResult;
+const jsonRpcNodeProvider = process.env.JSON_RPC_NODE_PROVIDER as string
+const bundlerUrl = process.env.BUNDLER_URL as string
 
-// catch errors if there's any in the estimateUserOperationGas call
-if ("code" in estimation) {
-  console.log(estimation);
-  return
-}
+let userOperation = await smartAccount.createUserOperation(
+  [transaction1, transaction2], // you can batch multiple transactions to be executed in one userop
+  jsonRpcNodeProvider, // the node rpc is used to fetch the current nonce and fetch gas prices.
+  bundlerUrl, // the bundler rpc is used to estimate the gas limits
+)
 
-user_operation.callGasLimit = toBeHex(
-  Math.round(Number(estimation.callGasLimit) * 1.2)
-);
-
-user_operation.preVerificationGas = toBeHex(
-  Math.round(Number(estimation.preVerificationGas) * 1.2)
-);
-
-user_operation.verificationGasLimit = toBeHex(
-  Math.round(Number(estimation.verificationGas) * 1.2)
-);
-
-const jsonRpcNodeProvider = process.env.JSON_RPC_NODE_PROVIDER as string;
-const provider = new JsonRpcProvider(jsonRpcNodeProvider);
-const feeData = await provider.getFeeData();
-
-if (feeData.maxFeePerGas && feeData.maxPriorityFeePerGas) {
-  user_operation.maxFeePerGas = toBeHex(
-    Math.round(Number(feeData.maxFeePerGas) * 1.5)
-  );
-
-  user_operation.maxPriorityFeePerGas = toBeHex(
-    Math.round(Number(feeData.maxFeePerGas) * 1.5)
-  );
-}
+const cost = calculateUserOperationMaxGasCost(userOperation)
+console.log("This useroperation may cost upto : " + cost + " wei")
+console.log("Please fund the sender account : " + userOperation.sender +" with more than " + cost + " wei")
 ```
 
-:::tip
-For the most precise results, consider re-estimating gas after obtaining initial limits and valid paymasterAndData with a signature. 
+:::info
+You can override any of the returned values using the overrides parameter.
 :::
 
-### Step 5: Sign and Submit Transaction
+### Step 6: Sign and Submit
 
-1. Import `getUserOperationHash` and `getBytes`
-
-`getUserOperationHash` is a function that takes the user operation we just constructed and returns its hash
-
-```ts title="index.ts"
-import {
-  // highlight-start
-  getBytes,
-  // highlight-end
-} from "ethers"
-
-import {
-  // highlight-start
-  getUserOperationHash,
-  // highlight-end
-} from "abstractionkit"
-```
-
-2. Sign user operation and submit it to the bundler
+1. Call `signUserOperation`, which will create a signature for the private key provided of the owner of the Safe.
 
 ```ts title="index.ts"
 const chainId = process.env.CHAIN_ID as string;
+const privateKey = process.env.PRIVATE_KEY as string;
 
-const user_operation_hash = getUserOperationHash(
-  user_operation,
-  entrypointAddress,
-  chainId
-);
+userOperation.signature = smartAccount.signUserOperation(
+  userOperation,
+  [privateKey],
+  chainId,
+)
+```
 
-user_operation.signature = await eoaSigner.signMessage(
-  getBytes(user_operation_hash)
-);
+:::info
+Since Safe is a multisig wallet, `signUserOperation` can take an array of private keys for multiple owners of the Account. 
+:::
 
-const bundlerResponse = await bundler.sendUserOperation(user_operation);
+2. Use the Bundler RPC to send the userop to the bundler with `sendUserOperation`, and await the return `SendUseroperationResponse` object to confirm the on-chain inclusion of the user operation. 
 
-console.log(bundlerResponse, "bundlerResponse");
+```ts title="index.ts"
+// highlight-start
+const sendUserOperationResponse = await smartAccount.sendUserOperation(userOperation, bundlerUrl)
+// highlight-end
 
-if ("message" in bundlerResponse && (bundlerResponse.message as string) == "AA21 didn't pay prefund") {
-    console.log("Please fund the new account address with some sepolia eth to pay for gas : " + newAccountAddress);
+console.log("UserOperation sent. Waiting to be included ......")
+```
+
+
+3. Track the userOperation and wait its inclusion onchain 
+```ts
+// highlight-start
+let userOperationReceiptResult = await sendUserOperationResponse.included()
+// highlight-end
+
+console.log("Useroperation receipt received.")
+console.log(userOperationReceiptResult)
+
+if (userOperationReceiptResult.success) {
+    console.log("Two Nfts were minted. The transaction hash is : " + userOperationReceiptResult.receipt.transactionHash)
+} else {
+    console.log("Useroperation execution failed")
 }
 ```
 
 Now let's run this code again with `npx ts-node index.ts`
 
-You've now sent your first user operation! If everything went well, you should see the bundler returning a user operation hash
+You've now sent your first user operation! If everything went well, you should see the bundler returning a user operation receipt
 
-```bash title="Terminal"
+<details>
+<summary>Result</summary>
+
+```terminal
+Useroperation sent. Waiting to be included ......
+Useroperation receipt received.
 {
-  userOperationHash: '0xbaa2e95962df1a1f9982e2f3a703d91bf1efc00746994376892ce8b6ac3fe7cb,
+  userOpHash: '0x1acede61123ab7116eb29c797aeaec3c03615c37732ba66428524aebdb4b4514',
+  entryPoint: '0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789',
+  sender: '0xb8741a449d50ed0dcfe395287f85be152884c8d9',
+  nonce: 0n,
+  paymaster: '0x3fe285dcd76bcce4ac92d38a6f2f8e964041e020',
+  actualGasCost: 8078496n,
+  actualGasUsed: 504906n,
+  success: true,
+  logs: '[{"address":"0x5ff137d4b0fdcd49dca30c7cf57e578a026d2789","blockHash":"0xe19e52b4c222c1cdbc765f1a4e196ff4bf40c5550926e02974570e1845e88e2c","blockNumber":"0x9efe5f","data":"0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000007b44a0000000000000000000000000000000000000000000000000000000000007b44a","logIndex":"0x9a","removed":false,"topics":["0x49628fd1471006c1482da88028e9ce4dbb080b815c9b0344d39e5a8e6ec1419f","0x1acede61123ab7116eb29c797aeaec3c03615c37732ba66428524aebdb4b4514","0x000000000000000000000000b8741a449d50ed0dcfe395287f85be152884c8d9","0x0000000000000000000000003fe285dcd76bcce4ac92d38a6f2f8e964041e020"],"transactionHash":"0xf43576a07f39660737a342c99a187eb70ac59d89bc0df92ff3c1bb8a8da370aa","transactionIndex":"0x1d"}]',
+  receipt: {
+    blockHash: '0xe19e52b4c222c1cdbc765f1a4e196ff4bf40c5550926e02974570e1845e88e2c',
+    blockNumber: 10419807n,
+    from: '0x3cfdc212769c890907bce93d3d8c2c53de6a7a89',
+    cumulativeGasUsed: 6978990n,
+    gasUsed: 507053n,
+    logs: '[{"address":"0xb8741a449d50ed0dcfe395287f85be152884c8d9","blockHash":"0xe19e52b4c222c1cdbc765f1a4e196ff4bf40c5550926e02974570e1845e88e2c","blockNumber":"0x9efe5f","data":"0x","logIndex":"0x90","removed":false,"topics":["0xecdf3a3effea5783a3c4c2140e677577666428d44ed9d474a0b3a4c9943f8440","0x000000000000000000000000a581c4a4db7175302464ff3c06380bc3270b4037"],"transactionHash":"0xf43576a07f39660737a342c99a187eb70ac59d89bc0df92ff3c1bb8a8da370aa","transactionIndex":"0x1d"},{"address":"0xb8741a449d50ed0dcfe395287f85be152884c8d9","blockHash":"0xe19e52b4c222c1cdbc765f1a4e196ff4bf40c5550926e02974570e1845e88e2c","blockNumber":"0x9efe5f","data":"0x000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000010000000000000000000000008ecd4ec46d4d2a6b64fe960b3d64e8b94b2234eb000000000000000000000000a581c4a4db7175302464ff3c06380bc3270b40370000000000000000000000000000000000000000000000000000000000000001000000000000000000000000bdbc5fbc9ca8c3f514d073ec3de840ac84fc6d31","logIndex":"0x91","removed":false,"topics":["0x141df868a6331af528e38c83b7aa03edc19be66e37ae67f9285bf4f8e3c6a1a8","0x0000000000000000000000004e1dcf7ad4e460cfd30791ccc4f9c8a4f820ec67"],"transactionHash":"0xf43576a07f39660737a342c99a187eb70ac59d89bc0df92ff3c1bb8a8da370aa","transactionIndex":"0x1d"},{"address":"0x4e1dcf7ad4e460cfd30791ccc4f9c8a4f820ec67","blockHash":"0xe19e52b4c222c1cdbc765f1a4e196ff4bf40c5550926e02974570e1845e88e2c","blockNumber":"0x9efe5f","data":"0x00000000000000000000000029fcb43b46531bca003ddc8fcb67ffe91900c762","logIndex":"0x92","removed":false,"topics":["0x4f51faf6c4561ff95f067657e43439f0f856d97c04d9ec9070a6199ad418e235","0x000000000000000000000000b8741a449d50ed0dcfe395287f85be152884c8d9"],"transactionHash":"0xf43576a07f39660737a342c99a187eb70ac59d89bc0df92ff3c1bb8a8da370aa","transactionIndex":"0x1d"},{"address":"0x5ff137d4b0fdcd49dca30c7cf57e578a026d2789","blockHash":"0xe19e52b4c222c1cdbc765f1a4e196ff4bf40c5550926e02974570e1845e88e2c","blockNumber":"0x9efe5f","data":"0x0000000000000000000000004e1dcf7ad4e460cfd30791ccc4f9c8a4f820ec670000000000000000000000003fe285dcd76bcce4ac92d38a6f2f8e964041e020","logIndex":"0x93","removed":false,"topics":["0xd51a9c61267aa6196961883ecf5ff2da6619c37dac0fa92122513fb32c032d2d","0x1acede61123ab7116eb29c797aeaec3c03615c37732ba66428524aebdb4b4514","0x000000000000000000000000b8741a449d50ed0dcfe395287f85be152884c8d9"],"transactionHash":"0xf43576a07f39660737a342c99a187eb70ac59d89bc0df92ff3c1bb8a8da370aa","transactionIndex":"0x1d"},{"address":"0x5ff137d4b0fdcd49dca30c7cf57e578a026d2789","blockHash":"0xe19e52b4c222c1cdbc765f1a4e196ff4bf40c5550926e02974570e1845e88e2c","blockNumber":"0x9efe5f","data":"0x","logIndex":"0x94","removed":false,"topics":["0xbb47ee3e183a558b1a2ff0874b079f3fc5478b7454eacf2bfc5af2ff5878f972"],"transactionHash":"0xf43576a07f39660737a342c99a187eb70ac59d89bc0df92ff3c1bb8a8da370aa","transactionIndex":"0x1d"},{"address":"0xb8741a449d50ed0dcfe395287f85be152884c8d9","blockHash":"0xe19e52b4c222c1cdbc765f1a4e196ff4bf40c5550926e02974570e1845e88e2c","blockNumber":"0x9efe5f","data":"0x000000000000000000000000a581c4a4db7175302464ff3c06380bc3270b403700000000000000000000000038869bf66a61cf6bdb996a6ae40d5853fd43b526000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000001048d80ff0a000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000b200d9de104e3386d9a45a61bce269c43e48b534e4e7000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000041249c58b00d9de104e3386d9a45a61bce269c43e48b534e4e7000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000041249c58b000000000000000000000000000000000000000000000000000000000000000000000000000000000000","logIndex":"0x95","removed":false,"topics":["0xb648d3644f584ed1c2232d53c46d87e693586486ad0d1175f8656013110b714e"],"transactionHash":"0xf43576a07f39660737a342c99a187eb70ac59d89bc0df92ff3c1bb8a8da370aa","transactionIndex":"0x1d"},{"address":"0xd9de104e3386d9a45a61bce269c43e48b534e4e7","blockHash":"0xe19e52b4c222c1cdbc765f1a4e196ff4bf40c5550926e02974570e1845e88e2c","blockNumber":"0x9efe5f","data":"0x","logIndex":"0x96","removed":false,"topics":["0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef","0x0000000000000000000000000000000000000000000000000000000000000000","0x000000000000000000000000b8741a449d50ed0dcfe395287f85be152884c8d9","0x0000000000000000000000000000000000000000000000000000000000000056"],"transactionHash":"0xf43576a07f39660737a342c99a187eb70ac59d89bc0df92ff3c1bb8a8da370aa","transactionIndex":"0x1d"},{"address":"0xd9de104e3386d9a45a61bce269c43e48b534e4e7","blockHash":"0xe19e52b4c222c1cdbc765f1a4e196ff4bf40c5550926e02974570e1845e88e2c","blockNumber":"0x9efe5f","data":"0x","logIndex":"0x97","removed":false,"topics":["0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef","0x0000000000000000000000000000000000000000000000000000000000000000","0x000000000000000000000000b8741a449d50ed0dcfe395287f85be152884c8d9","0x0000000000000000000000000000000000000000000000000000000000000057"],"transactionHash":"0xf43576a07f39660737a342c99a187eb70ac59d89bc0df92ff3c1bb8a8da370aa","transactionIndex":"0x1d"},{"address":"0xb8741a449d50ed0dcfe395287f85be152884c8d9","blockHash":"0xe19e52b4c222c1cdbc765f1a4e196ff4bf40c5550926e02974570e1845e88e2c","blockNumber":"0x9efe5f","data":"0x","logIndex":"0x98","removed":false,"topics":["0x6895c13664aa4f67288b25d7a21d7aaa34916e355fb9b6fae0a139a9085becb8","0x000000000000000000000000a581c4a4db7175302464ff3c06380bc3270b4037"],"transactionHash":"0xf43576a07f39660737a342c99a187eb70ac59d89bc0df92ff3c1bb8a8da370aa","transactionIndex":"0x1d"},{"address":"0x3fe285dcd76bcce4ac92d38a6f2f8e964041e020","blockHash":"0xe19e52b4c222c1cdbc765f1a4e196ff4bf40c5550926e02974570e1845e88e2c","blockNumber":"0x9efe5f","data":"0x0000000000000000000000000000000000000000000000000000000000000000","logIndex":"0x99","removed":false,"topics":["0xa050a122b4c0e369e3385eb6b7cccd8019638b2764de67bec0af99130ddf8471","0x1acede61123ab7116eb29c797aeaec3c03615c37732ba66428524aebdb4b4514","0x000000000000000000000000b8741a449d50ed0dcfe395287f85be152884c8d9","0x0000000000000000000000000000000000000000000000000000000000000000"],"transactionHash":"0xf43576a07f39660737a342c99a187eb70ac59d89bc0df92ff3c1bb8a8da370aa","transactionIndex":"0x1d"},{"address":"0x5ff137d4b0fdcd49dca30c7cf57e578a026d2789","blockHash":"0xe19e52b4c222c1cdbc765f1a4e196ff4bf40c5550926e02974570e1845e88e2c","blockNumber":"0x9efe5f","data":"0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000007b44a0000000000000000000000000000000000000000000000000000000000007b44a","logIndex":"0x9a","removed":false,"topics":["0x49628fd1471006c1482da88028e9ce4dbb080b815c9b0344d39e5a8e6ec1419f","0x1acede61123ab7116eb29c797aeaec3c03615c37732ba66428524aebdb4b4514","0x000000000000000000000000b8741a449d50ed0dcfe395287f85be152884c8d9","0x0000000000000000000000003fe285dcd76bcce4ac92d38a6f2f8e964041e020"],"transactionHash":"0xf43576a07f39660737a342c99a187eb70ac59d89bc0df92ff3c1bb8a8da370aa","transactionIndex":"0x1d"}]',
+    logsBloom: '0x0000040000009000000000000000010080000000000000000000000000000000000800000000000000020001000004040010000000000000800002000000000000001000000000000000000c0002000000000000010000080040000000000000020000000a0000000500002000000800008000000100000000000014000000000800010020000200008000000040000000000200000400000000000000000000000004000000000000500000000004000210000000000000000002001000000020200082000000000001000008000000000000002060000000100000000026000000082000010000000000000008100220000000000000000000000010000200',
+    transactionHash: '0xf43576a07f39660737a342c99a187eb70ac59d89bc0df92ff3c1bb8a8da370aa',
+    transactionIndex: 29n,
+    effectiveGasPrice: 16n
+  }
 }
+Two Nfts were minted. The transaction hash is : 0xf43576a07f39660737a342c99a187eb70ac59d89bc0df92ff3c1bb8a8da370aa
 ```
+
+</details>
 
 You can lookup the user operation hash on a dedicated ERC-4337 explorer like [JiffyScan](https://jiffyscan.xyz/).
 
-In the next guides, we will show how to abstract away gas by using paymasters.
+In the next guides, we will show how to use sponsored gas policies using paymasters.

@@ -42,6 +42,7 @@ const sidebars = {
         'wallet/guides/getting-started',
         'wallet/guides/send-gasless-tx',
         'wallet/guides/pay-gas-in-erc20',
+        'wallet/guides/multisig',
       ],
     },
     {
@@ -51,18 +52,10 @@ const sidebars = {
       className: 'category-not-collapsible',
       items: [
         'wallet/abstractionkit/introduction',
-        {
-          type: 'category',
-          label: 'Smart Accounts',
-          collapsed: true,
-          items: [
-            'wallet/abstractionkit/candide-account',
-            'wallet/abstractionkit/safe-account',
-            'wallet/abstractionkit/simple-account',
-          ],
-        },
+        'wallet/abstractionkit/safe-account',
         'wallet/abstractionkit/bundler',
         'wallet/abstractionkit/paymaster',
+        'wallet/abstractionkit/utilities',
       ],
     },
     {

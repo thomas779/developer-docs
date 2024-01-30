@@ -15,12 +15,13 @@ import {
   userOperationParamaters,
   entrypointParams,
   pm_sponsorUserOperationWithoutGasReturnParam,
-  pm_sponsorUserOperationWithGasReturnParams
+  pm_sponsorUserOperationWithGasReturnParams,
+  pm_supportedEntryPointReturnParam,
 } from "/src/requestRpcData";
 
-A `CandideValidationPaymaster` is a class to an ERC-4337 Paymaster that interacts with Candide verifying paymaster API.
+A `CandidePaymaster` is a class interacts with Candide's ERC-4337 Paymaster API.
 
-The `CandideValidationPaymaster` class sets up a Paymaster Instance with:
+The `CandidePaymaster` class sets up a Paymaster Instance with:
 
 1. Paymaster URL `string`
 
@@ -38,35 +39,29 @@ import { CandideValidationPaymaster } from "abstractionkit";
 
 Initialize a Paymaster with your RPC url
 
+:::info
+Get an API key from the [dashboard](httsp://dashboard.candide.dev)
+:::
+
 ```ts title="paymaster.ts"
-import { CandideValidationPaymaster } from "abstractionkit";
+import { CandidePaymaster } from "abstractionkit";
 
-const paymasterRpc = "https://api.candide.dev/paymaster/v1/$network/$apikey";
-const entrypointAddress = "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789";
+const paymasterRpc = "https://api.candide.dev/paymaster/$version/$network/$apikey";
 
-const paymaster: CandideValidationPaymaster = new CandideValidationPaymaster(
-  entrypointAddress,
-  paymasterRPC
-);
+const paymaster: CandidePaymaster = new CandidePaymaster(paymasterRPC);
 ```
 
 Then you can consume Paymaster methods:
 
 ```ts
-const supportedGasTokens = await paymaster.getSupportedERC20Tokens();
+const supportedEntrypoints = await paymaster.getSupportedEntrypoint();
 ```
 
 ## Methods
 
-### getPaymasterCallDataForGaslessTx
+### getPaymasterMetaData
 
-**FREE Gas Mode**: Takes a userOperation, and returns `paymasterAndData` to execute a transaction gasless. 
-
-It **may or may not** return a mandatory preVerificationGas, maxFeePerGas, and maxPriorityFeePerGas.
-
-:::info
-Any gas overrides provided in the paymaster result MUST be used in the userop otherwise the paymaster signature won't work.
-:::
+Returns the metadata associated with the Paymaster, along with dummyPaymasterAndData useful for gas estimates
 
 #### Usage
 
@@ -76,31 +71,12 @@ Any gas overrides provided in the paymaster result MUST be used in the userop ot
 ```ts title="example.ts"
 import { paymaster } from "./paymaster";
 
-const paymasterResult = await paymaster.getPaymasterCallDataForGaslessTx(
-  user_operation,
-);
+const paymasterResult = await paymaster.getPaymasterMetaData();
 ```
 
 </TabItem>
-<TabItem value="Param type" label="Param Types">
-<table>
-  <thead>
-    <th align="left">Paramater</th>
-    <th align="left">Type</th>
-  </thead>
-  <tbody>
-    <tr>
-      <td align="left">userOperation</td>
-      <td align="left">
-        <p>Object</p>
-        <RpcRequestTable items={userOperationParamaters} />
-      </td>
-    </tr>
-  </tbody>
-</table>
-</TabItem>
 <TabItem value="response type" label="Response Type">
-  <RpcRequestTable items={pm_sponsorUserOperationWithGasReturnParams} />
+  <RpcRequestTable items={paymasterMetadataParameters} />
 </TabItem>
 </Tabs>
 
@@ -109,15 +85,24 @@ const paymasterResult = await paymaster.getPaymasterCallDataForGaslessTx(
 
 ```ts
 {
-  paymasterAndData: '0x3fE285DcD76BCcE4Ac92d38A6F2F8E964041e0200000000000000000000000000000000000000000030000651ea90c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000a9fc88a3820801d1559ada307455ff4b3410fd2b8a642d695990a86003eb502a7c87419454ead7ce12f5ba9bb961141f52a8cc944b95ceebab95438b28f025731c'
+  name: 'Candide Paymaster',
+  description: 'Candide Paymaster a fast, secure and feature-rich 4337 Paymaster',
+  icons: [],
+  address: '0x3fE285DcD76BCcE4Ac92d38A6F2F8E964041e020',
+  sponsoredEventTopic: '0xa050a122b4c0e369e3385eb6b7cccd8019638b2764de67bec0af99130ddf8471',
+  dummyPaymasterAndData: '0x3fE285DcD76BCcE4Ac92d38A6F2F8E964041e0207ddefa2f027691116d0a7aa6418246622d70b12a0100000000ffff000000000000000000000000000000000000000000000000000000000000ffff000000000000000000000000000000000000000000000000000000000000ffff010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101011c'
 }
 ```
 
 </details>
 
-### getSupportedERC20Tokens
+#### source code
 
-Returns the ERC-20 Tokens that the paymaster accepts as gas tokens on the current network
+[getPaymasterMetaData](https://github.com/candidelabs/abstractionkit/blob/0c363636cd97d47cac39e4e6b8daf4283710adde/src/paymaster/CandidePaymaster.ts#L56C40-L56C57)
+
+### getSupportedERC20TokensAndPaymasterMetadata
+
+Returns the ERC-20 Tokens that the paymaster accepts as gas tokens on the current network, along with its metadata
 
 #### Usage
 
@@ -127,7 +112,7 @@ Returns the ERC-20 Tokens that the paymaster accepts as gas tokens on the curren
 ```ts title="example.ts"
 import { paymaster } from "./paymaster.ts";
 
-const supportedGasTokens = await paymaster.getSupportedERC20Tokens();
+const result = await paymaster.getSupportedERC20TokensAndPaymasterMetadata();
 ```
 
 </TabItem>
@@ -186,9 +171,106 @@ const supportedGasTokens = await paymaster.getSupportedERC20Tokens();
 
 </details>
 
-### getPaymasterCallDataForPayingGasWithErc20
+#### Source code
+[getSupportedERC20TokensAndPaymasterMetadata](https://github.com/candidelabs/abstractionkit/blob/0c363636cd97d47cac39e4e6b8daf4283710adde/src/paymaster/CandidePaymaster.ts#L63C63-L63C94)
 
-**Pay Gas in ERC-20s** mode: This method takes a useroperation and a token address, and returns `paymasterAndData` along with the gas values to sponsor a user operation using erc-20 tokens
+### getSupportedEntrypoint
+
+Returns the supported Entrypoints by the paymaster
+
+#### Usage
+
+<Tabs>
+<TabItem value="example.ts" label="example.ts">
+
+```ts title="example.ts"
+import { paymaster } from "./paymaster";
+
+const paymasterResult = await paymaster.getSupportedEntrypoint();
+```
+
+</TabItem>
+<TabItem value="response type" label="Response Type">
+  <RpcRequestTable items={pm_supportedEntryPointReturnParam} />
+</TabItem>
+</Tabs>
+
+<details>
+<summary>Example Response</summary>
+
+```ts
+0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789
+```
+
+</details>
+
+#### source code
+[getSupportedEntrypoint](https://github.com/candidelabs/abstractionkit/blob/0c363636cd97d47cac39e4e6b8daf4283710adde/src/paymaster/CandidePaymaster.ts#L95)
+
+### isSupportedERC20Token
+
+Checks if a particular ERC-20 token is accepted as gas payment by the paymaster. Returns a boolean
+
+#### Usage
+<Tabs>
+<TabItem value="example.ts" label="example.ts">
+
+```ts title="example.ts"
+import { paymaster } from "./paymaster";
+
+const erc20TokenAddress = "0x7DdEFA2f027691116D0a7aa6418246622d70B12A";
+
+const isSupported = await paymaster.isSupportedERC20Token(erc20TokenAddress);
+```
+
+</TabItem>
+<TabItem value="Param type" label="Param Types">
+<table>
+  <thead>
+    <th align="left">Paramater</th>
+    <th align="left">Type</th>
+    <th align="left">Description</th>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="left">tokenAddress</td>
+      <td align="left"><code>string</code></td>
+      <td>Onchain ERC-20 Token Address </td>
+    </tr>
+  </tbody>
+</table>
+</TabItem>
+<TabItem value="response type" label="Response Type">
+  <table>
+  <thead>
+    <th align="left">Paramater</th>
+    <th align="left">Type</th>
+    <th align="left">Description</th>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="left">Checks for erc-20 support</td>
+      <td align="left"><code>boolean</code></td>
+      <td>Returns true if the ERC-20 token is supported, returns false otherwise</td>
+    </tr>
+  </tbody>
+</table>
+</TabItem>
+
+</Tabs>
+
+<details>
+<summary>Example Response</summary>
+
+```ts
+true
+```
+
+</details>
+
+### getSupportedERC20TokenData
+
+Returns the token data given an erc20 address 
 
 #### Usage
 
@@ -200,10 +282,7 @@ import { paymaster } from "./paymaster";
 
 const erc20TokenAddress = "0x7DdEFA2f027691116D0a7aa6418246622d70B12A";
 
-const paymasterResult = await paymaster.getPaymasterCallDataForGaslessTx(
-  user_operation,
-  erc20TokenAddress,
-);
+const erc20TokenData = await paymaster.getSupportedERC20TokenData(erc20TokenAddress);
 ```
 
 </TabItem>
@@ -212,47 +291,172 @@ const paymasterResult = await paymaster.getPaymasterCallDataForGaslessTx(
   <thead>
     <th align="left">Paramater</th>
     <th align="left">Type</th>
+    <th align="left">Description</th>
   </thead>
   <tbody>
     <tr>
-      <td align="left">userOperation</td>
-      <td align="left">
-        <p>Object</p>
-        <RpcRequestTable items={userOperationParamaters} />
-      </td>
-    </tr>
-    <tr>
       <td align="left">tokenAddress</td>
-      <td align="left">
-        <table>
-          <thead>
-            <th align="left">Type</th>
-            <th align="left">Description</th>
-          </thead>
-          <tr>
-            <td>
-              <code>string</code>
-            </td>
-            <td>Token Address selected from getSupportedERC20Tokens()</td>
-          </tr>
-        </table>
-      </td>
+      <td align="left"><code>string</code></td>
+      <td>Onchain ERC-20 Token Address </td>
     </tr>
   </tbody>
 </table>
 </TabItem>
 <TabItem value="response type" label="Response Type">
-  <RpcRequestTable items={pm_sponsorUserOperationWithoutGasReturnParam} />
+  <RpcRequestTable items={tokensParamaters} />
 </TabItem>
 </Tabs>
+<details title="Example Response">
 
-<details>
-<summary>Example Response</summary>
-
-```ts
+```js
 {
-  paymasterAndData: '0x3fE285DcD76BCcE4Ac92d38A6F2F8E964041e0207ddefa2f027691116d0a7aa6418246622d70b12a000000651ea34800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000de077f372a8c4c30bf6f1934b8ac0441dc6d8470f386567d904454c6e12bb9a6634b03879c1b59a612329a6e7e26db4218dead2aea2d8b58662e03956fc964c5e07a57059f336d71c'
+  symbol: 'CTT',
+  address: '0x7ddefa2f027691116d0a7aa6418246622d70b12a',
+  decimal: '0x12',
+  fee: '0x0',
+  exchangeRate: '0x0de0d1c4e668f68a'
 }
 ```
 
 </details>
+
+#### Source code
+[getSupportedERC20TokenData](https://github.com/candidelabs/abstractionkit/blob/cbfda80e4d8125ad93b936613c97f5780984a83a/src/paymaster/CandidePaymaster.ts#L150)
+
+### createPaymasterUserOperation
+
+Estimates gas and set paymasterAndData. Returns userOperation
+
+#### Usage
+
+<Tabs>
+<TabItem value="example.ts" label="example.ts">
+
+```ts
+import { UserOperation } from "abstractionkit";
+
+const bundlerRPC = "https://sepolia.voltaire.candidewallet.com/rpc";
+
+let userOpeartion: UserOperation = {
+  sender: "0x32afdcfa1e3bfe70d03ecb55b5c8045c26515c9d",
+  nonce: "0x04",
+  initCode: "0x",
+  callData: "0x..",
+  callGasLimit: "0",
+  verificationGasLimit: "0",
+  preVerificationGas:"0",
+  maxFeePerGas: "0",
+  maxPriorityFeePerGas: "0",
+  paymasterAndData: "0x",
+  signature: "0x",
+};
+
+userOperation = createPaymasterUserOperation(userOperation, bundlerRPC);
+```
+
+</TabItem>
+<TabItem value="Param type" label="Param Types">
+  <table>
+    <thead>
+      <th align="left">Paramater</th>
+      <th align="left">Type</th>
+    </thead>
+    <tbody>
+      <tr>
+        <td align="left">userOperation</td>
+        <td align="left">
+          <p>UserOperation object</p>
+          <RpcRequestTable items={userOperationParamaters} />
+        </td>
+      </tr>
+      <tr>
+        <td align="left">Bundler URL</td>
+        <td align="left">
+          <table>
+            <thead>
+              <th align="left">Type</th>
+              <th align="left">Description</th>
+            </thead>
+            <tr>
+              <td>
+                <font color="#e25894">string</font>
+              </td>
+              <td>The Bundler URL. It is used to fetch the gas limits</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td align="left">context</td>
+        <td align="left">
+          <table>
+            <thead>
+              <th align="left">Type</th>
+              <th align="left">Description</th>
+            </thead>
+            <tr>
+              <td>
+                <font color="#e25894">CandidePaymasterContext</font>
+              </td>
+              <td>Optional. Candide Paymaster context data.</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td align="left">State Override Set</td>
+        <td align="left">
+          <table>
+            <thead>
+              <th align="left">Type</th>
+              <th align="left">Description</th>
+            </thead>
+            <tr>
+              <td>
+                <font color="#e25894">StateOverrideSet</font>
+              </td>
+              <td>Optional. State override values to set during gs estimation</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</TabItem>
+<TabItem value="response type" label="Response Type">
+  <table>
+    <thead>
+      <th align="left">Paramater</th>
+      <th align="left">Type</th>
+    </thead>
+    <tbody>
+      <tr>
+        <td align="left">userOperation</td>
+        <td align="left">
+          <p>{`Promise<UserOperation> object`}</p>
+          <RpcRequestTable items={userOperationParamaters} />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</TabItem>
+</Tabs>
+
+#### Source code
+[createPaymasterUserOperation](https://github.com/candidelabs/abstractionkit/blob/cbfda80e4d8125ad93b936613c97f5780984a83a/src/paymaster/CandidePaymaster.ts#L188)
+
+### createSponsorPaymasterUserOperation
+
+#### Source code
+[createSponsorPaymasterUserOperation](https://github.com/candidelabs/abstractionkit/blob/cbfda80e4d8125ad93b936613c97f5780984a83a/src/paymaster/CandidePaymaster.ts#L278C8-L278C43)
+
+### createTokenPaymasterUserOperation
+
+#### Source code
+[createTokenPaymasterUserOperation](https://github.com/candidelabs/abstractionkit/blob/cbfda80e4d8125ad93b936613c97f5780984a83a/src/paymaster/CandidePaymaster.ts#L301C8-L301C41)
+
+### calculateUserOperationErc20TokenMaxGasCost
+
+#### Source code
+[calculateUserOperationErc20TokenMaxGasCost](https://github.com/candidelabs/abstractionkit/blob/cbfda80e4d8125ad93b936613c97f5780984a83a/src/paymaster/CandidePaymaster.ts#L339C8-L339C50)
+

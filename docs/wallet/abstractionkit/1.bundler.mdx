@@ -12,10 +12,7 @@ import TabItem from "@theme/TabItem";
 
 A `Bundler` is a class to an ERC-4337 Bundler JSON-RPC API methods such as estimating user operation gas, and sending user operations.
 
-The `Bundler` class sets up a Bundler Instance with:
-
-1. [Bundler RPC URL](../../bundler/rpc-endpoints)
-2. The entrypoint address
+The `Bundler` class sets up a Bundler Instance with a [Bundler RPC URL](../../bundler/rpc-endpoints).
 
 ## Usage
 
@@ -31,9 +28,8 @@ Initialize a Bundler with your desired bundler RPC url
 
 ```ts
 const bundlerRPC = "https://sepolia.voltaire.candidewallet.com/rpc";
-const entrypointAddress = "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789";
 
-const bundler: Bundler = new Bundler(bundlerRPC, entrypointAddress);
+const bundler: Bundler = new Bundler(bundlerRPC);
 ```
 
 Then you can consume Bundler methods:
@@ -45,8 +41,6 @@ const entrypointAddresses = await bundler.supportedEntryPoints();
 ### Paramaters
 
 #### bundlerURL `string`
-
-#### entrypointAddress `string`
 
 ## Methods
 
@@ -71,8 +65,7 @@ const getChainId = await bundler.chainId();
 ```ts title="bundler.ts"
 import { Bundler } from "abstractionkit";
 
-const bundlerRPC = "https://goerli.voltaire.candidewallet.com/rpc";
-const entrypointAddress = "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789";
+const bundlerRPC = "https://sepolia.voltaire.candidewallet.com/rpc";
 
 const bundler: Bundler = new Bundler(bundlerRPC, entrypointAddress);
 ```
@@ -84,7 +77,7 @@ const bundler: Bundler = new Bundler(bundlerRPC, entrypointAddress);
 <summary>Example Response</summary>
 
 ```ts
-{ chainId: '0x5' }
+{ chainId: '0xaa36a7' }
 ```
 
 </details>
@@ -114,8 +107,7 @@ const entrypointAddresses = await bundler.supportedEntryPoints();
 ```ts title="bundler.ts"
 import { Bundler } from "abstractionkit";
 
-const bundlerRPC = "https://goerli.voltaire.candidewallet.com/rpc";
-const entrypointAddress = "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789";
+const bundlerRPC = "https://sepolia.voltaire.candidewallet.com/rpc";
 
 const bundler: Bundler = new Bundler(bundlerRPC, entrypointAddress);
 ```
@@ -167,7 +159,9 @@ const userOperation: UserOperation = {
   signature: "0x",
 };
 
-const estimation = (await bundler.estimateUserOperationGas(user_operation)) as GasEstimationResult;
+const entrypointAddress = "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789";
+
+const estimation = (await bundler.estimateUserOperationGas(user_operation, entrypointAddress)) as GasEstimationResult;
 ```
 
 </TabItem>
@@ -176,8 +170,7 @@ const estimation = (await bundler.estimateUserOperationGas(user_operation)) as G
 ```ts title="bundler.ts"
 import { Bundler } from "abstractionkit";
 
-const bundlerRPC = "https://goerli.voltaire.candidewallet.com/rpc";
-const entrypointAddress = "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789";
+const bundlerRPC = "https://sepolia.voltaire.candidewallet.com/rpc";
 
 const bundler: Bundler = new Bundler(bundlerRPC, entrypointAddress);
 ```
@@ -232,7 +225,9 @@ const userOperation: UserOperation = {
   signature: '0x1234..'
 }
 
-const userOperationHash = (await bundler.sendUserOperation(user_operation));
+const entrypointAddress = "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789";
+
+const userOperationHash = (await bundler.sendUserOperation(user_operation, entrypointAddress));
 ```
 
 </TabItem>
@@ -241,10 +236,9 @@ const userOperationHash = (await bundler.sendUserOperation(user_operation));
 ```ts title="bundler.ts"
 import { Bundler } from "abstractionkit";
 
-const bundlerRPC = "https://goerli.voltaire.candidewallet.com/rpc";
-const entrypointAddress = "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789";
+const bundlerRPC = "https://sepolia.voltaire.candidewallet.com/rpc";
 
-const bundler: Bundler = new Bundler(bundlerRPC, entrypointAddress);
+const bundler: Bundler = new Bundler(bundlerRPC);
 ```
 
 </TabItem>
@@ -287,10 +281,9 @@ const userOperation = await bundler.getUserOperationByHash(userOperationHash);
 ```ts title="bundler.ts"
 import { Bundler } from "abstractionkit";
 
-const bundlerRPC = "https://goerli.voltaire.candidewallet.com/rpc";
-const entrypointAddress = "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789";
+const bundlerRPC = "https://sepolia.voltaire.candidewallet.com/rpc";
 
-const bundler: Bundler = new Bundler(bundlerRPC, entrypointAddress);
+const bundler: Bundler = new Bundler(bundlerRPC);
 ```
 
 </TabItem>
@@ -350,10 +343,9 @@ const userOperationReceipt = await bundler.getUserOperationReceipt(
 ```ts title="bundler.ts"
 import { Bundler } from "abstractionkit";
 
-const bundlerRPC = "https://goerli.voltaire.candidewallet.com/rpc";
-const entrypointAddress = "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789";
+const bundlerRPC = "https://sepolia.voltaire.candidewallet.com/rpc";
 
-const bundler: Bundler = new Bundler(bundlerRPC, entrypointAddress);
+const bundler: Bundler = new Bundler(bundlerRPC);
 ```
 
 </TabItem>
