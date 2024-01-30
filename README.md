@@ -1,6 +1,6 @@
-# CANDIDE Developer Documentation Website
+# Candide Atelier Developer Documentation Website
 
-![Alt text](./static/img/1500x500.jpeg "CANDIDE LOGO")
+![Alt text](./static/img/posters/atelier-meta-web.png "Candide Atelier Logo")
 
 This website is built using [Docusaurus 2](https://docusaurus.io/), a modern static website generator.
 
