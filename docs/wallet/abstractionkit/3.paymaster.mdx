@@ -11,12 +11,11 @@ import { RpcRequestTable } from "/src/components/CustomTable";
 import {
   paymasterMetadataParameters,
   tokensParamaters,
-  emptyParams,
   userOperationParamaters,
-  entrypointParams,
-  pm_sponsorUserOperationWithoutGasReturnParam,
-  pm_sponsorUserOperationWithGasReturnParams,
   pm_supportedEntryPointReturnParam,
+  candidePaymasterContext,
+  stateOverrideSetParameters,
+  addressToStateParameters
 } from "/src/requestRpcData";
 
 import { smartAccountParameters } from "./accountParamAndReturnData";
@@ -357,7 +356,7 @@ const erc20TokenData = await paymaster.getSupportedERC20TokenData(erc20TokenAddr
 
 ### createPaymasterUserOperation
 
-Estimates gas and set paymasterAndData. Returns userOperation
+Estimates gas limits and set paymasterAndData. Returns a complete userOperation
 
 #### Usage
 
@@ -369,21 +368,24 @@ import { UserOperation } from "abstractionkit";
 
 const bundlerRPC = "https://sepolia.voltaire.candidewallet.com/rpc";
 
-let userOpeartion: UserOperation = {
-  sender: "0x32afdcfa1e3bfe70d03ecb55b5c8045c26515c9d",
-  nonce: "0x04",
-  initCode: "0x",
-  callData: "0x..",
-  callGasLimit: "0",
-  verificationGasLimit: "0",
-  preVerificationGas:"0",
-  maxFeePerGas: "0",
-  maxPriorityFeePerGas: "0",
-  paymasterAndData: "0x",
-  signature: "0x",
-};
+// Use the SmartAccount methods to help you construct the useroperation below
+let userOperation = {
+  sender: '0xb8741a449d50ed0dcfe395287f85be152884c8d9',
+  nonce: 10n,
+  initCode: '0x',
+  callData: '0x541d63c800000000000000000000000038869bf66a61cf6bdb996a6ae40d5853fd43b52600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000001448d80ff0a000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000f2009a7af758ae5d7b6aae84fe4c5ba67c041dfe5336000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000246a627842000000000000000000000000b8741a449d50ed0dcfe395287f85be152884c8d9009a7af758ae5d7b6aae84fe4c5ba67c041dfe5336000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000246a627842000000000000000000000000b8741a449d50ed0dcfe395287f85be152884c8d9000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
+  callGasLimit: 0n,
+  verificationGasLimit: 0n,
+  preVerificationGas: 0n,
+  maxFeePerGas: 66195658616n,
+  maxPriorityFeePerGas: 120000n,
+  paymasterAndData: '0x',
+  signature: '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
+}
 
+//highlight-start
 userOperation = createPaymasterUserOperation(userOperation, bundlerRPC);
+//highlight-end
 ```
 
 </TabItem>
@@ -397,7 +399,7 @@ userOperation = createPaymasterUserOperation(userOperation, bundlerRPC);
       <tr>
         <td align="left">userOperation</td>
         <td align="left">
-          <p>UserOperation object</p>
+          <p><font color="#e25894"><code>UserOperation</code></font> object</p>
           <RpcRequestTable items={userOperationParamaters} />
         </td>
       </tr>
@@ -428,15 +430,16 @@ userOperation = createPaymasterUserOperation(userOperation, bundlerRPC);
             </thead>
             <tr>
               <td>
-                <font color="#e25894">CandidePaymasterContext</font>
+                <p><font color="#e25894"><code>CandidePaymasterContext</code></font> object. (optional)</p>
+                 <RpcRequestTable items={candidePaymasterContext} />
               </td>
-              <td>Optional. Candide Paymaster context data.</td>
+              <td> Context for information to pass to the paymaster</td>
             </tr>
           </table>
         </td>
       </tr>
       <tr>
-        <td align="left">State Override Set</td>
+        <td align="left">StateOverrideSet</td>
         <td align="left">
           <table>
             <thead>
@@ -445,9 +448,14 @@ userOperation = createPaymasterUserOperation(userOperation, bundlerRPC);
             </thead>
             <tr>
               <td>
-                <font color="#e25894">StateOverrideSet</font>
+                <p><font color="#e25894"><code>StateOverrideSet</code></font> object. (optional)</p>
+                 <RpcRequestTable items={stateOverrideSetParameters} />
+                 <p><font color="#e25894"><code>AddressToState</code></font> object</p>
+                 <RpcRequestTable items={addressToStateParameters} />
               </td>
-              <td>Optional. State override values to set during gs estimation</td>
+              <td>
+              Wrapper for state overrides for gas estimation
+              </td>
             </tr>
           </table>
         </td>
@@ -465,7 +473,7 @@ userOperation = createPaymasterUserOperation(userOperation, bundlerRPC);
       <tr>
         <td align="left">userOperation</td>
         <td align="left">
-          <p>{`Promise<UserOperation> object`}</p>
+          <p><font color="#e25894">{`Promise<UserOperation>`}</font> object</p> 
           <RpcRequestTable items={userOperationParamaters} />
         </td>
       </tr>
@@ -473,6 +481,29 @@ userOperation = createPaymasterUserOperation(userOperation, bundlerRPC);
   </table>
 </TabItem>
 </Tabs>
+
+<details title="Example Response">
+
+```ts
+{
+  sender: '0xb8741a449d50ed0dcfe395287f85be152884c8d9',
+  nonce: 10n,
+  initCode: '0x',
+  callData: '0x541d63c800000000000000000000000038869bf66a61cf6bdb996a6ae40d5853fd43b52600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000001e48d80ff0a0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000018b009a7af758ae5d7b6aae84fe4c5ba67c041dfe5336000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000246a627842000000000000000000000000b8741a449d50ed0dcfe395287f85be152884c8d9009a7af758ae5d7b6aae84fe4c5ba67c041dfe5336000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000246a627842000000000000000000000000b8741a449d50ed0dcfe395287f85be152884c8d900fa5854fbf9964330d761961f46565ab7326e5a3b00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000044095ea7b30000000000000000000000003fe285dcd76bcce4ac92d38a6f2f8e964041e02000000000000000000000000000000000000000000000000000a1d1b51fe47c5c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
+  //highlight-start
+  callGasLimit: 116807n,
+  verificationGasLimit: 75441n,
+  preVerificationGas: 50444n,
+  //highlight-end
+  maxFeePerGas: 66195658616n,
+  maxPriorityFeePerGas: 120000n,
+  //highlight-start
+  paymasterAndData: '0x3fE285DcD76BCcE4Ac92d38A6F2F8E964041e020Fa5854FBf9964330d761961F46565AB7326e5a3b00000065bcd7fc00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000de84cb0d94beb10a4658077bd4ad19f4fdf94425ec730f342b8115d9907f6072f40bcea6a95bce74c29b84a7d4ee9fa67f4efb39e25a2e39a2ecb110b9a0af6b6a9589bfef7ec431b',
+  //highlight-end
+  signature: '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
+}
+```
+</details>
 
 #### Source code
 [createPaymasterUserOperation](https://github.com/candidelabs/abstractionkit/blob/cbfda80e4d8125ad93b936613c97f5780984a83a/src/paymaster/CandidePaymaster.ts#L188)

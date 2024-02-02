@@ -218,3 +218,52 @@ export const sendUseroperationResponseType = [
       "Waits for the user operation to be included onchain and returns the user operation receipt on success, or the bundler error on failture",
   },
 ];
+
+export const candidePaymasterContext = [
+  {
+    key: "token",
+    type: "string",
+    description: "ERC20 token address. (optional)",
+  },
+];
+
+export const addressToStateParameters = [
+  {
+    key: 'balance',
+    type: 'bigint | undefined',
+    description: 'The balance of the address.',
+  },
+  {
+    key: 'nonce',
+    type: 'bigint | undefined',
+    description: 'The nonce of the address.',
+  },
+  {
+    key: 'code',
+    type: 'string | undefined',
+    description: 'The code associated with the address.',
+  },
+  {
+    key: 'state',
+    type: 'Dictionary<string> | undefined',
+    description: 'The state associated with the address.',
+  },
+  {
+    key: 'stateDiff',
+    type: 'Dictionary<string> | undefined',
+    description: 'The state difference associated with the address.',
+  },
+];
+
+export const stateOverrideSetParameters = [
+  {
+    key: 'key',
+    type: 'string',
+    description: 'The key for the state override set.',
+  },
+  {
+    key: 'value',
+    type: 'AddressToState',
+    description: 'The AddressToState value for the state override set.',
+  },
+];
