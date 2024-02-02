@@ -19,20 +19,16 @@ import {
   pm_supportedEntryPointReturnParam,
 } from "/src/requestRpcData";
 
+import { smartAccountParameters } from "./accountParamAndReturnData";
+
 A `CandidePaymaster` is a class interacts with Candide's ERC-4337 Paymaster API.
-
-The `CandidePaymaster` class sets up a Paymaster Instance with:
-
-1. Paymaster URL `string`
-
-2. Entrypoint address `string`
 
 ## Usage
 
 ### Import
 
 ```ts
-import { CandideValidationPaymaster } from "abstractionkit";
+import { CandidePaymaster } from "abstractionkit";
 ```
 
 ### How to use
@@ -54,7 +50,7 @@ const paymaster: CandidePaymaster = new CandidePaymaster(paymasterRPC);
 Then you can consume Paymaster methods:
 
 ```ts
-const supportedEntrypoints = await paymaster.getSupportedEntrypoint();
+const paymasterMetaData = await paymaster.getPaymasterMetaData();
 ```
 
 ## Methods
@@ -75,8 +71,24 @@ const paymasterResult = await paymaster.getPaymasterMetaData();
 ```
 
 </TabItem>
+
 <TabItem value="response type" label="Response Type">
-  <RpcRequestTable items={paymasterMetadataParameters} />
+<table>
+  <thead>
+    <th align="left">Paramater</th>
+    <th align="left">Type</th>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="left">paymasterMetadata</td>
+      <td align="left">
+        <p><font color="#e25894"><code>PaymasterMetadata</code></font> Object</p>
+        <RpcRequestTable items={paymasterMetadataParameters} />
+      </td>
+    </tr>
+  </tbody>
+</table>
+
 </TabItem>
 </Tabs>
 
@@ -127,14 +139,14 @@ const result = await paymaster.getSupportedERC20TokensAndPaymasterMetadata();
     <tr>
       <td align="left">tokens</td>
       <td align="left">
-        <p>Object[]</p>
+        <p><font color="#e25894"><code>ERC20Token[]</code></font> Object[]</p>
         <RpcRequestTable items={tokensParamaters} />
       </td>
     </tr>
     <tr>
       <td align="left">paymasterMetadata</td>
       <td align="left">
-        <p>Object</p>
+        <p><font color="#e25894"><code>PaymasterMetadata</code></font> Object</p>
         <RpcRequestTable items={paymasterMetadataParameters} />
       </td>
     </tr>
@@ -152,10 +164,10 @@ const result = await paymaster.getSupportedERC20TokensAndPaymasterMetadata();
   tokens: [
     {
       symbol: 'CTT',
-      address: '0x7ddefa2f027691116d0a7aa6418246622d70b12a',
-      decimal: '0x12',
-      fee: '0x0',
-      exchangeRate: '0x0de0d1c4e668f68a'
+      address: '0xFa5854FBf9964330d761961F46565AB7326e5a3b',
+      decimal: 18,
+      fee: 0n,
+      exchangeRate: 1001219705870085130n
     }
   ],
   paymasterMetadata: {
@@ -164,7 +176,7 @@ const result = await paymaster.getSupportedERC20TokensAndPaymasterMetadata();
     icons: [],
     address: '0x3fE285DcD76BCcE4Ac92d38A6F2F8E964041e020',
     sponsoredEventTopic: '0xa050a122b4c0e369e3385eb6b7cccd8019638b2764de67bec0af99130ddf8471',
-    dummyPaymasterAndData: '0x3fE285DcD76BCcE4Ac92d38A6F2F8E964041e0207ddefa2f027691116d0a7aa6418246622d70b12a0100000000ffff000000000000000000000000000000000000000000000000000000000000ffff000000000000000000000000000000000000000000000000000000000000ffff010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101011c'
+    dummyPaymasterAndData: '0x3fE285DcD76BCcE4Ac92d38A6F2F8E964041e020Fa5854FBf9964330d761961F46565AB7326e5a3b0100000000ffff000000000000000000000000000000000000000000000000000000000000ffff000000000000000000000000000000000000000000000000000000000000ffff010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101011c'
   }
 }
 ```
@@ -233,8 +245,10 @@ const isSupported = await paymaster.isSupportedERC20Token(erc20TokenAddress);
   </thead>
   <tbody>
     <tr>
-      <td align="left">tokenAddress</td>
-      <td align="left"><code>string</code></td>
+      <td align="left">Token Address</td>
+      <td align="left">
+        <font color="#e25894"><code>string</code></font>
+      </td>
       <td>Onchain ERC-20 Token Address </td>
     </tr>
   </tbody>
@@ -249,8 +263,10 @@ const isSupported = await paymaster.isSupportedERC20Token(erc20TokenAddress);
   </thead>
   <tbody>
     <tr>
-      <td align="left">Checks for erc-20 support</td>
-      <td align="left"><code>boolean</code></td>
+      <td align="left">Checks for support</td>
+      <td align="left">
+        <font color="#e25894"><code>boolean</code></font>
+      </td>
       <td>Returns true if the ERC-20 token is supported, returns false otherwise</td>
     </tr>
   </tbody>
@@ -280,7 +296,7 @@ Returns the token data given an erc20 address
 ```ts title="example.ts"
 import { paymaster } from "./paymaster";
 
-const erc20TokenAddress = "0x7DdEFA2f027691116D0a7aa6418246622d70B12A";
+const erc20TokenAddress = "0xFa5854FBf9964330d761961F46565AB7326e5a3b";
 
 const erc20TokenData = await paymaster.getSupportedERC20TokenData(erc20TokenAddress);
 ```
@@ -295,15 +311,31 @@ const erc20TokenData = await paymaster.getSupportedERC20TokenData(erc20TokenAddr
   </thead>
   <tbody>
     <tr>
-      <td align="left">tokenAddress</td>
-      <td align="left"><code>string</code></td>
+      <td align="left">Token Address</td>
+      <td align="left">
+        <font color="#e25894"><code>string</code></font>
+      </td>
       <td>Onchain ERC-20 Token Address </td>
     </tr>
   </tbody>
 </table>
 </TabItem>
 <TabItem value="response type" label="Response Type">
-  <RpcRequestTable items={tokensParamaters} />
+<table>
+  <thead>
+    <th align="left">Paramater</th>
+    <th align="left">Type</th>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="left">tokens</td>
+      <td align="left">
+        <p><font color="#e25894"><code>ERC20Token[]</code></font> Object[]</p>
+        <RpcRequestTable items={tokensParamaters} />
+      </td>
+    </tr>
+  </tbody>
+</table>
 </TabItem>
 </Tabs>
 <details title="Example Response">
@@ -311,10 +343,10 @@ const erc20TokenData = await paymaster.getSupportedERC20TokenData(erc20TokenAddr
 ```js
 {
   symbol: 'CTT',
-  address: '0x7ddefa2f027691116d0a7aa6418246622d70b12a',
-  decimal: '0x12',
-  fee: '0x0',
-  exchangeRate: '0x0de0d1c4e668f68a'
+  address: '0xFa5854FBf9964330d761961F46565AB7326e5a3b',
+  decimal: 18,
+  fee: 0n,
+  exchangeRate: 1001219705870085130n
 }
 ```
 
@@ -451,6 +483,151 @@ userOperation = createPaymasterUserOperation(userOperation, bundlerRPC);
 [createSponsorPaymasterUserOperation](https://github.com/candidelabs/abstractionkit/blob/cbfda80e4d8125ad93b936613c97f5780984a83a/src/paymaster/CandidePaymaster.ts#L278C8-L278C43)
 
 ### createTokenPaymasterUserOperation
+
+Estimates gas limits and set `paymasterAndData` for ERC-20 Token Paymaster. Returns a complete userOperation
+
+#### Usage
+
+<Tabs>
+<TabItem value="example.ts" label="example.ts">
+
+```ts
+import { SmartAccount, CandidePaymaster } from "abstractionkit";
+
+const paymasterRPC="https://api.candide.dev/paymaster/$version/$network/$apikey";
+const erc20TokenAddress = "0xFa5854FBf9964330d761961F46565AB7326e5a3b"; // CTT test token
+const bundlerRPC = "https://sepolia.voltaire.candidewallet.com/rpc";
+const ownerPublicAddress = "0x2Ef844456580b6e1E22e1D584EBbC2467D9298B2"
+
+const smartAccount = SafeAccount.initializeNewAccount([ownerPublicAddress])
+
+// use smartAccount.createUserOperation to get the below
+let userOperation = {
+  sender: '0xb8741a449d50ed0dcfe395287f85be152884c8d9',
+  nonce: 10n,
+  initCode: '0x',
+  callData: '0x541d63c800000000000000000000000038869bf66a61cf6bdb996a6ae40d5853fd43b52600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000001448d80ff0a000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000f2009a7af758ae5d7b6aae84fe4c5ba67c041dfe5336000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000246a627842000000000000000000000000b8741a449d50ed0dcfe395287f85be152884c8d9009a7af758ae5d7b6aae84fe4c5ba67c041dfe5336000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000246a627842000000000000000000000000b8741a449d50ed0dcfe395287f85be152884c8d9000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
+  callGasLimit: 0n,
+  verificationGasLimit: 0n,
+  preVerificationGas: 0n,
+  maxFeePerGas: 66195658616n,
+  maxPriorityFeePerGas: 120000n,
+  paymasterAndData: '0x',
+  signature: '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
+}
+
+const paymaster: CandidePaymaster = new CandidePaymaster(paymasterRPC);
+
+// highlight-start
+userOperation = await paymaster.createTokenPaymasterUserOperation(
+  smartAccount,
+  userOperation,
+  erc20TokenAddress,
+  bundlerUrl,
+);
+// highlight-end
+```
+
+</TabItem>
+<TabItem value="Param type" label="Param Types">
+  <table>
+    <thead>
+      <th align="left">Paramater</th>
+      <th align="left">Type</th>
+    </thead>
+    <tbody>
+      <tr>
+        <td align="left">Smart Account</td>
+        <td align="left">
+          <p><font color="#e25894"><code>SmartAccount</code></font> class</p>
+          <RpcRequestTable items={smartAccountParameters} />
+        </td>
+      </tr>
+      <tr>
+        <td align="left">userOperation</td>
+        <td align="left">
+          <p><font color="#e25894"><code>UserOperation</code></font> object</p>
+          <RpcRequestTable items={userOperationParamaters} />
+        </td>
+      </tr>
+      <tr>
+        <td align="left">ERC20 Token Address</td>
+        <td align="left">
+          <table>
+            <thead>
+              <th align="left">Type</th>
+              <th align="left">Description</th>
+            </thead>
+            <tr>
+              <td>
+                <font color="#e25894">string</font>
+              </td>
+              <td>Onchain ERC-20 Token Address used for gas payment</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td align="left">Bundler URL</td>
+        <td align="left">
+          <table>
+            <thead>
+              <th align="left">Type</th>
+              <th align="left">Description</th>
+            </thead>
+            <tr>
+              <td>
+                <font color="#e25894">string</font>
+              </td>
+              <td>The Bundler URL. It is used to fetch the gas limits</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</TabItem>
+<TabItem value="response type" label="Response Type">
+  <table>
+    <thead>
+      <th align="left">Paramater</th>
+      <th align="left">Type</th>
+    </thead>
+    <tbody>
+      <tr>
+        <td align="left">userOperation</td>
+        <td align="left">
+          <p><font color="#e25894">{`Promise<UserOperation>`}</font> object</p> 
+          <RpcRequestTable items={userOperationParamaters} />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</TabItem>
+</Tabs>
+
+<details title="Example Response">
+
+```ts
+{
+  sender: '0xb8741a449d50ed0dcfe395287f85be152884c8d9',
+  nonce: 10n,
+  initCode: '0x',
+  callData: '0x541d63c800000000000000000000000038869bf66a61cf6bdb996a6ae40d5853fd43b52600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000001e48d80ff0a0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000018b009a7af758ae5d7b6aae84fe4c5ba67c041dfe5336000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000246a627842000000000000000000000000b8741a449d50ed0dcfe395287f85be152884c8d9009a7af758ae5d7b6aae84fe4c5ba67c041dfe5336000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000246a627842000000000000000000000000b8741a449d50ed0dcfe395287f85be152884c8d900fa5854fbf9964330d761961f46565ab7326e5a3b00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000044095ea7b30000000000000000000000003fe285dcd76bcce4ac92d38a6f2f8e964041e02000000000000000000000000000000000000000000000000000a1d1b51fe47c5c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
+  //highlight-start
+  callGasLimit: 116807n,
+  verificationGasLimit: 75441n,
+  preVerificationGas: 50444n,
+  //highlight-end
+  maxFeePerGas: 66195658616n,
+  maxPriorityFeePerGas: 120000n,
+  //highlight-start
+  paymasterAndData: '0x3fE285DcD76BCcE4Ac92d38A6F2F8E964041e020Fa5854FBf9964330d761961F46565AB7326e5a3b00000065bcd7fc00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000de84cb0d94beb10a4658077bd4ad19f4fdf94425ec730f342b8115d9907f6072f40bcea6a95bce74c29b84a7d4ee9fa67f4efb39e25a2e39a2ecb110b9a0af6b6a9589bfef7ec431b',
+  //highlight-end
+  signature: '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
+}
+```
+</details>
 
 #### Source code
 [createTokenPaymasterUserOperation](https://github.com/candidelabs/abstractionkit/blob/cbfda80e4d8125ad93b936613c97f5780984a83a/src/paymaster/CandidePaymaster.ts#L301C8-L301C41)
