@@ -1,3 +1,36 @@
+export const smartAccountParameters = [
+  {
+    key: 'accountAddress',
+    type: 'string',
+    description: 'The address of the smart account.',
+  },
+  {
+    key: 'proxyByteCode',
+    type: 'string',
+    description: 'The bytecode of the proxy.',
+  },
+  {
+    key: 'initializerFunctionSelector',
+    type: 'string',
+    description: 'The selector for the initializer function.',
+  },
+  {
+    key: 'initializerFunctionInputAbi',
+    type: 'string[]',
+    description: 'The ABI for the initializer function input.',
+  },
+  {
+    key: 'executorFunctionSelector',
+    type: 'string',
+    description: 'The selector for the executor function.',
+  },
+  {
+    key: 'executorFunctionInputAbi',
+    type: 'string[]',
+    description: 'The ABI for the executor function input.',
+  },
+];
+
 export const createNewAccountParam = [
   {
     key: "owners",
