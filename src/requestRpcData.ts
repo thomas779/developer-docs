@@ -7,7 +7,7 @@ export const paymasterMetadataParameters = [
   {
     key: "description",
     type: "string",
-    description: "A short description for the paymsater service",
+    description: "A short description for the paymaster service",
   },
   {
     key: "icons",
@@ -28,7 +28,7 @@ export const paymasterMetadataParameters = [
     key: "dummyPaymasterAndData",
     type: "string",
     description:
-      "Dummy value to use for estimating user operation before sponsorship",
+      "Dummy value to use for estimating userop gas before sponsorship",
   },
 ];
 
@@ -45,17 +45,17 @@ export const tokensParamaters = [
   },
   {
     key: "decimal",
-    type: "string",
+    type: "number",
     description: "Decimals of token",
   },
   {
     key: "fee",
-    type: "string",
+    type: "bigint",
     description: "Gas fee in unit of of the token",
   },
   {
     key: "exchangeRate",
-    type: "string",
+    type: "bigint",
     description: "Exchange rate of token",
   },
 ];
@@ -114,13 +114,13 @@ export const userOperationParamaters = [
     key: "paymasterAndData",
     type: "string",
     description:
-      "this field is ignore. Add a dummy data '0x', or skip including it",
+      "Address of paymaster sponsoring the transaction, followed by extra data to send to the paymaster (empty for self-sponsored transaction). Revolves to '0x' if not using a paymaster, and a paymasterDummyData when estimating gas",
   },
   {
     key: "signature",
     type: "string",
     description:
-      "this field is ignore. Add a dummy data '0x', or skip including it",
+      "The signature for the userOperation. It is the data passed into the account along with the nonce during the verification step. Resolves to '0x' when the user did not provide their signature yet",
   },
 ];
 
