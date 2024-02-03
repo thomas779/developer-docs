@@ -7,7 +7,7 @@ keywords: [safe-account, "4337", sdk, account-abstraction, gnosis-safe]
 
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
-import { SdkParamsTable } from "/src/components/CustomTable";
+import { SdkParamsTable, RpcRequestTable } from "/src/components/CustomTable";
 import {
   createNewAccountReturn,
   metaTransactionType,
@@ -22,6 +22,8 @@ import {
   jsonRpcErrorType, 
   bundlerJsonRpcErrorType,
   sendUseroperationResponseType,
+  stateOverrideSetParameters,
+  addressToStateParameters,
 } from "../../../src/requestRpcData";
 
 The `SafeAccount` uses the original Safe Singleton and adds ERC-4337 functionality using a fallback handler module. The contracts have been developed by the Safe Team, has been audited by Ackee Blockchain. To learn more about the contracts and audits, visit [Safe's github](https://github.com/safe-global/safe-modules/tree/main/modules/4337).
@@ -76,7 +78,11 @@ The **Advanced** methods offer fine control and customization, catering to devel
       </tr>
       <tr>
         <td></td>
-        <td><a href="https://github.com/candidelabs/abstractionkit/blob/0c363636cd97d47cac39e4e6b8daf4283710adde/src/account/Safe/SafeAccountV0_2_0.ts#L484C15-L484C39">estimateUserOperationGas</a></td>
+        <td><a href="./#estimateuseroperationgas">estimateUserOperationGas</a></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><a href="https://github.com/candidelabs/abstractionkit/blob/4aa794aac983bfee6dd96cd37fb384074ca9a53e/src/account/Safe/SafeAccountV0_2_0.ts#L789C16-L789C62">formatEip712SignaturesToUseroperationSignature</a></td>
       </tr>
     </tbody>
 </table>
@@ -756,3 +762,147 @@ callData : 0xf34308ef000000000000000000000000b4fbf271143f4fbf7b91a5ded31805e42b2
 #### Source code
 
 [createAccountCallDataBatchTransactions](https://github.com/candidelabs/abstractionkit/blob/0c363636cd97d47cac39e4e6b8daf4283710adde/src/account/Safe/SafeAccountV0_2_0.ts#L313)
+
+### estimateUserOperationGas
+
+Estimate gas limits for a userOperation
+
+#### Usage
+
+<Tabs>
+<TabItem value="example.ts" label="example.ts">
+
+```ts
+import { 
+  SafeAccountV0_2_0 as SafeAccount, 
+  UserOperation
+} from "abstractionkit";
+
+const bundlerRPC = "https://sepolia.voltaire.candidewallet.com/rpc";
+
+const ownerPublicAddress = "0xBdbc5FBC9cA8C3F514D073eC3de840Ac84FC6D31";
+const smartAccount = SafeAccount.initializeNewAccount([ownerPublicAddress])
+
+// Use createUserOperation() to help you construct the userOp below
+let userOperation = {
+  sender: '0xb8741a449d50ed0dcfe395287f85be152884c8d9',
+  nonce: 10n,
+  initCode: '0x',
+  callData: '0x541d63c800000000000000000000000038869bf66a61cf6bdb996a6ae40d5853fd43b52600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000001448d80ff0a000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000f2009a7af758ae5d7b6aae84fe4c5ba67c041dfe5336000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000246a627842000000000000000000000000b8741a449d50ed0dcfe395287f85be152884c8d9009a7af758ae5d7b6aae84fe4c5ba67c041dfe5336000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000246a627842000000000000000000000000b8741a449d50ed0dcfe395287f85be152884c8d9000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
+  callGasLimit: 0n,
+  verificationGasLimit: 0n,
+  preVerificationGas: 0n,
+  maxFeePerGas: 66195658616n,
+  maxPriorityFeePerGas: 120000n,
+  paymasterAndData: '0x',
+  signature: '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
+}
+
+//highlight-start
+const [preVerificationGas, verificationGasLimit, callGasLimit] = await estimateUserOperationGas(userOperation, bundlerRPC);
+//highlight-end
+```
+
+</TabItem>
+<TabItem value="Param type" label="Param Types">
+  <table>
+    <thead>
+      <th align="left">Paramater</th>
+      <th align="left">Type</th>
+    </thead>
+    <tbody>
+      <tr>
+        <td align="left">userOperation</td>
+        <td align="left">
+          <p><font color="#e25894"><code>UserOperation</code></font> object</p>
+          <RpcRequestTable items={userOperationParamaters} />
+        </td>
+      </tr>
+      <tr>
+        <td align="left">Bundler URL</td>
+        <td align="left">
+          <table>
+            <thead>
+              <th align="left">Type</th>
+              <th align="left">Description</th>
+            </thead>
+            <tr>
+              <td>
+                <font color="#e25894">string</font>
+              </td>
+              <td>The Bundler URL. It is used to fetch the gas limits</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td align="left">Number of Signers</td>
+        <td align="left">
+          <table>
+            <thead>
+              <th align="left">Type</th>
+              <th align="left">Description</th>
+            </thead>
+            <tr>
+              <td>
+                <font color="#e25894"><code>number</code></font> (optional)
+              </td>
+              <td> Number of Signers. Default to 1</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td align="left">StateOverrideSet</td>
+        <td align="left">
+          <table>
+            <thead>
+              <th align="left">Type</th>
+              <th align="left">Description</th>
+            </thead>
+            <tr>
+              <td>
+                <p><font color="#e25894"><code>StateOverrideSet</code></font> object. (optional)</p>
+                 <RpcRequestTable items={stateOverrideSetParameters} />
+                 <p><font color="#e25894"><code>AddressToState</code></font> object</p>
+                 <RpcRequestTable items={addressToStateParameters} />
+              </td>
+              <td>
+              Wrapper for state overrides for gas estimation
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</TabItem>
+<TabItem value="response type" label="Response Type">
+  <table>
+    <thead>
+      <th align="left">Paramater</th>
+      <th align="left">Type</th>
+      <th align="left">Description</th>
+    </thead>
+    <tbody>
+      <tr>
+        <td align="left">userOperation</td>
+        <td align="left">
+          <font color="#e25894">{`Promise<[bigint, bigint, bigint]>`}</font>
+        </td>
+        <td>Returns the gas estimates of preVerificationGas, verificationGasLimit, callGasLimit</td>
+      </tr>
+    </tbody>
+  </table>
+</TabItem>
+</Tabs>
+
+<details title="Example Response">
+
+```ts
+[ 46840n, 64545n, 102761n ]
+```
+</details>
+
+#### Source code
+[estimateUserOperationGas](https://github.com/candidelabs/abstractionkit/blob/0c363636cd97d47cac39e4e6b8daf4283710adde/src/account/Safe/SafeAccountV0_2_0.ts#L484C15-L484C39)
