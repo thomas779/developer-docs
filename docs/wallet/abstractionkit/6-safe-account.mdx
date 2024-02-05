@@ -15,6 +15,8 @@ import {
   createCallDataBatchTransactionReturn,
   initCodeOverrides as initCodeOverridesParams,
   createUserOperationOverrides,
+  createInitCodeParams,
+  createInitCodeReturn,
 } from "./accountParamAndReturnData";
 
 import { 
@@ -62,18 +64,14 @@ The **Advanced** methods offer fine control and customization, catering to devel
       </tr>
       <tr>
         <td><a href="./#createuseroperation">createUserOperation</a></td>
-        <td><a href="https://github.com/candidelabs/abstractionkit/blob/0c363636cd97d47cac39e4e6b8daf4283710adde/src/account/Safe/SafeAccountV0_2_0.ts#L216C16-L216C30">createInitCode</a></td>
+        <td><a href="./#createinitcode">createInitCode</a></td>
       </tr>
       <tr>
         <td><a href="./#signuseroperation">signUserOperation</a></td>
-        <td><a href="https://github.com/candidelabs/abstractionkit/blob/0c363636cd97d47cac39e4e6b8daf4283710adde/src/account/Safe/SafeAccountV0_2_0.ts#L262C16-L262C34">createProxyAddress</a></td>
-      </tr>
-      <tr>
-        <td><a href="./#senduseroperation">sendUserOperation</a></td>
         <td><a href="./#createaccountcalldatasingletransaction">createAccountCallDataSingleTransaction</a></td>
       </tr>
       <tr>
-        <td></td>
+        <td><a href="./#senduseroperation">sendUserOperation</a></td>
         <td><a href="./#createaccountcalldatabatchtransactions">createAccountCallDataBatchTransactions</a></td>
       </tr>
       <tr>
@@ -597,6 +595,52 @@ initCode: 0x...
 #### Source code
 
 [createAccountAddressAndInitCode](https://github.com/candidelabs/abstractionkit/blob/0c363636cd97d47cac39e4e6b8daf4283710adde/src/account/Safe/SafeAccountV0_2_0.ts#L110C16-L110C47)
+
+### createInitCode
+
+Calculates the intCode needed to deploy the account onchain
+
+#### Usage
+
+In this example, we initiate a single owner account.
+
+<Tabs>
+<TabItem value="example.ts" label="example.ts">
+
+```ts title="example.ts"
+import { SafeAccount } from "abstractionkit";
+
+const owner1PublicAddress = "0xBdbc5FBC9cA8C3F514D073eC3de840Ac84FC6D31";
+const owner2PublicAddress = "0x4991A5360e5da9BAF62fF644d89F46268e5159eA";
+const initCode = SafeAccount.createInitCode([ownerPublicAddress, owner2PublicAddress], 2);
+
+console.log("initCode: ", initCode);
+```
+
+</TabItem>
+
+<TabItem value="Param type" label="Param Types">
+  <SdkParamsTable items={createInitCodeParams} />
+</TabItem>
+
+<TabItem value="Return Type" label="Return Type">
+  <SdkParamsTable items={createInitCodeReturn} />
+</TabItem>
+
+</Tabs>
+
+<details>
+<summary>Example Response</summary>
+
+```terminal
+initCode: 0x...
+```
+
+</details>
+
+#### Source code
+
+[createInitCode](https://github.com/candidelabs/abstractionkit/blob/c51e68703c3bb07768888f4777123d061dde41aa/src/account/Safe/SafeAccountV0_2_0.ts#L234)
 
 ### createAccountCallDataSingleTransaction
 

@@ -1,33 +1,33 @@
 export const smartAccountParameters = [
   {
-    key: 'accountAddress',
-    type: 'string',
-    description: 'The address of the smart account.',
+    key: "accountAddress",
+    type: "string",
+    description: "The address of the smart account.",
   },
   {
-    key: 'proxyByteCode',
-    type: 'string',
-    description: 'The bytecode of the proxy.',
+    key: "proxyByteCode",
+    type: "string",
+    description: "The bytecode of the proxy.",
   },
   {
-    key: 'initializerFunctionSelector',
-    type: 'string',
-    description: 'The selector for the initializer function.',
+    key: "initializerFunctionSelector",
+    type: "string",
+    description: "The selector for the initializer function.",
   },
   {
-    key: 'initializerFunctionInputAbi',
-    type: 'string[]',
-    description: 'The ABI for the initializer function input.',
+    key: "initializerFunctionInputAbi",
+    type: "string[]",
+    description: "The ABI for the initializer function input.",
   },
   {
-    key: 'executorFunctionSelector',
-    type: 'string',
-    description: 'The selector for the executor function.',
+    key: "executorFunctionSelector",
+    type: "string",
+    description: "The selector for the executor function.",
   },
   {
-    key: 'executorFunctionInputAbi',
-    type: 'string[]',
-    description: 'The ABI for the executor function input.',
+    key: "executorFunctionInputAbi",
+    type: "string[]",
+    description: "The ABI for the executor function input.",
   },
 ];
 
@@ -250,7 +250,8 @@ export const initCodeOverrides = [
   {
     key: "c2nonce",
     type: "bigint",
-    description: "To generate different sender addresses from the same owners. Default to 0",
+    description:
+      "To generate different sender addresses from the same owners. Default to 0",
   },
   {
     key: "singletonAddress",
@@ -271,6 +272,24 @@ export const initCodeOverrides = [
     key: "addModuleLibAddress",
     type: "string",
     description: "addModuleLib address",
+  },
+];
+
+export const createInitCodeParams = [
+  {
+    key: "owners",
+    type: "string[]",
+    description:
+      "Pass the owner(s) address(es) of the account. It can be a single owner account or a multi-owner accounts (multi-sig)",
+  },
+].concat(initCodeOverrides);
+
+export const createInitCodeReturn = [
+  {
+    key: "initCode",
+    type: "string",
+    description:
+      "The initCode of the account, only needed if the account is not yet on-chain and needs to be created",
   },
 ];
 
