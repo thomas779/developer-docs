@@ -80,7 +80,7 @@ The **Advanced** methods offer fine control and customization, catering to devel
       </tr>
       <tr>
         <td></td>
-        <td><a href="https://github.com/candidelabs/abstractionkit/blob/4aa794aac983bfee6dd96cd37fb384074ca9a53e/src/account/Safe/SafeAccountV0_2_0.ts#L789C16-L789C62">formatEip712SignaturesToUseroperationSignature</a></td>
+        <td><a href="./#formateip712signaturestouseroperationsignature">formatEip712SignaturesToUseroperationSignature</a></td>
       </tr>
     </tbody>
 </table>
@@ -950,3 +950,120 @@ const [preVerificationGas, verificationGasLimit, callGasLimit] = await estimateU
 
 #### Source code
 [estimateUserOperationGas](https://github.com/candidelabs/abstractionkit/blob/0c363636cd97d47cac39e4e6b8daf4283710adde/src/account/Safe/SafeAccountV0_2_0.ts#L484C15-L484C39)
+
+### formatEip712SignaturesToUseroperationSignature
+
+A static method to format a list of eip712 signatures to a userOperation signature. 
+
+#### Usage
+
+<Tabs>
+<TabItem value="example.ts" label="example.ts">
+
+```ts
+import { Wallet } from "etherjs"; // etherjs v5 example
+import { SafeAccountV0_2_0 as SafeAccount } from "abstractionkit";
+
+const ownerPublicAddress = process.env.PUBLIC_ADDRESS as string;
+const smartAccount = SafeAccount.initializeNewAccount([ownerPublicAddress]);
+
+const ownerPrivateKey = process.env.PRIVATE_KEY as string;
+const signer = new Wallet(ownerPrivateKey);
+
+// Use createUserOperation() to help you construct the userOp below
+let userOperation = ...
+
+// domain is optional
+const domain = {
+  chainId: process.env.CHAIN_ID,
+  verifyingContract: smartAccount.safe4337ModuleAddress,
+};
+
+const types = SafeAccount.EIP712_SAFE_OPERATION_TYPE;
+
+// formate according to EIP712 Safe Operation Type
+const { sender, ...userOp } = userOperation;
+const safeUserOperation = {
+  ...userOp,
+  safe: userOperation.sender,
+  validUntil: BigInt(0),
+  validAfter: BigInt(0),
+  entryPoint: smartAccount.entrypointAddress,
+};
+
+//highlight-start
+const signature = await signer.signTypedData(domain, types, safeUserOperation);
+const formatedSig = SafeAccount.formatEip712SignaturesToUseroperationSignature([ownerPublicAddress], [signature]);
+userOperation.signature = formatedSig;
+//highlight-end
+```
+
+</TabItem>
+<TabItem value="Param type" label="Param Types">
+  <table>
+    <thead>
+      <th align="left">Paramater</th>
+      <th align="left">Type</th>
+      <th align="left">Description</th>
+    </thead>
+    <tbody>
+      <tr>
+        <td align="left">Signers Addresses</td>
+        <td align="left">
+          <font color="#e25894"><code>string[]</code></font>
+        </td>
+        <td>signers public addresses</td>
+      </tr>
+      <tr>
+        <td align="left">Signatures</td>
+        <td align="left">
+          <font color="#e25894"><code>string[]</code></font>
+        </td>
+        <td>List of eip712 signatures</td>
+      </tr>
+      <tr>
+        <td align="left">validAfter</td>
+        <td align="left">
+          <font color="#e25894"><code>bigint</code></font>
+        </td>
+        <td>timestamp the signature will be valid after</td>
+      </tr>
+      <tr>
+        <td align="left">validUntil</td>
+        <td align="left">
+          <font color="#e25894"><code>bigint</code></font>
+        </td>
+        <td>timestamp the signature will be valid until</td>
+      </tr>
+    </tbody>
+  </table>
+</TabItem>
+<TabItem value="response type" label="Response Type">
+  <table>
+    <thead>
+      <th align="left">Paramater</th>
+      <th align="left">Type</th>
+      <th align="left">Description</th>
+    </thead>
+    <tbody>
+      <tr>
+        <td align="left">Signature</td>
+        <td align="left">
+          <font color="#e25894">string</font>
+        </td>
+        <td>A userOperation signature</td>
+      </tr>
+    </tbody>
+  </table>
+</TabItem>
+</Tabs>
+
+<details title="Example Response">
+
+```ts
+0x0000000000000000000000006da39f6f7b0d2c0035084d3c313350697b3167ff591a84bf0b4bb4741224b5d226682ec306544c091e2b6535042c900b459282edfe98e393d552963ca8db11731c
+```
+</details>
+
+#### Source code
+[formatEip712SignaturesToUseroperationSignature](https://github.com/candidelabs/abstractionkit/blob/c51e68703c3bb07768888f4777123d061dde41aa/src/account/Safe/SafeAccountV0_2_0.ts#L789)
