@@ -25,7 +25,7 @@ If you are coming from the [previous guide](../send-gasless-tx), you only need a
 - Some Candide Test Tokens (CTT). Request CTT on [discord](https://discord.gg/22Xps7M5CJ) or [telegram](https://t.me/heymarcopolo)
 
 :::info
-You can find the full example of this tutorial on [Github](https://github.com/candidelabs/abstractionkit/tree/main/examples/CandideAccountExamples/CreateAccountAndSendTransactionUsingPaymaster)
+You can find the full example of this tutorial on [Github](https://github.com/candidelabs/abstractionkit/tree/main/examples/SafeAccountExamples/CreateAccountAndSendTransactionUsingTokenPaymaster)
 :::
 
 ### Step 1: Get setup
@@ -40,12 +40,14 @@ cd smart-wallet-pay-gas-erc20
 2. Install required dependencies
 
 ```bash
-yarn add abstractionkit
+yarn add abstractionkit dotenv
 ```
 
 3. Configure Environment Variables
 
-Create a .env file in your project directory and add the following environment variables with your own values. We will be using Sepolia Testnet for this example
+- Create a .env file in ./src and add the following environment variables with your own values
+- We will be using Sepolia Testnet for this example
+- `yarn add dotenv` to load environment variables from the .env file
 
 :::info
 We host free [bundlers](../../bundler/rpc-endpoints) endpoints, you do not need to create an account.
