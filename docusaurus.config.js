@@ -94,7 +94,7 @@ const config = {
       announcementBar: {
         id: 'private_beta_paymaster',
         content:
-          'AbstractionKit now supports the Safe Account. Join our chat for dev support <button><a target="_blank" rel="noopener noreferrer" href="https://discord.gg/wxxP4ZhtbB">Join Discord</a></button>',
+          'AbstractionKit now supports the Safe Account. <button><a target="_blank" rel="noopener noreferrer" href="https://docs.candide.dev/wallet/abstractionkit/safe-account/">Get Started</a></button>',
         backgroundColor: '#f0f6ff',
         textColor: '#000000',
         isCloseable: false,
