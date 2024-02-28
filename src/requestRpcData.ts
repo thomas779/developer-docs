@@ -85,28 +85,28 @@ export const userOperationParamaters = [
   },
   {
     key: "callGasLimit",
-    type: "string",
+    type: "bigint",
     description: "The amount of gas to allocate the main execution call",
   },
   {
     key: "verificationGasLimit",
-    type: "string",
+    type: "bigint",
     description: "The amount of gas to allocate for the verification step",
   },
   {
     key: "preVerificationGas",
-    type: "string",
+    type: "bigint",
     description:
       "The amount of gas to pay for to compensate the bundler for pre-verification execution and calldata",
   },
   {
     key: "maxFeePerGas",
-    type: "string",
+    type: "bigint",
     description: "Maximum fee per gas (similar to EIP-1559 max_fee_per_gas)",
   },
   {
     key: "maxPriorityFeePerGas",
-    type: "string",
+    type: "bigint",
     description:
       "Maximum priority fee per gas (similar to EIP-1559 max_priority_fee_per_gas)",
   },
