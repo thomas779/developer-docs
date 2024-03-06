@@ -85,6 +85,7 @@ const sidebars = {
       className: 'category-not-collapsible',
       label: 'Technical Reference',
       items: [
+        'wallet/technical-reference/chain-nuances',
         'wallet/technical-reference/deployments', 
         {
           type: 'category',
