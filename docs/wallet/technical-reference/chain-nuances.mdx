@@ -8,7 +8,7 @@ keywords: [EVM, polygon, gas-estimates, account-abstraction]
 
 Smart Wallet developers face challenges with varying EVM gas estimates. AbstractionKit provides flexibility through overrides. 
 
-Using the [createUserOperation](../abstractionkit/safe-account/#createuseroperation) function, developers can pass their own values for `maxPriorityFeePerGas` and `maxFeePerGas`, ensuring reliable transaction processing.
+Using the [createUserOperation](/wallet/abstractionkit/safe-account/#createuseroperation) function, developers can pass their own values for `maxPriorityFeePerGas` and `maxFeePerGas`, ensuring reliable transaction processing.
 
 ```ts title="Gas Overrides example"
 const userOperation = await smartAccount.createUserOperation(
