@@ -116,7 +116,7 @@ const userAccountContract = new ethers.Contract(walletAddress, abiSmartWallet, p
 const hashMessage = ethers.utils.hashMessage(message);
 
 try {
-  const returnValue = await signer.isValidSignature(hashMessage, signature)
+  const returnValue = await userAccountContract.isValidSignature(hashMessage, signature)
 } catch (error) {
   // signature is not valid
 }
