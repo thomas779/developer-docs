@@ -1,0 +1,114 @@
+---
+title: Signing a Message
+description: Learn how sign messages using Safe wallet and verifing its signature using EIP-1271 Signature Validation 
+keywords: [signing-messages, smart-contract-signature, eip-1271]
+---
+
+# Signing & Validation a Message 
+
+Smart wallets can sign arbitrary messages similar to EOAs.
+
+## Single Owner Safe
+
+### Sign Message 
+
+```ts title="Signing"
+import * as dotenv from 'dotenv';
+
+import { SafeAccountV0_2_0 as SafeAccount } from "abstractionkit"; 
+import { Contract, JsonRpcProvider, Wallet, hashMessage} from "ethers"; // v6
+
+dotenv.config()
+const ownerPublicAddress = process.env.PUBLIC_ADDRESS as string
+const smartAccount = SafeAccount.initializeNewAccount(
+    [ownerPublicAddress],
+)
+
+const chainId = BigInt(process.env.CHAIN_ID as string)
+const jsonRpcNodeProvider = process.env.JSON_RPC_NODE_PROVIDER as string
+const provider = new JsonRpcProvider(jsonRpcNodeProvider, chainId);
+
+const abiSmartWallet = [
+    "function isValidSignature(bytes32 _dataHash, bytes calldata _signature) external view returns (bytes4)",
+    "function getMessageHash(bytes memory message) public view returns (bytes32)"
+];
+
+const safeContract = new Contract(
+    smartAccount.accountAddress,
+    abiSmartWallet,
+    provider,
+);
+
+const message = hashMessage("Hello World");
+const safeMessageHash = await safeContract.getMessageHash(message);
+
+const ownerPrivateKey = process.env.PRIVATE_KEY as string
+const signer = new Wallet(ownerPrivateKey);
+const signature = await signer.signingKey.sign(safeMessageHash).serialized;
+```
+
+```ts title="Verifying the Signature"
+const returnValue = await safeContract.isValidSignature(
+    message,
+    signature,
+);
+
+console.log(returnValue, "Success! You should see the magic value 0x1626ba7e");
+```
+
+### Sign Typed Data EIP-712
+
+```ts title="Signing a Message"
+import * as dotenv from 'dotenv';
+
+import { SafeAccountV0_2_0 as SafeAccount } from "abstractionkit";
+import { Contract, JsonRpcProvider, Wallet, hashMessage} from "ethers"; // v6
+
+dotenv.config();
+const ownerPublicAddress = process.env.PUBLIC_ADDRESS as string
+const smartAccount = SafeAccount.initializeNewAccount(
+    [ownerPublicAddress],
+)
+
+const chainId = BigInt(process.env.CHAIN_ID as string)
+const message = hashMessage("Hello World");
+
+const domain = {
+    chainId,
+    verifyingContract: smartAccount.accountAddress
+};
+const types = {
+    SafeMessage: [
+        { type: "bytes", name: "message" },
+    ],
+};
+const value = { message };
+
+// For demo purposes, we are signing directly using etheres Wallet. 
+// You can also request this signature from the users MPC service if you are using one  
+const ownerPrivateKey = process.env.PRIVATE_KEY as string
+const signer = new Wallet(ownerPrivateKey);
+const signature = await signer.signTypedData(domain, types, value);
+```
+
+```ts title="Verifying the Signature"
+const jsonRpcNodeProvider = process.env.JSON_RPC_NODE_PROVIDER as string
+const provider = new JsonRpcProvider(jsonRpcNodeProvider, chainId);
+
+const abiSafeWallet = [
+    "function isValidSignature(bytes32 _dataHash, bytes calldata _signature) external view returns (bytes4)",
+    "function getMessageHash(bytes memory message) public view returns (bytes32)"
+];
+
+const safeContract = new Contract(
+    smartAccount.accountAddress,
+    abiSafeWallet,
+    provider,
+);
+const returnValue = await safeContract.isValidSignature(
+    message,
+    signature,
+);
+
+console.log(returnValue, "Success! You should see the magic value 0x1626ba7e");
+```

@@ -43,6 +43,7 @@ const sidebars = {
         'wallet/guides/send-gasless-tx',
         'wallet/guides/pay-gas-in-erc20',
         'wallet/guides/multisig',
+        'wallet/guides/signing'
       ],
     },
     {
