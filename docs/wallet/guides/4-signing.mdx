@@ -97,7 +97,6 @@ const provider = new JsonRpcProvider(jsonRpcNodeProvider, chainId);
 
 const abiSafeWallet = [
     "function isValidSignature(bytes32 _dataHash, bytes calldata _signature) external view returns (bytes4)",
-    "function getMessageHash(bytes memory message) public view returns (bytes32)"
 ];
 
 const safeContract = new Contract(
