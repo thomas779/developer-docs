@@ -1,0 +1,55 @@
+---
+slug: bundler-mempool-now-live
+title: Shared Bundler Mempool now live
+description: Voltaire is a modular and lightning-fast Python Bundler for Ethereum EIP-4337 Account Abstraction
+image: "/img/posters/erc4337-bundler.png"
+authors: [sherif]
+tags: [bundler]
+---
+## Decentralized & Censorship Resistant AA
+
+One year ago marked a significant milestone with the launch of the first production-ready 
+ERC-4337 entrypoint contract, with the premise of decentralized Account Abstraction 
+using an alternative mempool. The limitations and vulnerabilities of centralized server 
+approaches for smart accounts highlighted the importance of building decentralized and 
+censorship-resistant solutions. ERC-4337 offers a permissionless bundler network to deliver 
+User Operations without even changing or censoring them. Bundlers are incentivized to 
+participate in the service. They are also protected against grieving attacks thanks 
+to the Entrypoint design. The network is protected from Denial-of-service (DoS) attacks 
+ensuring continuous operation and resilience. The shared mempool was developed collaboratively 
+with engineering teams from Candide, [ERC-4337](https://www.erc4337.io/), [Etherspot](https://etherspot.fyi/), 
+[Silus](https://silius.gitbook.io/silius) and Alchemy.
+
+## How does ERC-4337 achieve that?
+
+
+The lack of proper measures can lead to various attacks, denial of service vectors,
+and potential network failure. To create a robust solution, ERC-4337 is designed to separate 
+validation from execution, limits the amount of work required for validation, and prevents 
+certain environment opcodes during validation. Additionally, restrictions are placed on 
+storage access and transactions to prevent mass invalidations and mutually exclusive 
+transactions. These measures aim to maintain decentralization and prevent potential attacks 
+on the network. A separate standard, ERC-7562 describes the rules imposed on the validation 
+context of Account Abstraction transactions.
+
+
+## Getting Started
+
+Candide is proud to release its first p2p implementation for 
+[Voltaire](https://github.com/candidelabs/voltaire/), marking a significant 
+milestone into its operation in the permissionless mempool. With the introduction of the p2p 
+implementation, Voltaire's codebase is now both in Python & Rust. User Operations propagated 
+to the mempool are routed not only solely to Voltaire but are also distributed to participating 
+Bundlers that have completed the p2p implementation as of today: Etherspot's 
+[Skandha](https://github.com/etherspot/skandha/) and [Silus](https://github.com/silius-rs/silius).
+
+Smart Account Developers eager to get early access can simply 
+[fill out the form](https://app.formbricks.com/s/cltpz00552us3czmesgrizyfc) specifying their 
+desired network for support. 
+
+If you are building on account abstraction, reach out on twitter, 
+discord or come say hello at team@candidelabs.com
+
+<p align="center">
+  <img src="/img/posters/erc4337-bundler.png" />
+</p>
