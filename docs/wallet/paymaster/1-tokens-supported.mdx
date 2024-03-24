@@ -6,8 +6,27 @@ keywords: [paymaster, gas sponsorship, pay gas in stablecoin]
 ---
 
 import { PaymasterSupportedToken } from "/src/components/CustomTable";
+
+export const arbitrumList=[{
+    token: "USDC (Native)",
+    logo: "/img/tokens/usdc-logo.svg",
+    address: "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+}];
+
+export const baseList =[{
+    token: "USDC (Native)",
+    logo: "/img/tokens/usdc-logo.svg",
+    address: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+}];
+
+export const bscList =[{
+    token: "USDC (Binance-Peg)",
+    logo: "/img/tokens/usdc-logo.svg",
+    address: "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
+}];
+
 export const polygonList = [{
-    token: "USD Coin (PoS) (USDC.e)",
+    token: "USDC.e (Bridged)",
     logo: "/img/tokens/usdc-logo.svg",
     address: "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
 }]
@@ -22,7 +41,7 @@ export const celoList =[{
     address: "0xd8763cba276a3738e6de85b4b3bf5fded6d6ca73",
 }];
 export const optimismList= [{
-    token: "USDC Bridged",
+    token: "USDC (Bridged)",
     logo: "/img/tokens/usdc-logo.svg",
     address: "0x7F5c764cBc14f9669B88837ca1490cCa17c31607",
 }];
@@ -51,17 +70,27 @@ export const mumbaiList= [{
 List of ERC-20 Tokens accepted by Candide's Paymaster
 
 :::info
-If you would like to see a token or network supported, [reach out on telegram](https://t.me/heymarcopolo) and we will add it.
+If you would like to see a token or network supported, reach out on [telegram](https://t.me/heymarcopolo) or email team@candidelabs.com
 :::
 
 ## Mainnets
-### Celo Mainnet
+
+### Arbitrum
+<PaymasterSupportedToken items={arbitrumList}/>
+
+### Base
+<PaymasterSupportedToken items={baseList}/>
+
+### Binance Smart Chain
+<PaymasterSupportedToken items={bscList}/>
+
+### Celo
 <PaymasterSupportedToken items={celoList} />
 
-### Optimism Mainnet
+### Optimism
 <PaymasterSupportedToken items={optimismList} />
 
-### Polygon POS Mainnet
+### Polygon POS
 <PaymasterSupportedToken items={polygonList} />
 
 ## Testnets
