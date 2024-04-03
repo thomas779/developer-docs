@@ -48,6 +48,16 @@ const sidebars = {
     },
     {
       type: 'category',
+      label: 'Plugins',
+      collapsible: false,
+      className: 'category-not-collapsible',
+      items: [
+        'wallet/plugins/passkeys',
+        'wallet/plugins/recovery-with-guardians'
+      ],
+    },
+    {
+      type: 'category',
       label: 'SDK Reference',
       collapsible: false,
       className: 'category-not-collapsible',

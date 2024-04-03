@@ -1,0 +1,224 @@
+---
+title: Passkeys
+description: Utilize Passkeys for securing and backing up user Safe smart accounts through biometric authentication.
+keywords: [passkeys, webauthn, safe, plugin]
+---
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Passkeys can be used to secure onchain smart accounts using **biometrics or face ID**. Users no longer need to manage and remember complex private keys; instead, they can effortlessly access their digital wallets using passkey-enabled devices, synced across devices via iCloud Keychain or other password managers like Google's.
+
+In the context of an ethereum wallet, Passkeys serve as substitutes for traditional passwords or pins that encrypts EOA's private keys in a local device. Instead, they generate unique digital keys using a different curve (P256) using the device secure enclave, enhancing security by preventing reuse. Passkeys are built on the WebAuthentication (WebAuthn) standard, which leverages public-key cryptography. Developed by the FIDO Alliance, Passkeys adhere to W3C standards.
+
+## Demo with Safe Accounts
+ 
+This example showcases a Safe Smart Account deployment utilizing 4337 and Passkeys, and minting an NFT. It employs experimental and unaudited contracts (at the moment of writing), such as WebAuthnSigner and FCLP256Verifier, developed by the Safe Team and FreshCryptoLib.
+
+- **Passkeys Webapp**:
+    - [Live Demo](https://safe-passkeys.netlify.app/) 
+    - [Source Code](https://github.com/candidelabs/abstractionkit/tree/webauth/examples/SafeAccountExamples/PasskeysCreateAccountandSendTransaction)
+
+- **Node script simulated Passkeys**
+    - [Source Code](https://github.com/candidelabs/abstractionkit/tree/webauth/examples/SafeAccountExamples/WebAuthCreateAccountAndSendTransaction)
+
+## Create Passkeys Account
+
+<Tabs>
+<TabItem value="npm" label="npm">
+
+```bash
+npm i abstractionkit@0.1.5 ethers
+```
+
+</TabItem>
+<TabItem value="yarn" label="yarn">
+
+```bash
+yarn add abstractionkit@0.1.5 ethers
+```
+
+</TabItem>
+</Tabs>
+
+During this tutorial, we're installing `v0.1.5` of `abstractionkit`, an alpha version that includes the webauthn contracts. 
+
+We will often import Web Authentication API helper functions and classes from [/webauth](https://github.com/candidelabs/abstractionkit/blob/webauth/examples/SafeAccountExamples/WebAuthCreateAccountAndSendTransaction/src/webauthn.ts). Make sure to copy it and using it during your developement. 
+
+### Step 1: Create WebAuthn credentials
+
+Create WebAuthn credentials using the navigator.credentials API. This includes defining parameters such as the relying party (RP) name and ID, user details, and challenge.
+
+```ts
+import ethers from "ethers";
+import { WebAuthnCredentials } from './webauthn';
+
+const navigator = {
+    credentials: new WebAuthnCredentials(),
+}
+
+const credential = navigator.credentials.create({
+    publicKey: {
+        rp: {
+            name: 'Candide',
+            id: 'candide.dev',
+        },
+        user: {
+            id: ethers.getBytes(ethers.id('chucknorris')),
+            name: 'chucknorris',
+            displayName: 'Chuck Norris',
+        },
+        challenge: ethers.toBeArray(Date.now()),
+        pubKeyCredParams: [{ type: 'public-key', alg: -7 }],
+    },
+})
+```
+
+### Step 2: Extract Public Key
+
+Extract the public key from the generated WebAuthn credential response
+
+```ts
+import { extractPublicKey } from "./webauthn";
+import { WebauthPublicKey } from "abstractionkit";
+
+const publicKey = extractPublicKey(credential.response)
+
+const webauthPublicKey: WebauthPublicKey = {
+    x: publicKey.x,
+    y: publicKey.y,
+}
+```
+
+### Step 4: Initialize Smart Account
+
+Initialize the Safe Smart Account as usual. The `SafeAccountWebAuth` class uses the same methods as the other for everything related to creating a userOp.
+
+```ts
+import { SafeAccountWebAuth as SafeAccount } from "abstractionkit";
+
+const smartAccount = SafeAccount.initializeNewAccount([webauthPublicKey])
+```
+
+:::info Combine Signature Types
+You can combine an EOA public address and a webauthPublicKey in the initializing function 
+to create a multisig secured by both types.
+:::
+
+## Create Passkey UserOp
+This step follows the same flow as the normal Safe flow with  [createUserOperation](../../abstractionkit/safe-account/#createuseroperation), with the addition of the webauthn dummy signature. 
+
+```ts
+import { DummySignature } from "abstractionkit";
+
+let userOperation = await smartAccount.createUserOperation(
+    [transaction] // constructed MetaTransaction 
+    jsonRpcNodeProvider, //the node rpc.
+    bundlerUrl, //the bundler rpc.
+    {
+        dummySingatures:[DummySignature.webauth]
+    }
+)
+```
+
+## Sign with Passkeys
+
+### Step1: Calculate the EIP712 hash
+
+Calculate the Safe EIP712 hash for the UserOp
+
+```ts
+const entrypoint = "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"
+
+const safeInitOpHash = SafeAccount.getUserOperationEip712Hash(
+    userOperation,
+    chainId,
+    0n, // validAfter
+    0n, // validUntil
+    entrypoint
+)
+```
+
+### Step 2: Request a WebAuthn assertion
+
+Using the navigator.credentials API
+
+```ts
+import { UserVerificationRequirement } from "./webauthn";
+
+const assertion = navigator.credentials.get({
+    publicKey: {
+        challenge: ethers.getBytes(safeInitOpHash),
+        rpId: 'candide.dev',
+        allowCredentials: [{ type: 'public-key', id: new Uint8Array(credential.rawId) }],
+        userVerification: UserVerificationRequirement.required,
+    },
+})
+```
+
+### Step 3: Extract WebAuthn signature data
+
+Extract WebAuthn signature data from the assertion response and create a signature from the extracted signature data
+
+```ts
+import { WebauthSignatureData } from "abstractionkit";
+import { extractClientDataFields, extractSignature } from "./webauthn";
+
+const webauthSignatureData: WebauthSignatureData = {
+    authenticatorData: assertion.response.authenticatorData,
+    clientDataFields: extractClientDataFields(assertion.response),
+    rs: extractSignature(assertion.response),
+}
+
+const webauthSignature: string = SafeAccount.createWebAuthnSignature(webauthSignatureData)
+```
+
+### Step 4: Create a Signer Signature Pair and Format
+
+Create a `SignerSignaturePair` containing the `webauthPublicKey` and `webauthSignature`, and format the `SignerSignaturePair` into the expected format for the userOperation signature
+
+```ts
+import { SignerSignaturePair } from "abstractionkit";
+
+const signerSignaturePair: SignerSignaturePair = {
+    signer: webauthPublicKey,
+    signature: webauthSignature,
+}
+
+userOperation.signature = SafeAccount.formatSignaturesToUseroperationSignature(
+    [signerSignaturePair],
+    userOperation.nonce == 0n
+)
+```
+
+## Additional Notes
+
+### Saving Public Credentials  
+It's crucial to securely store the Passkey's public credentials, specifically *x, y, and rawId*, 
+in a retrievable location. Losing this data would mean users can't recover their accounts 
+with Passkeys. This information isn't sensitive, so you can set up a server using 
+[@simplewebauthn/server](https://simplewebauthn.dev/docs/packages/server) for this purpose.
+
+### Sync & Recovery
+
+#### Apple
+Passkey recovery on Apple devices involves iCloud Keychain escrow. In case of device loss, 
+users authenticate through their iCloud account using standard procedure. After authentication, 
+they enter their device passcode. Apple users also has the option to add an account recovery contact 
+for additional support. Learn more on [Apple Passkeys security](https://support.apple.com/en-us/102195) 
+
+#### Google
+
+Google Password Manager seamlessly syncs passkeys across devices, with plans to extend syncing
+support to a broader range of operating systems. Learn more on [Google Passkeys security](https://developers.google.com/identity/passkeys)
+
+### Device Support
+Passkeys are widely available across devices such as: 
+- Apple Devices: iPhones & iPads (iOS 16+), Mac (macOS 13+)
+- Android Devices: Phones and tablets (Android 9+)
+- Windows (10/11/+): Supported on Chrome, Brave, Edge, and Firefox browsers
+- Linux: Supported on Chrome, Firefox, Edge, and Brave browsers
+
+For a comprehensive list of supported systems, please visit [passkeys.dev/device-support](https://passkeys.dev/device-support/)
+
+
+
