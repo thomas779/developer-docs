@@ -2,20 +2,20 @@
 title: Passkeys
 description: Utilize Passkeys for securing and backing up user Safe smart accounts through biometric authentication.
 keywords: [passkeys, webauthn, safe, plugin]
+image: /img/passkeys_poster.png
 ---
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
-Passkeys can be used to secure onchain smart accounts using **biometrics or face ID**. Users no longer need to manage and remember complex private keys; instead, they can effortlessly access their digital wallets using passkey-enabled devices, synced across devices via iCloud Keychain or other password managers like Google's.
+Passkeys can be used to secure onchain smart accounts using **fingerprint**, **face recognition**, or the device **PIN** code. Users no longer need to manage and remember complex private keys; instead, they can effortlessly access their digital wallets using passkey-enabled devices, synced across devices via Apple's **iCloud Keychain**, or other cross-platform password managers like **Proton Pass** and **Bitwarden**.
 
-In the context of an ethereum wallet, Passkeys serve as substitutes for traditional passwords or pins that encrypts EOA's private keys in a local device. Instead, they generate unique digital keys using a different curve (P256) using the device secure enclave, enhancing security by preventing reuse. Passkeys are built on the WebAuthentication (WebAuthn) standard, which leverages public-key cryptography. Developed by the FIDO Alliance, Passkeys adhere to W3C standards.
-
+In the context of an Ethereum wallet, **Passkeys** serve as substitutes for traditional seedphrase backups. Unlike the default curve (secp256k1) used for Externally Owned Accounts (EOA), Passkeys generate unique digital keys using the **secp256r1** curve. These keys benefit from device secure enclave cryptography, which enhances security by preventing password reuse. Passkeys are built on the WebAuthn standard, leveraging public-key cryptography. Developed collaboratively by the FIDO Alliance, which includes Apple, Google, Microsoft, and others, Passkeys strictly adhere to WebAuthn standards.
 ## Demo with Safe Accounts
  
 This example showcases a Safe Smart Account deployment utilizing 4337 and Passkeys, and minting an NFT. It employs experimental and unaudited contracts (at the moment of writing), such as WebAuthnSigner and FCLP256Verifier, developed by the Safe Team and FreshCryptoLib.
 
-- **Passkeys Webapp**:
-    - [Live Demo](https://safe-passkeys.netlify.app/) 
+- **Safe Passkeys Webapp**:
+    - [Live Demo](https://passkeys.candide.dev/) 
     - [Source Code](https://github.com/candidelabs/abstractionkit/tree/webauth/examples/SafeAccountExamples/PasskeysCreateAccountandSendTransaction)
 
 - **Node script simulated Passkeys**
@@ -27,14 +27,14 @@ This example showcases a Safe Smart Account deployment utilizing 4337 and Passke
 <TabItem value="npm" label="npm">
 
 ```bash
-npm i abstractionkit@0.1.5 ethers
+npm i abstractionkit@0.1.6 ethers
 ```
 
 </TabItem>
 <TabItem value="yarn" label="yarn">
 
 ```bash
-yarn add abstractionkit@0.1.5 ethers
+yarn add abstractionkit@0.1.6 ethers
 ```
 
 </TabItem>
@@ -210,6 +210,17 @@ for additional support. Learn more on [Apple Passkeys security](https://support.
 
 Google Password Manager seamlessly syncs passkeys across devices, with plans to extend syncing
 support to a broader range of operating systems. Learn more on [Google Passkeys security](https://developers.google.com/identity/passkeys)
+
+#### Yubikey
+YubiKey is compatible with passkeys through its support for the authentication protocol. 
+Passkeys can be protected and managed using YubiKey's hardware-based security features. 
+Learn more on [Yubico](https://www.yubico.com/blog/a-yubico-faq-about-passkeys/)
+
+#### Password Managers
+Passkey backups are not limited to hardware manufactures, they are supported across different 
+password managers like [Windows Hello](https://support.microsoft.com/en-us/windows/passkeys-in-windows-301c8944-5ea2-452b-9886-97e4d2ef4422), 
+[Bitwarden](https://bitwarden.com/), [ProtonPass](https://proton.me/blog/proton-pass-passkeys),
+[1Password](https://1password.com/product/passkeys), [LastPass](https://www.lastpass.com/features/passwordless-authentication) and others.  
 
 ### Device Support
 Passkeys are widely available across devices such as: 
