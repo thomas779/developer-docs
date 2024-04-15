@@ -94,7 +94,7 @@ const config = {
       announcementBar: {
         id: 'private_beta_paymaster',
         content:
-          'Voltaire now live in Shared Bundler Mempool <button><a target="_blank" rel="noopener noreferrer" href="https://docs.candide.dev/blog/bundler-mempool-now-live/">Read Announcement</a></button>',
+          'JUST IN: Smooth Onboarding with Safe Passkeys <button><a target="_blank" rel="noopener noreferrer" href="https://www.candide.dev/blog/safe-passkeys-smooth-onboarding">Read Announcement</a></button>',
         backgroundColor: '#f0f6ff',
         textColor: '#000000',
         isCloseable: false,
