@@ -37,11 +37,33 @@ or compromised.
 
 Read more on our on blog post on making [Ethereum Accounts Recoverable](../../../blog/making-accounts-recoverable/), the seedless way.
 
-:::info
-Want to run a simple example? Start by adding your first guardian [here](https://github.com/candidelabs/abstractionkit/tree/webauth/examples/SafeAccountExamples/SocialRecovery). 
+:::tip
+Want to run a simple example? Start by adding your first guardian to protect an account [here](https://github.com/candidelabs/abstractionkit/tree/webauth/examples/SafeAccountExamples/SocialRecovery). 
 :::
 
 ## Usage
+
+### Install
+<Tabs>
+<TabItem value="npm" label="npm">
+
+```bash
+npm i abstractionkit@0.1.7
+```
+
+</TabItem>
+<TabItem value="yarn" label="yarn">
+
+```bash
+yarn add abstractionkit@0.1.7
+```
+
+</TabItem>
+</Tabs>
+
+:::note
+We're installing `v0.1.7` of `abstractionkit`, an experimental version that includes the Guardian Recovery Module.
+:::
 
 ### Import
  
@@ -337,39 +359,6 @@ Creates a MetaTransaction that finalizes an ongoing recovery request if the reco
   </TabItem>
 </Tabs>
 
-## Cancel Recovery Request
-
-### createCancelRecoveryMetaTransaction
-
-Creates a MetaTransaction that lets the account cancel an ongoing recovery request.
-
-<Tabs>
-  <TabItem value="Param type" label="Param Types">
-    <SdkParamsTable items={createCancelRecoveryParams} />
-  </TabItem>
-  <TabItem value="Return type" label="Return Types">
-    <table>
-      <thead>
-        <th align="left">Param Name</th>
-        <th align="left">Param Type</th>
-        <th align="left">Description</th>
-      </thead>
-      <tbody>
-        <tr>
-          <td>MetaTransaction</td>
-          <td align="left">
-            <p><font color="#22c916">MetaTransaction</font></p>
-            <SdkParamsTable items={metaTransactionType} />
-          </td>
-          <td align="left">
-            MetaTransaction is the type of a transaction to construct a Safe operation.
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </TabItem>
-</Tabs>
-
 ## Cancel a Recovery
 
 ### createCancelRecoveryMetaTransaction
@@ -482,5 +471,3 @@ Get the module nonce for an account.
     <p>BigInt</p>
   </TabItem>
 </Tabs>
-
-Work in progress, to be release natively on AbstractionKit. If you can't wait, get started [here](https://docs.candide.dev/blog/making-accounts-recoverable/)
