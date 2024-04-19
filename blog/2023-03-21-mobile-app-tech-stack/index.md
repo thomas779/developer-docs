@@ -64,7 +64,7 @@ Using Wallet Dart provides several benefits, including:
 - **Enhanced UX** - CANDIDE Paymaster support gasless transactions, improving the user experience and making it more seamless to interact.
 - **Better dev experience** - The Wallet Dart SDK abstracts away the complexities of the development *Smart Accounts*, such as cryptography, wallet management, and smart contract interactions, making it easier to build account abstraction applications
 
-Use the Wallet Dart [Library](https://github.com/candidelabs/wallet-dart) and contribute back. More documentation coming soon. Hop on our discord if you need any help.
+Use the Wallet Dart [Library](https://github.com/candidelabs/wallet-dart) and contribute back. More documentation coming soon. Hop on our Discord if you need any help.
 
 
 ## Optimism
@@ -72,4 +72,4 @@ Use the Wallet Dart [Library](https://github.com/candidelabs/wallet-dart) and co
 CANDIDE Wallet is powered by the [OP Stack](https://stack.optimism.io/), the open-source development stack that powers Optimism. An Ethereum layer 2 that improves the scalability and usability of crypto, bringing lower cost gas coupled with lighting fast transactions.
 
 ## Modile Client
-CANDIDE Mobile Wallet is a cross-platform, mobile first, built with Flutter. CANDIDE Mobile App seamless mobile experiences targets end-users on any mobile device. It is not only built on top of not only the libraries mentioned above but also on top of countless open-source code that was published for free to make it happen. You can get our Beta builds for both Android and iOS on our discord, or by building it yourself on our [github](https://github.com/candidelabs/candide-mobile-app).
+CANDIDE Mobile Wallet is a cross-platform, mobile first, built with Flutter. CANDIDE Mobile App seamless mobile experiences targets end-users on any mobile device. It is not only built on top of not only the libraries mentioned above but also on top of countless open-source code that was published for free to make it happen. You can get our Beta builds for both Android and iOS on our Discord, or by building it yourself on our [github](https://github.com/candidelabs/candide-mobile-app).

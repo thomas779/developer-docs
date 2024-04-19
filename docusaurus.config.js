@@ -121,7 +121,7 @@ const config = {
           {
             to: '/wallet/atelier-intro',
             position: 'left',
-            label: 'Smart Wallets',
+            label: 'Smart Accounts',
           },
           {
             to: '/dapps/getting-started',
@@ -197,7 +197,7 @@ const config = {
             "items": [
               {
                 "label": "Discord",
-                "href": "https://discord.gg/Q8B6WJ2MvT"
+                "href": "https://discord.gg/8q2H6BEJuf"
               },
               {
                 "label": "Twitter",
