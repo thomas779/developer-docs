@@ -31,7 +31,7 @@ import {
 import { metaTransactionType } from "../../../src/data/accountParamAndReturnData";
 
 The Account Recovery module is designed to work for both a single-owner account 
-and for multi-sig accounts. An account owner can add recovery methods (also known as Guardians) 
+and for multi-sig **Safe** accounts. An account owner can add recovery methods (also known as Guardians) 
 that have the ability to change the ownership of the account, in case the owner key is lost 
 or compromised. 
 
@@ -288,46 +288,6 @@ Creates a MetaTransaction that lets the guardians start the execution of the rec
   </TabItem>
 </Tabs>
 
-### getRecoveryHash
-
-Generates the recovery hash that should be signed by the guardian to authorize a recovery.
-
-<Tabs>
-  <TabItem value="Param type" label="Param Types">
-    <SdkParamsTable items={getRecoveryHashParams} />
-  </TabItem>
-  <TabItem value="Return type" label="Return Types">
-    <p>Recovery Hash</p>
-  </TabItem>
-</Tabs>
-
-### getRecoveryRequest
-
-Retrieves the account's current ongoing recovery request.
-
-<Tabs>
-  <TabItem value="Param type" label="Param Types">
-    <SdkParamsTable items={getRecoveryRequestParams} />
-  </TabItem>
-  <TabItem value="Return type" label="Return Types">
-    <SdkParamsTable items={RecoveryRequestParams} />
-  </TabItem>
-</Tabs>
-
-### getRecoveryApprovals
-
-Retrieves the guardian approval count for this particular recovery request at the current nonce.
-
-<Tabs>
-  <TabItem value="Param type" label="Param Types">
-    <SdkParamsTable items={getRecoveryApprovalsParams} />
-  </TabItem>
-  <TabItem value="Return type" label="Return Types">
-    <p>BigInt</p>
-  </TabItem>
-</Tabs>
-
-
 ### createFinalizeRecoveryMetaTransaction
 
 Creates a MetaTransaction that finalizes an ongoing recovery request if the recovery period is over. The method is public and callable by anyone to enable orchestration.
@@ -435,7 +395,7 @@ Counts the number of active guardians for an account.
 
 ### threshold
 
-Retrieves the account threshold.
+Retrieves the guardians threshold for the account.
 
 <Tabs>
   <TabItem value="Param type" label="Param Types">
@@ -456,6 +416,32 @@ Get the active guardians for an account.
   </TabItem>
   <TabItem value="Return type" label="Return Types">
     <p>String[]</p>
+  </TabItem>
+</Tabs>
+
+### getRecoveryRequest
+
+Retrieves the account's current ongoing recovery request.
+
+<Tabs>
+  <TabItem value="Param type" label="Param Types">
+    <SdkParamsTable items={getRecoveryRequestParams} />
+  </TabItem>
+  <TabItem value="Return type" label="Return Types">
+    <SdkParamsTable items={RecoveryRequestParams} />
+  </TabItem>
+</Tabs>
+
+### getRecoveryApprovals
+
+Retrieves the guardian approval count for this particular recovery request at the current nonce.
+
+<Tabs>
+  <TabItem value="Param type" label="Param Types">
+    <SdkParamsTable items={getRecoveryApprovalsParams} />
+  </TabItem>
+  <TabItem value="Return type" label="Return Types">
+    <p>BigInt</p>
   </TabItem>
 </Tabs>
 
