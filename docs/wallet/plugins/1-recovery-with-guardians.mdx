@@ -1,6 +1,6 @@
 ---
 title: Guardian Recovery 
-description: Add Guardians Account Recovery with time delay for Safe Smart Account. Also known as Social Recovery. 
+description: Active onchain account recovery with gaurdians through a time delay for Safe Accounts. 
 keywords: [guardian, recovery, social-recovery, safe-recovery, gnosis-safe]
 ---
 
@@ -8,6 +8,7 @@ import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 import { SdkParamsTable } from "/src/components/CustomTable";
 import {  
+    createEnableModuleParams,
     createConfirmRecoveryParams,
     createdMultiConfirmRecoveryParams,
     createExecuteRecoveryParams,
@@ -26,7 +27,7 @@ import {
     getGuardiansParams,
     nonceParams,
     RecoveryRequestParams,
-    sendEthCallRequestParams 
+    sendEthCallRequestParams
 } from "../../../src/data/recoveryParams";
 import { metaTransactionType } from "../../../src/data/accountParamAndReturnData";
 
@@ -92,6 +93,38 @@ const metaTransaction2 = srm.createAddGuardianWithThresholdMetaTransaction(
 ```
 
 ## Setup Guardians
+
+### createEnableModuleMetaTransaction
+
+Active the recovery plugin for the smart account
+
+<Tabs>
+  <TabItem value="Param type" label="Param Types">
+    <SdkParamsTable items={createEnableModuleParams} />
+  </TabItem>
+  <TabItem value="Return type" label="Return Types">
+    <table>
+      <thead>
+        <th align="left">Param Name</th>
+        <th align="left">Param Type</th>
+        <th align="left">Description</th>
+      </thead>
+      <tbody>
+        <tr>
+          <td>MetaTransaction</td>
+          <td align="left">
+            <p><font color="#22c916">MetaTransaction</font></p>
+            <SdkParamsTable items={metaTransactionType} />
+          </td>
+          <td align="left">
+            MetaTransaction is the type of a transaction to construct a Safe operation.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </TabItem>
+</Tabs>
+
 
 ### createAddGuardianWithThresholdMetaTransaction
 

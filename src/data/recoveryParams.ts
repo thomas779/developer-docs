@@ -1,3 +1,11 @@
+const createEnableModuleParams = [
+  {
+    key: "accountAddress",
+    type: "string",
+    description: "The target account address.",
+  },
+];
+
 const createConfirmRecoveryParams = [
   {
     key: "accountAddress",
@@ -303,64 +311,65 @@ const nonceParams = [
 ];
 
 const RecoveryRequestParams = [
-    {
-        key: "guardiansApprovalCount",
-        type: "bigint",
-        description: "The number of guardian approvals."
-    },
-    {
-        key: "newThreshold",
-        type: "bigint",
-        description: "The new threshold for the safe."
-    },
-    {
-        key: "executeAfter",
-        type: "number",
-        description: "Timestamp indicating when the execution can happen."
-    },
-    {
-        key: "newOwners",
-        type: "string[]",
-        description: "Array of new owners' addresses."
-    }
+  {
+    key: "guardiansApprovalCount",
+    type: "bigint",
+    description: "The number of guardian approvals.",
+  },
+  {
+    key: "newThreshold",
+    type: "bigint",
+    description: "The new threshold for the safe.",
+  },
+  {
+    key: "executeAfter",
+    type: "number",
+    description: "Timestamp indicating when the execution can happen.",
+  },
+  {
+    key: "newOwners",
+    type: "string[]",
+    description: "Array of new owners' addresses.",
+  },
 ];
 
 const sendEthCallRequestParams = [
-    {
-        key: "rpcUrl",
-        type: "string",
-        description: "The URL of the Ethereum RPC endpoint."
-    },
-    {
-        key: "ethCallTransaction",
-        type: "EthCallTransaction",
-        description: "The Ethereum call transaction object."
-    },
-    {
-        key: "blockNumber",
-        type: "string | bigint",
-        description: "The block number or 'latest' for the transaction."
-    }
+  {
+    key: "rpcUrl",
+    type: "string",
+    description: "The URL of the Ethereum RPC endpoint.",
+  },
+  {
+    key: "ethCallTransaction",
+    type: "EthCallTransaction",
+    description: "The Ethereum call transaction object.",
+  },
+  {
+    key: "blockNumber",
+    type: "string | bigint",
+    description: "The block number or 'latest' for the transaction.",
+  },
 ];
 
 export {
-    createConfirmRecoveryParams,
-    createdMultiConfirmRecoveryParams,
-    createExecuteRecoveryParams,
-    createFinalizeRecoveryParams,
-    createCancelRecoveryParams,
-    createAddGuardianWithThresholdParams,
-    createRevokeGuardianWithThresholdParams,
-    createChangeThresholdParams,
-    getRecoveryHashParams,
-    getRecoveryRequestParams,
-    getRecoveryApprovalsParams,
-    hasGuardianApprovedParams,
-    isGuardianParams,
-    guardiansCountParams,
-    thresholdParams,
-    getGuardiansParams,
-    nonceParams,
-    RecoveryRequestParams,
-    sendEthCallRequestParams
+  createEnableModuleParams,
+  createConfirmRecoveryParams,
+  createdMultiConfirmRecoveryParams,
+  createExecuteRecoveryParams,
+  createFinalizeRecoveryParams,
+  createCancelRecoveryParams,
+  createAddGuardianWithThresholdParams,
+  createRevokeGuardianWithThresholdParams,
+  createChangeThresholdParams,
+  getRecoveryHashParams,
+  getRecoveryRequestParams,
+  getRecoveryApprovalsParams,
+  hasGuardianApprovedParams,
+  isGuardianParams,
+  guardiansCountParams,
+  thresholdParams,
+  getGuardiansParams,
+  nonceParams,
+  RecoveryRequestParams,
+  sendEthCallRequestParams,
 };
