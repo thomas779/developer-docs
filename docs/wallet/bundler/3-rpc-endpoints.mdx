@@ -1,6 +1,6 @@
 ---
 slug: rpc-endpoints
-title: Public Bundler Endpoints
+title: RPC Endpoints
 description: Explore Candide's ERC-4337 Bundler RPC endpoints to enable powerful interactions for smart wallets and seamless blockchain transactions. Learn how to integrate and leverage these endpoints for enhanced Dapp experiences
 image: /img/posters/voltaire-meta.png
 authors: [sherif]
@@ -8,14 +8,6 @@ authors: [sherif]
 
 import { BundlerEndPointTable } from "/src/components/CustomTable";
 export const chainList = [
-  {
-    network: "Polygon PoS",
-    logo: "/img/networks/137.png",
-    chainId: 137,
-    chainHandle: "polygon",
-    address: "Available with a subscription-based plan",
-    type: "Bundler",
-  },
   {
     network: "Arbitrum One",
     logo: "/img/networks/42161.png",
@@ -88,8 +80,40 @@ export const chainList = [
     address: "Available with a subscription-based plan",
     type: "Bundler",
   },
+  {
+    network: "Polygon PoS",
+    logo: "/img/networks/137.png",
+    chainId: 137,
+    chainHandle: "polygon",
+    address: "Available with a subscription-based plan",
+    type: "Bundler",
+  },
 ];
 export const testChainList = [
+  {
+    network: "Arbitrum Sepolia",
+    logo: "/img/networks/42161.png",
+    chainId: 421614,
+    chainHandle: "arbitrum",
+    address: "https://arbitrum-sepolia.voltaire.candidewallet.com/rpc",
+    type: "Bundler",
+  },
+  {
+    network: "Avalanche Fuji Testnet",
+    logo: "/img/networks/43114.png",
+    chainId: 43113,
+    chainHandle: "fuji",
+    address: "https://fuji.voltaire.candidewallet.com/rpc",
+    type: "Bundler",
+  },
+  {
+    network: "Base Sepolia",
+    logo: "/img/networks/8453.png",
+    chainId: 84532,
+    chainHandle: "base-sepolia",
+    address: "https://base-sepolia.voltaire.candidewallet.com/rpc",
+    type: "Bundler",
+  },
   {
     network: "Celo Alfajores",
     logo: "/img/networks/5567.png",
@@ -123,30 +147,6 @@ export const testChainList = [
     type: "Bundler",
   },
   {
-    network: "Avalanche Fuji Testnet",
-    logo: "/img/networks/43114.png",
-    chainId: 43113,
-    chainHandle: "fuji",
-    address: "https://fuji.voltaire.candidewallet.com/rpc",
-    type: "Bundler",
-  },
-  {
-    network: "Arbitrum Sepolia",
-    logo: "/img/networks/42161.png",
-    chainId: 421614,
-    chainHandle: "arbitrum",
-    address: "Available upon request",
-    type: "Bundler",
-  },
-  {
-    network: "Base Sepolia",
-    logo: "/img/networks/8453.png",
-    chainId: 84532,
-    chainHandle: "base-sepolia",
-    address: "Available upon request",
-    type: "Bundler",
-  },
-  {
     network: "BnB Smart Chain Tesnet",
     logo: "/img/networks/56.png",
     chainId: 97,
@@ -158,18 +158,22 @@ export const testChainList = [
 
 # Bundler RPC Endpoints
 
-Voltaire Bundler is provided as hosted bundler infra on multiple chain. Testnet access is provided at no cost, while mainnet access is available through subscription-based plans for developers and companies.
+Voltaire is provided as hosted Bundler API on multiple chain. Testnet access is provided at no cost, while mainnet access is available through subscription-based plans for developers and companies.
 
 Secure your mainnet access today by [scheduling a meeting](https://cal.com/candidelabs/30mins).
 
-If you require a specific network not listed below, [shoot us on telegram](https://t.me/heymarcopolo) and we will let you know if we can make support it.
-## Mainnet
-
-<BundlerEndPointTable items={chainList} />
+If you require a specific network not listed below, send us a message on [telegram](https://t.me/heymarcopolo) or discord, and we will let you know if we can support it.
 
 ## Testnet
 
 <BundlerEndPointTable items={testChainList} />
+
+
+## Mainnet
+ 
+<BundlerEndPointTable items={chainList} />
+
+Not mentioned above: Rollups built on a standardized stack, such as Optimism OP-Stack and Arbitrum Orbit, are also supported.
 
 ## Voltaire with RPC Providers
 
@@ -178,7 +182,7 @@ Voltaire is also available through RPC providers that run Bundler as a Service. 
 List is alphabetically in no particular order.
 
 <p align="left" style={{
-  width:"250px", 
+  width:"100px", 
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
@@ -194,7 +198,7 @@ List is alphabetically in no particular order.
 
 ### BlockPi
 
-Once you create an account with BlockPi, you will see the available chains and Bundlers. Select CANDIDE as your option to use Voltaire. Learn more on their Bundler Service [here](https://docs.blockpi.io/guides-for-web-3.0-users/account-abstraction-erc-4337/bundler-service).
+Once you create an account with BlockPi, you will see the available chains and Bundlers. Select Candide as your option to use Voltaire. Learn more on their Bundler Service [here](https://docs.blockpi.io/guides-for-web-3.0-users/account-abstraction-erc-4337/bundler-service).
 
 ### LlamaNodes
 

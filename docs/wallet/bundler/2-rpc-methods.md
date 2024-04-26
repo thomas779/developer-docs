@@ -1,5 +1,5 @@
 ---
-title: RPC methods
+title: RPC Methods
 description: A reference to the supported RPC methods by Voltiare ERC-4337 Bundler
 image: /img/posters/voltaire-meta.png
 ---
