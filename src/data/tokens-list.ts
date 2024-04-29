@@ -32,6 +32,11 @@ export const baseList = [
 
 export const bscList = [
   {
+    token: "DAI (Binance-Peg)",
+    logo: "/img/tokens/dai-logo.png",
+    address: "0x1AF3F329e8BE154074D8769D1FFa4eE058B1DBc3",
+  },
+  {
     token: "BSC-USD (ex USDT)",
     logo: "/img/tokens/busdt-logo.png",
     address: "0x55d398326f99059fF775485246999027B3197955",
@@ -133,12 +138,12 @@ export const arbitrumSepoliaList = [
   },
 ];
 export const baseSepoliaList = [
-    {
-      token: "Candide Test Token",
-      logo: "/img/tokens/ctt-logo.png",
-      address: "0xE0BD422189D77cD1AC77C520B363a7FA649FFdf1",
-    },
-  ];
+  {
+    token: "Candide Test Token",
+    logo: "/img/tokens/ctt-logo.png",
+    address: "0xE0BD422189D77cD1AC77C520B363a7FA649FFdf1",
+  },
+];
 export const sepoliaList = [
   {
     token: "Candide Test Token",
