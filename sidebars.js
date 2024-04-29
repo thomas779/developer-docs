@@ -75,8 +75,8 @@ const sidebars = {
       className: 'category-not-collapsible',
       collapsible: false,
       items: [
-        'wallet/paymaster/rpc-methods',
         'wallet/paymaster/tokens-supported',
+        'wallet/paymaster/rpc-methods',
       ],
     },
     {
@@ -86,8 +86,8 @@ const sidebars = {
       collapsible: false,
       collapsed: false,
       items: [
-        'wallet/bundler/rpc-methods',
         'wallet/bundler/rpc-endpoints',
+        'wallet/bundler/rpc-methods',
       ],
     },
     {

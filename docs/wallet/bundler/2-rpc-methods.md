@@ -1,9 +1,9 @@
 ---
 title: RPC Methods
-description: A reference to the supported RPC methods by Voltiare ERC-4337 Bundler
+description: A reference to the supported RPC methods by an ERC-4337 Bundler
 image: /img/posters/voltaire-meta.png
 ---
-# Bundler RPC methods
+# Bundler RPC Methods
 
 Voltaire Bundler exposes standard JSON-RPC API
 
@@ -103,7 +103,7 @@ It returns estimates for a UserOperation Gas parameters for `preVerificationGas`
   "jsonrpc": "2.0",
   "id": 0,
   "method": "eth_getUserOperationByHash",
-  "params": [userOpHash, entrypointAddress]
+  "params": [userOpHash]
 }
 ```
 
@@ -120,7 +120,7 @@ The method returns the full UserOperation object as well as the entrypoint addre
   "jsonrpc": "2.0",
   "id": 0,
   "method": "eth_getUserOperationReceipt",
-  "params": [userOpHash, entrypointAddress]
+  "params": [userOpHash]
 }
 ```
 
