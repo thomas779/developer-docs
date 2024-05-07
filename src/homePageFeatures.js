@@ -1,6 +1,6 @@
 export default [
     {
-      title: 'Smart Wallets',
+      title: 'Smart Accounts',
       rows: [
         {
           title: 'Guides',

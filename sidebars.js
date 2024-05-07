@@ -42,8 +42,9 @@ const sidebars = {
         'wallet/guides/getting-started',
         'wallet/guides/send-gasless-tx',
         'wallet/guides/pay-gas-in-erc20',
+        'wallet/guides/authentication',
         'wallet/guides/multisig',
-        'wallet/guides/signing'
+        'wallet/guides/signing',
       ],
     },
     {
@@ -155,7 +156,7 @@ const sidebars = {
     },
     {
       type: 'category',
-      label: 'Bundler (Advanced)',
+      label: 'Bundler (self-host)',
       collapsed: true,
       items: [
         'wallet/bundler/erc-4337-intro',

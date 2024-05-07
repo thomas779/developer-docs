@@ -1,0 +1,208 @@
+---
+title: Authentication
+description: Learn how to manage user authentification with smart accounts
+image: /img/posters/abstractionkit-meta.png
+keywords: [mpc,hosted-wallets,social-login, passkeys, biometrics]
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Smart Accounts, much like EOAs, depend on signatures for validating transactions and messages. What sets smart accounts apart is their ability to utilize various signature schemes, such as multisig and passkeys.
+
+## Traditional Signers
+
+Externally Owner Account (EOAs) utilize both a private and public key for security. Similarly, 
+Smart Accounts can employ the same approach for securing funds. This can be achieved 
+through various means such as a locally generated private key, utilizing a hosted MPC solution, 
+or securing it with existing user wallets like MetaMask. 
+
+### Email / Social Login
+Developers have the option to integrate third-party "signer services" into their smart accounts. 
+As a result, users must authenticate through these services to access their smart accounts. 
+These services offer the advantage of traditional web2 onboarding experiences, enabling user authentication 
+through familiar mediums such as email magic link, social platforms, or SMS. 
+
+AbstractionKit is flexible to accepts any third party MPC service. To signup an account owner and to sign a userOperation, you can follow the same flow as the [guide on EOA wallets](./#eoa-wallets).
+
+### Ethers/Viem Signers
+
+Ethereum Libraries support the concept of EOAs by wrapping a private key and supporting high-level methods to sign common types of interaction. 
+
+#### Setup Account Owner
+<Tabs queryString="library">
+<TabItem value="ethers" label="ethers example">
+
+```ts
+import { SafeAccountV0_2_0 as SafeAccount } from "abstractionkit";
+import { Wallet } from "ethers";
+
+const ownerPrivateKey = process.env.PRIVATE_KEY as string;
+
+const signer = new Wallet(ownerPrivateKey);
+const smartAccount = SafeAccount.initializeNewAccount([signer.address]);
+```
+
+</TabItem>
+<TabItem value="viem" label="viem example">
+
+```ts 
+import { SafeAccountV0_2_0 as SafeAccount } from "abstractionkit";
+import { privateKeyToAccount } from "viem";
+
+const ownerPrivateKey = process.env.PRIVATE_KEY as string;
+
+const signer = privateKeyToAccount(ownerPrivateKey);
+const smartAccount = SafeAccount.initializeNewAccount([signer.address]);
+```
+
+</TabItem>
+</Tabs>
+
+#### Sign UserOperation
+Format the signature to a userOperation signature using [formatEip712SignaturesToUseroperationSignature](../../abstractionkit/safe-account/#formateip712signaturestouseroperationsignature).
+
+<Tabs queryString="library">
+<TabItem value="ethers" label="ethers example">
+
+```ts
+let userOperation = ... // Use createUserOperation() to help you construct the userOp below
+
+const domain = {
+  chainId: process.env.CHAIN_ID,
+  verifyingContract: smartAccount.safe4337ModuleAddress,
+};
+
+const types = SafeAccount.EIP712_SAFE_OPERATION_TYPE;
+
+// formate according to EIP712 Safe Operation Type
+const { sender, ...userOp } = userOperation;
+const safeUserOperation = {
+  ...userOp,
+  safe: userOperation.sender,
+  validUntil: BigInt(0),
+  validAfter: BigInt(0),
+  entryPoint: smartAccount.entrypointAddress,
+};
+
+const signature = await signer.signTypedData(domain, types, safeUserOperation);
+const formatedSig = SafeAccount.formatEip712SignaturesToUseroperationSignature([signer.address], [signature]);
+userOperation.signature = formatedSig;
+```
+
+</TabItem>
+<TabItem value="viem" label="viem example">
+
+```ts
+let userOperation = ... // Use createUserOperation() to help you construct the userOp below
+
+const domain = {
+  chainId: process.env.CHAIN_ID,
+  verifyingContract: smartAccount.safe4337ModuleAddress,
+};
+
+const types = SafeAccount.EIP712_SAFE_OPERATION_TYPE;
+
+// formate according to EIP712 Safe Operation Type
+const { sender, ...userOp } = userOperation;
+const safeUserOperation = {
+  ...userOp,
+  safe: userOperation.sender,
+  validUntil: BigInt(0),
+  validAfter: BigInt(0),
+  entryPoint: smartAccount.entrypointAddress,
+};
+
+const signature = await signer.signTypedData({
+  domain,
+  types,
+  primaryType: 'SafeOp',
+  message: safeUserOperation,
+});
+const formatedSig = SafeAccount.formatEip712SignaturesToUseroperationSignature([signer.address], [signature]);
+userOperation.signature = formatedSig;
+```
+
+</TabItem>
+</Tabs>
+
+### EOA Wallets
+MetaMask, Rainbow, and all others, offer a JavaScript Ethereum Provider API, ensuring consistent interaction across any application. 
+
+#### Setup Account Owner
+<Tabs queryString="library">
+<TabItem value="ethers" label="ethers example">
+
+```ts
+import { SafeAccountV0_2_0 as SafeAccount } from "abstractionkit";
+import { BrowserProvider } from "ethers"
+
+const provider = new ethers.BrowserProvider(window.ethereum);
+const signer = await provider.getSigner();
+const signerAddress = await signer.getAddress();
+
+const smartAccount = SafeAccount.initializeNewAccount([signerAddress]);
+```
+
+</TabItem>
+<TabItem value="viem" label="viem example">
+
+```ts
+import { SafeAccountV0_2_0 as SafeAccount } from "abstractionkit"; 
+import { createWalletClient, custom } from 'viem'
+import { sepolia } from 'viem/chains'
+ 
+const client = createWalletClient({
+  chain: sepolia,
+  transport: custom(window.ethereum!)
+})
+
+const signerAddresses = await walletClient.requestAddresses();
+const signerAddress = signerAddresses[0];
+
+const smartAccount = SafeAccount.initializeNewAccount([signerAddress]);
+```
+
+</TabItem>
+</Tabs>
+
+#### Sign UserOperation
+
+Follow the same example for [ethers/viem sign useroperation](./#sign-useroperation).
+
+### Direct Access to Private key
+When there is direct access to the private key locally, you can pass the key directly in [signUserOperation](../../../wallet/abstractionkit/safe-account/#signuseroperation).
+
+#### Signup Account Owner
+```ts
+import { SafeAccountV0_2_0 as SafeAccount } from 'abstractionkit'
+
+const ownerPublicAddress = process.env.PUBLIC_KEY;
+
+const smartAccount = SafeAccount.initializeNewAccount([ownerPublicAddress]);
+```
+
+#### Sign UserOperation
+```ts
+const chainId = BigInt(process.env.CHAIN_ID as string);
+const ownerPrivateKey = process.env.PRIVATE_KEY as string;
+
+const userOperation = ... // returned from createUserOperation()
+
+userOperation.signature = smartAccount.signUserOperation(
+  userOperation,
+  [privateKey],
+  chainId,
+)
+```
+
+## Passkeys
+
+Visit dedicated guide on [Passkeys](../../plugins/passkeys)  
+
+## Multisig
+
+Visit dedicated guide on [MultiSig](../multisig)  
+
+
+
