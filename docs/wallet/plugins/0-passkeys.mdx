@@ -16,10 +16,10 @@ This example showcases a **Safe** Smart Account deployment utilizing 4337 and Pa
 
 - **Safe Passkeys Webapp**:
     - [Live Demo](https://passkeys.candide.dev/) 
-    - [Source Code](https://github.com/candidelabs/abstractionkit/tree/webauth/examples/SafeAccountExamples/PasskeysCreateAccountandSendTransaction)
+    - [Source Code](https://github.com/candidelabs/abstractionkit/tree/experimental/examples/SafeAccountExamples/PasskeysCreateAccountandSendTransaction)
 
 - **Node script simulated Passkeys**
-    - [Source Code](https://github.com/candidelabs/abstractionkit/tree/webauth/examples/SafeAccountExamples/WebAuthCreateAccountAndSendTransaction)
+    - [Source Code](https://github.com/candidelabs/abstractionkit/tree/experimental/examples/SafeAccountExamples/WebAuthnCreateAccountAndSendTransaction)
 
 ## Create Passkeys Account
 
@@ -43,7 +43,7 @@ yarn add abstractionkit@0.1.12 ethers
 :::note 
 We're installing `v0.1.12` of `abstractionkit`, an alpha version that includes the Passkeys plugin, only on Sepolia Testnet.
 
-We will often import WebAuthn API helper functions and classes from [/webauthn](https://github.com/candidelabs/abstractionkit/blob/webauth/examples/SafeAccountExamples/WebAuthCreateAccountAndSendTransaction/src/webauthn.ts). Make sure to copy it and using it during your developement. 
+We will often import WebAuthn API helper functions and classes from [/webauthn](https://github.com/candidelabs/abstractionkit/blob/experimental/examples/SafeAccountExamples/WebAuthnCreateAccountAndSendTransaction/src/webauthn.ts). Make sure to copy it and using it during your developement. 
 :::
 
 ### Step 1: Create WebAuthn credentials
@@ -117,7 +117,7 @@ let userOperation = await smartAccount.createUserOperation(
     jsonRpcNodeProvider, //the node rpc.
     bundlerUrl, //the bundler rpc.
     {
-        dummySingatures:[DummySignature.webauth]
+        dummySignatures:[DummySignature.webAuthn]
     }
 )
 ```
