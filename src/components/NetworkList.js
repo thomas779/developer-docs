@@ -44,6 +44,14 @@ export function NetworkList() {
         }}
       />
       <img
+        src="/img/networks/100.svg"
+        alt="Gnosis"
+        style={{
+          width: "45px",
+          marginRight: "10px",
+        }}
+      />
+      <img
         src="/img/networks/8453.png"
         alt="Base"
         style={{

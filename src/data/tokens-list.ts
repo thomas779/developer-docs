@@ -92,6 +92,23 @@ export const celoList = [
     address: "0x48065fbBE25f71C9282ddf5e1cD6D6A887483D5e",
   },
 ];
+export const gnosisList = [
+  {
+    token: "Monerium EUR (EURe)",
+    logo: "/img/tokens/EURe.png",
+    address: "0xcB444e90D8198415266c6a2724b7900fb12FC56E",
+  },
+  {
+    token: "USDC (Bridged)",
+    logo: "/img/tokens/usdc-logo.svg",
+    address: "0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83",
+  },
+  {
+    token: "USDT",
+    logo: "/img/tokens/usdt-logo.svg",
+    address: "0x4ECaBa5870353805a9F068101A40E0f32ed605C6",
+  },
+];
 export const optimismList = [
   {
     token: "DAI",
