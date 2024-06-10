@@ -18,7 +18,7 @@ function isValidSignature(
 ```
 The first `_dataHash` argument accepts the hash of the message digest, and the second argument `_signature` is the signed payload returned by the wallet upon signing.
 
-### Ethersjs v6 Example
+### Ethers v6 Example
 First check if the user wallet is an EOA or a smart contract wallet:
 
 ```js
