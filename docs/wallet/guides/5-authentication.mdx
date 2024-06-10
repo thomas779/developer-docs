@@ -2,68 +2,116 @@
 title: Authentication
 description: Learn how to manage user authentification with smart accounts
 image: /img/posters/abstractionkit-meta.png
-keywords: [mpc,hosted-wallets,social-login, passkeys, biometrics]
+keywords: [mpc, hosted-wallets, social-login, passkeys, biometrics]
 ---
+
+# Authentication
 
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
-Smart Accounts, much like EOAs, depend on signatures for validating transactions and messages. What sets smart accounts apart is their ability to utilize various signature schemes, such as multisig and passkeys.
+Smart Accounts, much like regular accounts (EOAs), depend on signatures for validating transactions and messages. What sets Smart Accounts apart is their ability to utilize various signature schemes, such as Passkeys and Multisig.
+
+## Passkeys
+
+Candide supports on-chain Passkeys, allowing users to sign transactions directly from their devices. 
+Using their default phone/computer auth system, such as PIN, biometrics, or FaceID, signatures 
+are authenticated on-chain through smart contracts. All without reliance on centralized infrastructure. 
+
+See a demo on [passkeys.candide.dev](https://passkeys.candide.dev), and learn more on Passkeys [here](../plugins/0-passkeys.mdx).
+
+## Multisig
+
+Candide supports on-chain multisig (multi-signature) accounts, which enhance security by requiring multiple
+approvals for transactions. This feature is ideal for implementing two-factor authentication (2FA) 
+and is well-suited for wallets targeting companies or DAOs, where transactions often require multiple key 
+approvals. 
+
+Visit dedicated guide on [MultiSig](../multisig)
 
 ## Traditional Signers
 
-Externally Owner Account (EOAs) utilize both a private and public key for security. Similarly, 
-Smart Accounts can employ the same approach for securing funds. This can be achieved 
-through various means such as a locally generated private key, utilizing a hosted MPC solution, 
-or securing it with existing user wallets like MetaMask. 
+Externally Owner Account (EOAs) utilize both a private and public key for security. Similarly,
+Smart Accounts can employ the same approach for securing funds. This can be achieved
+through various means such as a locally generated private key, utilizing a hosted MPC solution,
+or securing it with existing user wallets like MetaMask.
 
-### Email / Social Login
-Developers have the option to integrate third-party "signer services" into their smart accounts. 
-As a result, users must authenticate through these services to access their smart accounts. 
-These services offer the advantage of traditional web2 onboarding experiences, enabling user authentication 
-through familiar mediums such as email magic link, social platforms, or SMS. 
+### Social / Email
 
-AbstractionKit is flexible to accepts any third party MPC service. To signup an account owner and to sign a userOperation, you can follow the same flow as the [guide on EOA wallets](./#eoa-wallets).
+Developers can integrate third-party "Signer services" into their smart accounts, 
+providing the benefits of traditional Web2 onboarding experiences. These services enable user 
+authentication through familiar methods such as email magic links, social logins, or SMS.
 
-### Ethers/Viem Signers
+- Candide's AbstractionKit is highly adaptable, supporting any third-party Signer service. 
+The process for assigning the smart account owner and signing a User Operation is consistent 
+across all services. For details on how to integrate as third-parties as main signer, 
+refer to the [guide for EOA wallets](./#eoa-wallets).
 
-Ethereum Libraries support the concept of EOAs by wrapping a private key and supporting high-level methods to sign common types of interaction. 
+- However, it is important to note that using third-party services as the primary signer of 
+the account makes the wallet you are offering ** custodial.** Candide recommends using Passkeys as 
+the main signer, while offering third-parties as recovery options via the 
+on-chain [Guardian Recovery](../plugins/1-recovery-with-guardians.mdx). This approach ensures 
+progressive self-custody, allowing users to modify recovery options as needed.
+
+Below are some third-party recovery options that you can consider. Candide does not endorse any of these options; the guides are provided for educational purposes only.
+
+| Service      | Key Management Method                   | Authentication Methods        | Plug-n-play Front End? | Guide                     |
+| ------------ | --------------------------------------- | ----------------------------- | ---------------------- | ------------------------- |
+| Dynamic      | MPC (Turnkey under the hood)            | Email, Social, Wallets        | Yes                    |
+| Fireblocks   | MPC                                     | Custom                        | No                     |                           |
+| Lit Protocol | MPC                                     | Email, Social, Phone          | No                     |                           |
+| Magic.link   | AWS KMS                                 | Email, Social                 | Yes                    | [Use Magic with AbstractionKit](./magic.mdx)|
+| Privy        | MPC                                     | Email, Social, Wallets        | Yes                    | |
+| Turnkey      | AWS KMS                                 | Custom                        | No                     | [Use Turnkey with AbstractionKit](./turnkey.mdx)|
+| Web3Auth     | MPC, key sharding                       | Social, Email                 | Yes                    |  link|
+
+### EOA Wallets
+
+You can allow users to use MetaMask, or any other EOA wallet as the signer to the Smart Account.
+EOAs exposes a JavaScript Ethereum Provider API. 
 
 #### Setup Account Owner
+
 <Tabs queryString="library">
 <TabItem value="ethers" label="ethers example">
 
 ```ts
 import { SafeAccountV0_2_0 as SafeAccount } from "abstractionkit";
-import { Wallet } from "ethers";
+import { BrowserProvider } from "ethers";
 
-const ownerPrivateKey = process.env.PRIVATE_KEY as string;
+const provider = new BrowserProvider(window.ethereum);
+const signer = await provider.getSigner();
+const signerAddress = await signer.getAddress();
 
-const signer = new Wallet(ownerPrivateKey);
-const smartAccount = SafeAccount.initializeNewAccount([signer.address]);
+const smartAccount = SafeAccount.initializeNewAccount([signerAddress]);
 ```
 
 </TabItem>
 <TabItem value="viem" label="viem example">
 
-```ts 
+```ts
 import { SafeAccountV0_2_0 as SafeAccount } from "abstractionkit";
-import { privateKeyToAccount } from "viem";
+import { createWalletClient, custom } from "viem";
 
-const ownerPrivateKey = process.env.PRIVATE_KEY as string;
+const client = createWalletClient({
+  transport: custom(window.ethereum!),
+});
 
-const signer = privateKeyToAccount(ownerPrivateKey);
-const smartAccount = SafeAccount.initializeNewAccount([signer.address]);
+const signerAddresses = await client.requestAddresses();
+const signerAddress = signerAddresses[0];
+
+const smartAccount = SafeAccount.initializeNewAccount([signerAddress]);
 ```
 
 </TabItem>
 </Tabs>
 
 #### Sign UserOperation
+
 Format the signature to a userOperation signature using [formatEip712SignaturesToUseroperationSignature](../../abstractionkit/safe-account/#formateip712signaturestouseroperationsignature).
 
 <Tabs queryString="library">
-<TabItem value="ethers" label="ethers example">
+<TabItem value="ethers" label="ethers">
 
 ```ts
 let userOperation = ... // Use createUserOperation() to help you construct the userOp below
@@ -91,7 +139,7 @@ userOperation.signature = formatedSig;
 ```
 
 </TabItem>
-<TabItem value="viem" label="viem example">
+<TabItem value="viem" label="viem">
 
 ```ts
 let userOperation = ... // Use createUserOperation() to help you construct the userOp below
@@ -126,56 +174,14 @@ userOperation.signature = formatedSig;
 </TabItem>
 </Tabs>
 
-### EOA Wallets
-MetaMask, Rainbow, and all others, offer a JavaScript Ethereum Provider API, ensuring consistent interaction across any application. 
+### Private key Storage
 
-#### Setup Account Owner
-<Tabs queryString="library">
-<TabItem value="ethers" label="ethers example">
+Traditional wallets encrypts the private key in local storage. In this setup, the owner of the smart account is represented by it. Use [signUserOperation](../../../wallet/abstractionkit/safe-account/#signuseroperation).
+
+#### Signup Account Owner
 
 ```ts
 import { SafeAccountV0_2_0 as SafeAccount } from "abstractionkit";
-import { BrowserProvider } from "ethers"
-
-const provider = new ethers.BrowserProvider(window.ethereum);
-const signer = await provider.getSigner();
-const signerAddress = await signer.getAddress();
-
-const smartAccount = SafeAccount.initializeNewAccount([signerAddress]);
-```
-
-</TabItem>
-<TabItem value="viem" label="viem example">
-
-```ts
-import { SafeAccountV0_2_0 as SafeAccount } from "abstractionkit"; 
-import { createWalletClient, custom } from 'viem'
-import { sepolia } from 'viem/chains'
- 
-const client = createWalletClient({
-  chain: sepolia,
-  transport: custom(window.ethereum!)
-})
-
-const signerAddresses = await walletClient.requestAddresses();
-const signerAddress = signerAddresses[0];
-
-const smartAccount = SafeAccount.initializeNewAccount([signerAddress]);
-```
-
-</TabItem>
-</Tabs>
-
-#### Sign UserOperation
-
-Follow the same example for [ethers/viem sign useroperation](./#sign-useroperation).
-
-### Direct Access to Private key
-When there is direct access to the private key locally, you can pass the key directly in [signUserOperation](../../../wallet/abstractionkit/safe-account/#signuseroperation).
-
-#### Signup Account Owner
-```ts
-import { SafeAccountV0_2_0 as SafeAccount } from 'abstractionkit'
 
 const ownerPublicAddress = process.env.PUBLIC_KEY;
 
@@ -183,6 +189,7 @@ const smartAccount = SafeAccount.initializeNewAccount([ownerPublicAddress]);
 ```
 
 #### Sign UserOperation
+
 ```ts
 const chainId = BigInt(process.env.CHAIN_ID as string);
 const ownerPrivateKey = process.env.PRIVATE_KEY as string;
@@ -195,14 +202,3 @@ userOperation.signature = smartAccount.signUserOperation(
   chainId,
 )
 ```
-
-## Passkeys
-
-Visit dedicated guide on [Passkeys](../../plugins/passkeys)  
-
-## Multisig
-
-Visit dedicated guide on [MultiSig](../multisig)  
-
-
-
