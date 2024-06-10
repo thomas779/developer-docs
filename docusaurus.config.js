@@ -134,14 +134,21 @@ const config = {
             label: 'Dashboard',
           },
           {
-            to: '/account-abstraction/intro',
-            position: 'right',
-            label: 'Learn AA',
-          },
-          {
             to: '/blog',
             position: 'right',
             label: 'Blog',
+          },
+          {
+            href: 'https://github.com/candidelabs/',
+            position: 'right',
+            className: 'header-github-link',
+            'aria-label': 'GitHub repository',
+          },
+          {
+            href: 'https://discord.gg/8q2H6BEJuf',
+            position: 'right',
+            className: 'header-discord-link',
+            'aria-label': 'Discord server',
           },
         ],
       },
