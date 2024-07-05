@@ -29,7 +29,7 @@ Smart Wallets solve many of the issues that were raised with EOAs by offering sp
 This is where Account Abstraction and Candide come in.
 ## What is Account Abstraction
 
-Account Abstraction through [ERC-4337](https://eips.ethereum.org/EIPS/eip-4337) is a standard to build smart wallets without the need for consensus-layer protocol changes. This involves packaging a transaction in a new transaction type called [`UserOperation`](https://eips.ethereum.org/EIPS/eip-4337#definitions) that contains the instructions for what users wants to accomplish. This includes information on the owner, the calldata, who is paying for gas, the user signature and gas information. 
+Account Abstraction through [ERC-4337](https://eips.ethereum.org/EIPS/eip-4337) is a standard to build Smart Wallets without the need for consensus-layer protocol changes. This involves packaging a transaction in a new transaction type called [`UserOperation`](https://eips.ethereum.org/EIPS/eip-4337#definitions) that contains the instructions for what users wants to accomplish. This includes information on the owner, the calldata, who is paying for gas, the user signature and gas information. 
 
 Smart wallets offer a host of advantages that EOAs simply cannot offer:
 

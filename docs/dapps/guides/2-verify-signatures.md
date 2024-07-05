@@ -2,7 +2,7 @@
 title: Signature Validation
 description: Implement the standard way for any contracts to verify whether a signature on a behalf of a given contract is valid. This is possible via the implementation of a isValidSignature (hash, signature) function on the signing contract, which can be called to validate a signature.
 image: /img/logo/candide-logo-dark-wordmark.svg
-keywords: [signature validation, smart wallets, contract signatures, EIP-1271]
+keywords: [signature validation, Smart Wallets, contract signatures, EIP-1271]
 ---
 # Signature Validation
 

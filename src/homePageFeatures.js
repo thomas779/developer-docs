@@ -1,10 +1,10 @@
 export default [
     {
-      title: 'Smart Accounts',
+      title: 'Smart Wallets',
       rows: [
         {
           title: 'Guides',
-          description: 'Step by step guides on how to create, customize and offer smart wallets for your users',
+          description: 'Step by step guides on how to create, customize and offer Smart Wallets for your users',
           to: './wallet/atelier-intro'
         },
         {

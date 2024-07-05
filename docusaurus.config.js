@@ -121,7 +121,7 @@ const config = {
           {
             to: '/wallet/atelier-intro',
             position: 'left',
-            label: 'Smart Accounts',
+            label: 'Smart Wallets',
           },
           {
             to: '/dapps/getting-started',

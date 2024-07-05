@@ -11,7 +11,7 @@ export default function Home() {
   return (
     <Layout
       title={`Atelier Documentation`}
-      description="Candide Atelier is a set of open-source tools that lets you build smart wallets powered by ERC-4337 Account Abstraction"
+      description="Candide Atelier is a set of open-source tools that lets you build Smart Wallets powered by ERC-4337 Account Abstraction"
     >
       <Banner />
       <main>
