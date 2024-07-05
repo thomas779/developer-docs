@@ -1,5 +1,5 @@
 ---
-title: Guardian Recovery 
+title: Account Recovery 
 description: Active onchain account recovery with gaurdians through a time delay for Safe Accounts. 
 keywords: [guardian, recovery, social-recovery, safe-recovery, gnosis-safe]
 ---
@@ -7,44 +7,58 @@ keywords: [guardian, recovery, social-recovery, safe-recovery, gnosis-safe]
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 import { SdkParamsTable } from "/src/components/CustomTable";
-import {  
-    createEnableModuleParams,
-    createConfirmRecoveryParams,
-    createdMultiConfirmRecoveryParams,
-    createExecuteRecoveryParams,
-    createFinalizeRecoveryParams,
-    createCancelRecoveryParams,
-    createAddGuardianWithThresholdParams,
-    createRevokeGuardianWithThresholdParams,
-    createChangeThresholdParams,
-    getRecoveryHashParams,
-    getRecoveryRequestParams,
-    getRecoveryApprovalsParams,
-    hasGuardianApprovedParams,
-    isGuardianParams,
-    guardiansCountParams,
-    thresholdParams,
-    getGuardiansParams,
-    nonceParams,
-    RecoveryRequestParams,
-    sendEthCallRequestParams
+import {
+  createEnableModuleParams,
+  createConfirmRecoveryParams,
+  createdMultiConfirmRecoveryParams,
+  createExecuteRecoveryParams,
+  createFinalizeRecoveryParams,
+  createCancelRecoveryParams,
+  createAddGuardianWithThresholdParams,
+  createRevokeGuardianWithThresholdParams,
+  createChangeThresholdParams,
+  getRecoveryHashParams,
+  getRecoveryRequestParams,
+  getRecoveryApprovalsParams,
+  hasGuardianApprovedParams,
+  isGuardianParams,
+  guardiansCountParams,
+  thresholdParams,
+  getGuardiansParams,
+  nonceParams,
+  RecoveryRequestParams,
+  sendEthCallRequestParams
 } from "../../../src/data/recoveryParams";
 import { metaTransactionType } from "../../../src/data/accountParamAndReturnData";
 
-The Account Recovery module is designed to work for both a single-owner account 
-and for multi-sig **Safe** accounts. An account owner can add recovery methods (also known as Guardians) 
-that have the ability to change the ownership of the account, in case the owner key is lost 
-or compromised. 
 
-Read more on our on blog post on making [Ethereum Accounts Recoverable](../../../blog/making-accounts-recoverable/), the seedless way.
+## Intro
 
-:::tip
-Want to run a simple example? Start by adding your first guardian to protect an account [here](https://github.com/candidelabs/abstractionkit/tree/experimental/examples/SafeAccountExamples/SocialRecovery). 
-:::
+Social Recovery is widely accepted as an effective method for users to regain control 
+of their accounts by changing the main access control to a new owner through their trusted contacts. 
+Account Recovery modules allow owners to add recovery addresses, known as Guardians, 
+to facilitate this process in case their signer key is lost or compromised. 
+
+The Candide Social Recovery Module is flexible to accept various types of Ethereum accounts as Guardians, including:
+- Family and friends'
+- Hardware wallets
+- Institutions
+- Email / SMS (through custodial services offering cloud-based wallets)
+
+Learn more on how the Social Recovery Module work on this [post](../../../blog/making-accounts-recoverable/).
+
+#### Audits
+
+Contracts, Formal Verification and Audits be found on the github repo [candide-contracts](https://github.com/candidelabs/candide-contracts).
 
 ## Usage
 
 ### Install
+
+:::tip
+Prefer to run a simple example? Fork this repo and add your first guardian [here](https://github.com/candidelabs/abstractionkit/tree/experimental/examples/SafeAccountExamples/SocialRecovery). 
+:::
+
 <Tabs>
 <TabItem value="npm" label="npm">
 
