@@ -108,7 +108,7 @@ const config = {
       {
         name: 'keywords', 
         content:
-          'account abstraction, erc-4337, bundler, paymaster, smart contract wallet, gas sponsorship',
+          'account abstraction, erc-4337, bundler, paymaster, Smart Wallet, gas sponsorship',
       },
       ],
       navbar: {
