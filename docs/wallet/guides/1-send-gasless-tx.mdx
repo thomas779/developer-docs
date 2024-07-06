@@ -10,6 +10,12 @@ import TabItem from "@theme/TabItem";
 
 # Send a Gasless Transaction
 
+:::info
+Gassless Policies Txs are in Beta. Use this public API to sponsor gas on Sepolia and Amoy Testnet. Need an API key for Mainnets? Reach out on discord.
+
+`PAYMASTER_RPC=https://api.candide.dev/paymaster/v1/sepolia/f70ee1e3efa3f7a67ff392eb99dafc78`
+:::
+
 Learn how to send gasless transactions using a paymaster. 
 
 If you are coming from the [previous guide](../getting-started), you only need one additional step. Skip directly to [step 5](./#step-5-get-paymaster-data).
@@ -20,9 +26,7 @@ If you are coming from the [previous guide](../getting-started), you only need o
 ### Prerequisites
 
 - Node and a package manager (yarn or npm)
-- An API key to Candide's Paymaster. [Visit Dashboard](https://dashboard.candide.dev)
-- Special access to a global policy. [Send us telegram message](https://t.me/heymarcopolo)
-- If you need, the full example of this tutorial on [Github](https://github.com/candidelabs/abstractionkit/tree/main/examples/SafeAccountExamples/CreateAccountAndSendTransactionUsingSponsorPaymaster)
+- If you need, fork the full example of this tutorial on [Github](https://github.com/candidelabs/abstractionkit/tree/main/examples/SafeAccountExamples/CreateAccountAndSendTransactionUsingSponsorPaymaster)
 
 ### Step 1: Get setup
 
@@ -49,6 +53,9 @@ yarn add abstractionkit
 CHAIN_ID=11155111
 BUNDLER_URL=https://sepolia.voltaire.candidewallet.com/rpc
 JSON_RPC_NODE_PROVIDER=NODE_PROVIDER_URL
+
+# API key for Sepolia and Amoy
+PAYMASTER_RPC=https://api.candide.dev/paymaster/v1/sepolia/f70ee1e3efa3f7a67ff392eb99dafc78
 
 #account owner pub & private key
 PRIVATE_KEY=YOUR_PRIVATE_KEY
