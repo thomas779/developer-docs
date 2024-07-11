@@ -8,7 +8,7 @@ export default [
           to: './wallet/atelier-intro'
         },
         {
-          title: 'Abstraction Kit',
+          title: 'AbstractionKit',
           description: "A Typescript Library to easily build and send ERC-4337 UserOperations",
           to: './wallet/abstractionkit/introduction',
         },

@@ -179,7 +179,7 @@ const tokenAddress = process.env.TOKEN_ADDRESS as string;
 
 const paymaster: CandidePaymaster = new CandidePaymaster(paymasterRPC)
 
-const userOperation = await paymaster.createTokenPaymasterUserOperation(
+userOperation = await paymaster.createTokenPaymasterUserOperation(
     smartAccount,
     userOperation,
     tokenAddress,
