@@ -10,12 +10,6 @@ import TabItem from "@theme/TabItem";
 
 # Send a Gasless Transaction
 
-:::info
-Gassless Policies Txs are in Beta. Use this public API to sponsor gas on Sepolia and Amoy Testnet. Need an API key for Mainnets? Reach out on discord.
-
-`PAYMASTER_RPC=https://api.candide.dev/paymaster/v1/sepolia/f70ee1e3efa3f7a67ff392eb99dafc78`
-:::
-
 Learn how to send gasless transactions using a paymaster. 
 
 If you are coming from the [previous guide](../getting-started), you only need one additional step. Skip directly to [step 5](./#step-5-get-paymaster-data).
@@ -62,7 +56,7 @@ PRIVATE_KEY=YOUR_PRIVATE_KEY
 PUBLIC_ADDRESS=YOUR_PUBLIC_KEY
 ```
 :::info
-We host free [bundlers](../../bundler/rpc-endpoints) endpoints, you do not need to create an account.
+We host free [Bundler endpoints](../../bundler/rpc-endpoints) on testnets. You do not need to create an account.
 :::
 
 4. Create a empty file and a function to run our script
@@ -158,16 +152,14 @@ let userOperation = await smartAccount.createUserOperation(
 )
 ```
 
-:::info
-You can override any of the returned values using the overrides parameter.
-:::
-
 ### Step 5: Get Paymaster Data
 
 1. Import `CandidePaymaster`, and initiate an instance. Do not forget to add your paymaster url in your .env file with your API key
 
 :::info
-Sponsored Policies are in beta. Get an beta API key from us on [telegram](https://t.me/heymarcopolo)
+Sponsored Gas Policies are in Beta. Use this public API to sponsor gas on Sepolia. Need an API key for Mainnets? Reach out on [discord](https://discord.gg/8q2H6BEJuf).
+
+`PAYMASTER_RPC=https://api.candide.dev/paymaster/v1/sepolia/f70ee1e3efa3f7a67ff392eb99dafc78`
 :::
 
 <Tabs>

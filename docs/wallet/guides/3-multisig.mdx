@@ -57,7 +57,7 @@ PRIVATE_KEY2=
 ```
 
 :::info
-We host free [bundlers](../../bundler/rpc-endpoints) endpoints, you do not need to create an account.
+We host free [Bundler endpoints](../../bundler/rpc-endpoints) on testnets. You do not need to create an account.
 :::
 
 4. Create a empty file and a function to run our script
@@ -175,10 +175,6 @@ const cost = calculateUserOperationMaxGasCost(userOperation)
 console.log("This useroperation may cost upto : " + cost + " wei")
 console.log("Please fund the sender account : " + userOperation.sender +" with more than " + cost + " wei")
 ```
-
-:::info
-You can override any of the returned values using the overrides parameter.
-:::
 
 ### Step 6: Sign and Submit
 

@@ -49,7 +49,7 @@ PRIVATE_KEY=YOUR_PRIVATE_KEY
 PUBLIC_ADDRESS=YOUR_PUBLIC_KEY
 ```
 :::info
-We host free [bundlers](../../bundler/rpc-endpoints) endpoints, you do not need to create an account.
+We host free [Bundler endpoints](../../bundler/rpc-endpoints) on testnets. You do not need to create an account.
 :::
 
 
@@ -97,7 +97,7 @@ If everything worked, you will get the address of the account in the console.
 Account address(sender): 0x32afdcfa1e3bfe70d03ecb55b5c8045c26515c9d
 ```
 
-:::tip
+:::tip Fund the Account
 Now that you have generated the smart account, go ahead and fund it with some Sepolia ETH here.
 
 In another example, we will show you how to sponsor transactions with a paymaster. 
@@ -163,10 +163,6 @@ const cost = calculateUserOperationMaxGasCost(userOperation)
 console.log("This useroperation may cost upto : " + cost + " wei")
 console.log("Please fund the sender account : " + userOperation.sender +" with more than " + cost + " wei")
 ```
-
-:::info
-You can override any of the returned values using the overrides parameter.
-:::
 
 ### Step 6: Sign and Submit
 

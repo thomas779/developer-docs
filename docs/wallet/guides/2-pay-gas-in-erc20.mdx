@@ -12,7 +12,7 @@ import TabItem from "@theme/TabItem";
 
 Learn how to offer the ability for users to pay gas in ERC-20s using a Paymaster.
 
-If you are coming from the [previous guide](../send-gasless-tx), you only need adjust the paymaster step. Skip directly to [step 5](./#step-5-get-paymaster-data).
+If you are coming from the [previous guide](../send-gasless-tx), you only need adjust the paymaster step. You will need an API key from the [dashboard](https://dashboard.candide.dev), and then you can skip directly to [step 5](./#step-5-get-paymaster-data).
 
 <img src="/img/network-fees-sponsorship.png" style={{ width: "300px" }} />
 
@@ -23,10 +23,8 @@ If you are coming from the [previous guide](../send-gasless-tx), you only need a
 - Node and a package manager (yarn or npm)
 - An API key to access Candide's Paymaster. [Visit the Dashboard](https://dashboard.candide.dev)
 - Some Candide Test Tokens (CTT). Request CTT on our [Discord](https://discord.gg/8q2H6BEJuf)
+- If you need, fork the full example of this tutorial on on [Github](https://github.com/candidelabs/abstractionkit/tree/main/examples/SafeAccountExamples/CreateAccountAndSendTransactionUsingTokenPaymaster)
 
-:::info
-You can find the full example of this tutorial on [Github](https://github.com/candidelabs/abstractionkit/tree/main/examples/SafeAccountExamples/CreateAccountAndSendTransactionUsingTokenPaymaster)
-:::
 
 ### Step 1: Get setup
 
@@ -59,7 +57,7 @@ PRIVATE_KEY=YOUR_PRIVATE_KEY
 PUBLIC_ADDRESS=YOUR_PUBLIC_KEY
 ```
 :::info
-We host free [bundlers](../../bundler/rpc-endpoints) endpoints, you do not need to create an account.
+We host free [Bundler endpoints](../../bundler/rpc-endpoints) on testnets. You do not need to create an account.
 :::
 4. Create a empty file and a function to run our script
 
@@ -154,10 +152,6 @@ let userOperation = await smartAccount.createUserOperation(
 )
 ```
 
-:::info
-You can override any of the returned values using the overrides parameter.
-:::
-
 ### Step 5: Get Paymaster Data
 
 1. Import `CandidePaymaster`, and initiate an instance with its URL. You can get a free API key on the [dashboard](https://dashboard.candide.dev).
@@ -208,7 +202,7 @@ TOKEN_ADDRESS=0xFa5854FBf9964330d761961F46565AB7326e5a3b # CTT address on sepoli
 </Tabs>
 
 :::info
-Don't forget to fund the account with ERC-20s to pay for gas. We are using Candide Test Tokens (CTT). Request some on [telegram](https://t.me/heymarcopolo) or Discord.
+Don't forget to fund the account with ERC-20s to pay for gas. We are using Candide Test Tokens (CTT) for this example. Request some on our Discord.
 :::
 
 ### Step 5: Sign and Submit
