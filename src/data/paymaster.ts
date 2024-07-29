@@ -293,17 +293,17 @@ export const pm_sponsorUserOperationReturnParamsV07 = [
   },
   {
     key: "callGasLimit",
-    type: "bigint",
+    type: "string",
     description: "The amount of gas to allocate the main execution call",
   },
   {
     key: "verificationGasLimit",
-    type: "bigint",
+    type: "string",
     description: "The amount of gas to allocate for the verification step",
   },
   {
     key: "preVerificationGas",
-    type: "bigint",
+    type: "string",
     description: "Extra gas to pay the bunder",
   },
   {
