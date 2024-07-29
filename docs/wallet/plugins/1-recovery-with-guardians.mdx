@@ -6,7 +6,7 @@ keywords: [guardian, recovery, social-recovery, safe-recovery, gnosis-safe]
 
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
-import { SdkParamsTable } from "/src/components/CustomTable";
+import { DataTable } from "/src/components/Table";
 import {
   createEnableModuleParams,
   createConfirmRecoveryParams,
@@ -114,7 +114,7 @@ Active the recovery plugin for the smart account
 
 <Tabs>
   <TabItem value="Param type" label="Param Types">
-    <SdkParamsTable items={createEnableModuleParams} />
+    <DataTable items={createEnableModuleParams} />
   </TabItem>
   <TabItem value="Return type" label="Return Types">
     <table>
@@ -128,7 +128,7 @@ Active the recovery plugin for the smart account
           <td>MetaTransaction</td>
           <td align="left">
             <p><font color="#22c916">MetaTransaction</font></p>
-            <SdkParamsTable items={metaTransactionType} />
+            <DataTable items={metaTransactionType} />
           </td>
           <td align="left">
             MetaTransaction is the type of a transaction to construct a Safe operation.
@@ -146,7 +146,7 @@ Creates a MetaTransaction that lets the owner add a guardian for its account.
 
 <Tabs>
   <TabItem value="Param type" label="Param Types">
-    <SdkParamsTable items={createAddGuardianWithThresholdParams} />
+    <DataTable items={createAddGuardianWithThresholdParams} />
   </TabItem>
   <TabItem value="Return type" label="Return Types">
     <table>
@@ -160,7 +160,7 @@ Creates a MetaTransaction that lets the owner add a guardian for its account.
           <td>MetaTransaction</td>
           <td align="left">
             <p><font color="#22c916">MetaTransaction</font></p>
-            <SdkParamsTable items={metaTransactionType} />
+            <DataTable items={metaTransactionType} />
           </td>
           <td align="left">
             MetaTransaction is the type of a transaction to construct a Safe operation.
@@ -179,7 +179,7 @@ Creates a MetaTransaction that lets the owner revoke a guardian from its account
 
 <Tabs>
   <TabItem value="Param type" label="Param Types">
-    <SdkParamsTable items={createRevokeGuardianWithThresholdParams} />
+    <DataTable items={createRevokeGuardianWithThresholdParams} />
   </TabItem>
   <TabItem value="Return type" label="Return Types">
     <table>
@@ -193,7 +193,7 @@ Creates a MetaTransaction that lets the owner revoke a guardian from its account
           <td>MetaTransaction</td>
           <td align="left">
             <p><font color="#22c916">MetaTransaction</font></p>
-            <SdkParamsTable items={metaTransactionType} />
+            <DataTable items={metaTransactionType} />
           </td>
           <td align="left">
             MetaTransaction is the type of a transaction to construct a Safe operation.
@@ -210,7 +210,7 @@ Creates a MetaTransaction that lets the owner change the guardian threshold requ
 
 <Tabs>
   <TabItem value="Param type" label="Param Types">
-    <SdkParamsTable items={createChangeThresholdParams} />
+    <DataTable items={createChangeThresholdParams} />
   </TabItem>
   <TabItem value="Return type" label="Return Types">
     <table>
@@ -224,7 +224,7 @@ Creates a MetaTransaction that lets the owner change the guardian threshold requ
           <td>MetaTransaction</td>
           <td align="left">
             <p><font color="#22c916">MetaTransaction</font></p>
-            <SdkParamsTable items={metaTransactionType} />
+            <DataTable items={metaTransactionType} />
           </td>
           <td align="left">
             MetaTransaction is the type of a transaction to construct a Safe operation.
@@ -246,7 +246,7 @@ Once triggered, the recovery will started the recovery period delay, before it c
 
 <Tabs>
 <TabItem value="Param type" label="Param Types">
-  <SdkParamsTable items={createConfirmRecoveryParams} />
+  <DataTable items={createConfirmRecoveryParams} />
 </TabItem>
 <TabItem value="Return type" label="Return Types">
     <table>
@@ -260,7 +260,7 @@ Once triggered, the recovery will started the recovery period delay, before it c
             <td>MetaTransaction</td>
             <td align="left">
             <p><font color="#22c916">MetaTransaction</font></p>
-            <SdkParamsTable items={metaTransactionType} />
+            <DataTable items={metaTransactionType} />
             </td>
             <td align="left">
             MetaTransaction is the type of a transaction to construct a Safe operation
@@ -279,7 +279,7 @@ Once triggered, the recovery will start the recovery period delay, before it can
 
 <Tabs>
   <TabItem value="Param type" label="Param Types">
-    <SdkParamsTable items={createdMultiConfirmRecoveryParams} />
+    <DataTable items={createdMultiConfirmRecoveryParams} />
   </TabItem>
   <TabItem value="Return type" label="Return Types">
     <table>
@@ -293,7 +293,7 @@ Once triggered, the recovery will start the recovery period delay, before it can
             <td>MetaTransaction</td>
             <td align="left">
             <p><font color="#22c916">MetaTransaction</font></p>
-            <SdkParamsTable items={metaTransactionType} />
+            <DataTable items={metaTransactionType} />
             </td>
             <td align="left">
                 MetaTransaction is the type of a transaction to construct a Safe operation
@@ -310,7 +310,7 @@ Creates a MetaTransaction that lets the guardians start the execution of the rec
 
 <Tabs>
   <TabItem value="Param type" label="Param Types">
-    <SdkParamsTable items={createExecuteRecoveryParams} />
+    <DataTable items={createExecuteRecoveryParams} />
   </TabItem>
   <TabItem value="Return type" label="Return Types">
     <table>
@@ -324,7 +324,7 @@ Creates a MetaTransaction that lets the guardians start the execution of the rec
           <td>MetaTransaction</td>
           <td align="left">
             <p><font color="#22c916">MetaTransaction</font></p>
-            <SdkParamsTable items={metaTransactionType} />
+            <DataTable items={metaTransactionType} />
           </td>
           <td align="left">
             MetaTransaction is the type of a transaction to construct a Safe operation.
@@ -341,7 +341,7 @@ Creates a MetaTransaction that finalizes an ongoing recovery request if the reco
 
 <Tabs>
   <TabItem value="Param type" label="Param Types">
-    <SdkParamsTable items={createFinalizeRecoveryParams} />
+    <DataTable items={createFinalizeRecoveryParams} />
   </TabItem>
   <TabItem value="Return type" label="Return Types">
     <table>
@@ -355,7 +355,7 @@ Creates a MetaTransaction that finalizes an ongoing recovery request if the reco
           <td>MetaTransaction</td>
           <td align="left">
             <p><font color="#22c916">MetaTransaction</font></p>
-            <SdkParamsTable items={metaTransactionType} />
+            <DataTable items={metaTransactionType} />
           </td>
           <td align="left">
             MetaTransaction is the type of a transaction to construct a Safe operation.
@@ -374,7 +374,7 @@ Creates a MetaTransaction that lets the account cancel an ongoing recovery reque
 
 <Tabs>
   <TabItem value="Param type" label="Param Types">
-    <SdkParamsTable items={createCancelRecoveryParams} />
+    <DataTable items={createCancelRecoveryParams} />
   </TabItem>
   <TabItem value="Return type" label="Return Types">
     <table>
@@ -388,7 +388,7 @@ Creates a MetaTransaction that lets the account cancel an ongoing recovery reque
           <td>MetaTransaction</td>
           <td align="left">
             <p><font color="#22c916">MetaTransaction</font></p>
-            <SdkParamsTable items={metaTransactionType} />
+            <DataTable items={metaTransactionType} />
           </td>
           <td align="left">
             MetaTransaction is the type of a transaction to construct a Safe operation.
@@ -407,7 +407,7 @@ Retrieves specific guardian approval status for a particular recovery request at
 
 <Tabs>
   <TabItem value="Param type" label="Param Types">
-    <SdkParamsTable items={hasGuardianApprovedParams} />
+    <DataTable items={hasGuardianApprovedParams} />
   </TabItem>
   <TabItem value="Return type" label="Return Types">
     <p>Boolean</p>
@@ -420,7 +420,7 @@ Checks if an address is a guardian for an account.
 
 <Tabs>
   <TabItem value="Param type" label="Param Types">
-    <SdkParamsTable items={isGuardianParams} />
+    <DataTable items={isGuardianParams} />
   </TabItem>
   <TabItem value="Return type" label="Return Types">
     <p>Boolean</p>
@@ -433,7 +433,7 @@ Counts the number of active guardians for an account.
 
 <Tabs>
   <TabItem value="Param type" label="Param Types">
-    <SdkParamsTable items={guardiansCountParams} />
+    <DataTable items={guardiansCountParams} />
   </TabItem>
   <TabItem value="Return type" label="Return Types">
     <p>BigInt</p>
@@ -446,7 +446,7 @@ Retrieves the guardians threshold for the account.
 
 <Tabs>
   <TabItem value="Param type" label="Param Types">
-    <SdkParamsTable items={thresholdParams} />
+    <DataTable items={thresholdParams} />
   </TabItem>
   <TabItem value="Return type" label="Return Types">
     <p>BigInt</p>
@@ -459,7 +459,7 @@ Get the active guardians for an account.
 
 <Tabs>
   <TabItem value="Param type" label="Param Types">
-    <SdkParamsTable items={getGuardiansParams} />
+    <DataTable items={getGuardiansParams} />
   </TabItem>
   <TabItem value="Return type" label="Return Types">
     <p>String[]</p>
@@ -472,10 +472,10 @@ Retrieves the account's current ongoing recovery request.
 
 <Tabs>
   <TabItem value="Param type" label="Param Types">
-    <SdkParamsTable items={getRecoveryRequestParams} />
+    <DataTable items={getRecoveryRequestParams} />
   </TabItem>
   <TabItem value="Return type" label="Return Types">
-    <SdkParamsTable items={RecoveryRequestParams} />
+    <DataTable items={RecoveryRequestParams} />
   </TabItem>
 </Tabs>
 
@@ -485,7 +485,7 @@ Retrieves the guardian approval count for this particular recovery request at th
 
 <Tabs>
   <TabItem value="Param type" label="Param Types">
-    <SdkParamsTable items={getRecoveryApprovalsParams} />
+    <DataTable items={getRecoveryApprovalsParams} />
   </TabItem>
   <TabItem value="Return type" label="Return Types">
     <p>BigInt</p>
@@ -498,7 +498,7 @@ Get the module nonce for an account.
 
 <Tabs>
   <TabItem value="Param type" label="Param Types">
-    <SdkParamsTable items={nonceParams} />
+    <DataTable items={nonceParams} />
   </TabItem>
   <TabItem value="Return type" label="Return Types">
     <p>BigInt</p>

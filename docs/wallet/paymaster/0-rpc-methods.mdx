@@ -7,17 +7,17 @@ keywords: [paymaster, gas sponsorship, pay gas in stablecoin]
 
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
-import { RpcRequestTable } from "/src/components/CustomTable";
-import {
-  paymasterMetadataParameters,
-  tokensParamaters,
-  emptyParams,
-  userOperationParamaters,
-  entrypointParams,
-  pm_sponsorUserOperationWithGasReturnParams,
-} from "/src/requestRpcData";
+import { DataTable } from "/src/components/Table";
+import { userOperationReturnParamsV06 } from "/src/data/userOperation"
+import { 
+  candidePaymasterContext,
+  tokensParamatersV2,
+  paymasterMetadataReturnParametersV06,
+  pm_supportedEntryPointReturnParam,
+  pm_sponsorUserOperationReturnParamsV06V02
+} from "/src/data/paymaster";
 
-# Paymaster RPC Methods
+# Paymaster V2 RPC Methods
 
 JSON-RPC API reference for Candide's Verifying Paymaster service
 
@@ -96,14 +96,14 @@ Gets supported ERC-20 Tokens for gas payments, along side the paymaster metadata
       <td align="left">paymasterMetadata</td>
       <td align="left">
         <p>Object</p>
-        <RpcRequestTable items={paymasterMetadataParameters} />
+        <DataTable items={paymasterMetadataReturnParametersV06} />
       </td>
     </tr>
     <tr>
       <td align="left">tokens</td>
       <td align="left">
         <p>Object[]</p>
-        <RpcRequestTable items={tokensParamaters} />
+        <DataTable items={tokensParamatersV2} />
       </td>
     </tr>
   </tbody>
@@ -204,7 +204,7 @@ Any gas overrides provided in the paymaster result MUST be used in the userop ot
       <td align="left">userOperation</td>
       <td align="left">
         <p>Object</p>
-        <RpcRequestTable items={userOperationParamaters} />
+        <DataTable items={userOperationReturnParamsV06} />
       </td>
     </tr>
     <tr>
@@ -227,8 +227,9 @@ Any gas overrides provided in the paymaster result MUST be used in the userop ot
     <tr>
       <td align="left">context</td>
       <td align="left">
-        Object: This argument contains information about the specific paymaster
-        implementation you are using
+        <p>Object: This argument contains information about the specific paymaster
+        implementation you are using. If use paying gas in ERC-20 Tokens, pass the token key and value.</p>
+        <DataTable items={candidePaymasterContext} />
       </td>
     </tr>
   </tbody>
@@ -237,7 +238,7 @@ Any gas overrides provided in the paymaster result MUST be used in the userop ot
 </TabItem>
 
 <TabItem value="response type" label="Response Type">
-  <RpcRequestTable items={pm_sponsorUserOperationWithGasReturnParams} />
+  <DataTable items={pm_sponsorUserOperationReturnParamsV06V02} />
 </TabItem>
 
 </Tabs>
@@ -285,27 +286,8 @@ Get supported EntryPoint returns the entryPoint address supported by the paymast
 </TabItem>
 
 <TabItem value="response type" label="Response Type">
-  <table>
-    <thead>
-      <th align="left">Paramater</th>
-      <th align="left">Type</th>
-      <th align="left">Description</th>
-    </thead>
-    <tbody>
-      <tr>
-        <td align="left">entrypoint</td>
-        <td align="left">
-          <code>
-            <font color="#e25894">string</font>
-          </code>
-        </td>
-        <td align="left">
-          EntryPoint Address that the paymaster is supporting
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  </TabItem>
+  <DataTable items={pm_supportedEntryPointReturnParam} />
+</TabItem>
 </Tabs>
 
 ## pm_chainId

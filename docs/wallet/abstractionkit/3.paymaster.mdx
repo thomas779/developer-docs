@@ -7,17 +7,18 @@ image: /img/posters/abstractionkit-meta.png
 
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
-import { RpcRequestTable } from "/src/components/CustomTable";
+import { DataTable } from "/src/components/Table";
 import {
-  paymasterMetadataParameters,
-  tokensParamaters,
-  userOperationParamaters,
-  pm_supportedEntryPointReturnParam,
-  candidePaymasterContext,
   stateOverrideSetParameters,
   addressToStateParameters
 } from "/src/requestRpcData";
-
+import {  userOperationReturnParamsV06 } from "/src/data/userOperation";
+import {
+  paymasterMetadataReturnParametersV06, 
+  candidePaymasterContext, 
+  tokensParamatersV2, 
+  pm_supportedEntryPointReturnParam 
+} from "/src/data/paymaster";
 import { smartAccountParameters } from "../../../src/data/accountParamAndReturnData";
 
 A `CandidePaymaster` is a class interacts with Candide's ERC-4337 Paymaster API.
@@ -78,7 +79,7 @@ const paymasterResult = await paymaster.getPaymasterMetaData();
       <td align="left">paymasterMetadata</td>
       <td align="left">
         <p><font color="#e25894"><code>PaymasterMetadata</code></font> Object</p>
-        <RpcRequestTable items={paymasterMetadataParameters} />
+        <DataTable items={paymasterMetadataReturnParametersV06} />
       </td>
     </tr>
   </tbody>
@@ -135,14 +136,14 @@ const result = await paymaster.getSupportedERC20TokensAndPaymasterMetadata();
       <td align="left">tokens</td>
       <td align="left">
         <p><font color="#e25894"><code>ERC20Token[]</code></font> Object[]</p>
-        <RpcRequestTable items={tokensParamaters} />
+        <DataTable items={tokensParamatersV2} />
       </td>
     </tr>
     <tr>
       <td align="left">paymasterMetadata</td>
       <td align="left">
         <p><font color="#e25894"><code>PaymasterMetadata</code></font> Object</p>
-        <RpcRequestTable items={paymasterMetadataParameters} />
+        <DataTable items={paymasterMetadataReturnParametersV06} />
       </td>
     </tr>
   </tbody>
@@ -198,7 +199,7 @@ const paymasterResult = await paymaster.getSupportedEntrypoint();
 
 </TabItem>
 <TabItem value="response type" label="Response Type">
-  <RpcRequestTable items={pm_supportedEntryPointReturnParam} />
+  <DataTable items={pm_supportedEntryPointReturnParam} />
 </TabItem>
 </Tabs>
 
@@ -326,7 +327,7 @@ const erc20TokenData = await paymaster.getSupportedERC20TokenData(erc20TokenAddr
       <td align="left">tokens</td>
       <td align="left">
         <p><font color="#e25894"><code>ERC20Token[]</code></font> Object[]</p>
-        <RpcRequestTable items={tokensParamaters} />
+        <DataTable items={tokensParamatersV2} />
       </td>
     </tr>
   </tbody>
@@ -396,7 +397,7 @@ userOperation = createPaymasterUserOperation(userOperation, bundlerRPC);
         <td align="left">userOperation</td>
         <td align="left">
           <p><font color="#e25894"><code>UserOperation</code></font> object</p>
-          <RpcRequestTable items={userOperationParamaters} />
+          <DataTable items={userOperationReturnParamsV06} />
         </td>
       </tr>
       <tr>
@@ -427,7 +428,7 @@ userOperation = createPaymasterUserOperation(userOperation, bundlerRPC);
             <tr>
               <td>
                 <p><font color="#e25894"><code>CandidePaymasterContext</code></font> object. (optional)</p>
-                 <RpcRequestTable items={candidePaymasterContext} />
+                 <DataTable items={candidePaymasterContext} />
               </td>
               <td> Context for information to pass to the paymaster</td>
             </tr>
@@ -445,9 +446,9 @@ userOperation = createPaymasterUserOperation(userOperation, bundlerRPC);
             <tr>
               <td>
                 <p><font color="#e25894"><code>StateOverrideSet</code></font> object. (optional)</p>
-                 <RpcRequestTable items={stateOverrideSetParameters} />
+                 <DataTable items={stateOverrideSetParameters} />
                  <p><font color="#e25894"><code>AddressToState</code></font> object</p>
-                 <RpcRequestTable items={addressToStateParameters} />
+                 <DataTable items={addressToStateParameters} />
               </td>
               <td>
               Wrapper for state overrides for gas estimation
@@ -470,7 +471,7 @@ userOperation = createPaymasterUserOperation(userOperation, bundlerRPC);
         <td align="left">userOperation</td>
         <td align="left">
           <p><font color="#e25894">{`Promise<UserOperation>`}</font> object</p> 
-          <RpcRequestTable items={userOperationParamaters} />
+          <DataTable items={userOperationReturnParamsV06} />
         </td>
       </tr>
     </tbody>
@@ -567,14 +568,14 @@ userOperation = await paymaster.createTokenPaymasterUserOperation(
         <td align="left">Smart Account</td>
         <td align="left">
           <p><font color="#e25894"><code>SmartAccount</code></font> class</p>
-          <RpcRequestTable items={smartAccountParameters} />
+          <DataTable items={smartAccountParameters} />
         </td>
       </tr>
       <tr>
         <td align="left">userOperation</td>
         <td align="left">
           <p><font color="#e25894"><code>UserOperation</code></font> object</p>
-          <RpcRequestTable items={userOperationParamaters} />
+          <DataTable items={userOperationReturnParamsV06} />
         </td>
       </tr>
       <tr>
@@ -625,7 +626,7 @@ userOperation = await paymaster.createTokenPaymasterUserOperation(
         <td align="left">userOperation</td>
         <td align="left">
           <p><font color="#e25894">{`Promise<UserOperation>`}</font> object</p> 
-          <RpcRequestTable items={userOperationParamaters} />
+          <DataTable items={userOperationReturnParamsV06} />
         </td>
       </tr>
     </tbody>
@@ -710,7 +711,7 @@ const cost = await paymaster.calculateUserOperationErc20TokenMaxGasCost(
         <td align="left">userOperation</td>
         <td align="left">
           <p><font color="#e25894"><code>UserOperation</code></font> object</p>
-          <RpcRequestTable items={userOperationParamaters} />
+          <DataTable items={userOperationReturnParamsV06} />
         </td>
       </tr>
       <tr>

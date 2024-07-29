@@ -7,7 +7,7 @@ keywords: [safe-account, "4337", sdk, account-abstraction, gnosis-safe]
 
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
-import { SdkParamsTable, RpcRequestTable } from "/src/components/CustomTable";
+import { DataTable } from "/src/components/Table";
 import {
   createNewAccountReturn,
   metaTransactionType,
@@ -18,9 +18,8 @@ import {
   createInitCodeParams,
   createInitCodeReturn,
 } from "../../../src/data/accountParamAndReturnData";
-
+import { userOperationReturnParamsV06 } from "/src/data/userOperation";
 import { 
-  userOperationParamaters, 
   jsonRpcErrorType, 
   bundlerJsonRpcErrorType,
   sendUseroperationResponseType,
@@ -128,7 +127,7 @@ console.log("Account address (sender): " + smartAccount.accountAddress);
         <td align="left">InitCode Overrides</td>
         <td align="left">
           <p><font color="#22c916">InitCodeOverrides </font>object. (optional)</p>
-          <SdkParamsTable items={initCodeOverridesParams} />
+          <DataTable items={initCodeOverridesParams} />
         </td>
         <td align="left">
           InitCodeOverrides allows you to override the default paramaters 
@@ -222,7 +221,7 @@ console.log(userOperation);
         <td>Transactions</td>
         <td align="left">
           <p><font color="#22c916">MetaTransaction[]</font></p>
-          <SdkParamsTable items={metaTransactionType} />
+          <DataTable items={metaTransactionType} />
         </td>
         <td align="left">
           MetaTransaction is the type of a transaction to construct a Safe operation
@@ -246,7 +245,7 @@ console.log(userOperation);
         <td align="left">Overrides</td>
         <td align="left">
           <p>CreateUserOperationOverrides, optional object</p>
-          <SdkParamsTable items={createUserOperationOverrides} />
+          <DataTable items={createUserOperationOverrides} />
         </td>
         <td align="left">
           CreateUserOperationOverrides allows you to override any of the default paramaters for the user operation  
@@ -269,14 +268,14 @@ console.log(userOperation);
         <td align="left">
           <p><font color="#22c916">{`Promise<UserOperation | JsonRpcError | BundlerJsonRpcError>`}</font></p>
             <font color="#22c916">UserOperation </font>object
-            <SdkParamsTable items={userOperationParamaters} />
+            <DataTable items={userOperationReturnParamsV06} />
             <font color="#22c916">JsonRpcError object</font>
             <td align="left">
-              <SdkParamsTable items={jsonRpcErrorType} />
+              <DataTable items={jsonRpcErrorType} />
             </td>
             <font color="#22c916">BundlerJsonRpcError object</font>
             <td align="left">
-              <SdkParamsTable items={bundlerJsonRpcErrorType} />
+              <DataTable items={bundlerJsonRpcErrorType} />
             </td>
         </td>
         <td align="left">
@@ -347,7 +346,7 @@ console.log(signature);
         <td>UserOperation</td>
         <td align="left">
             <font color="#22c916">UserOperation </font>object
-            <SdkParamsTable items={userOperationParamaters} />
+            <DataTable items={userOperationReturnParamsV06} />
         </td>
         <td align="left">
           ERC-4337's higher-layer pseudo-transaction
@@ -433,7 +432,7 @@ console.log("receipt: ", receipt);
         <td>User Operation</td>
         <td align="left">
           <p><font color="#22c916">UserOperation </font>object</p>
-          <SdkParamsTable items={userOperationParamaters} />
+          <DataTable items={userOperationReturnParamsV06} />
         </td>
         <td align="left">
           ERC-4337's higher-layer pseudo-transaction
@@ -463,10 +462,10 @@ console.log("receipt: ", receipt);
         <td align="left">
           <p><font color="#22c916">{`Promise<SendUseroperationResponse | BundlerJsonRpcError>`}</font></p>
             <font color="#22c916">SendUseroperationResponse class</font>
-            <SdkParamsTable items={sendUseroperationResponseType} />
+            <DataTable items={sendUseroperationResponseType} />
             <font color="#22c916">BundlerJsonRpcError object</font>
             <td align="left">
-              <SdkParamsTable items={bundlerJsonRpcErrorType} />
+              <DataTable items={bundlerJsonRpcErrorType} />
             </td>
         </td>
         <td align="left">
@@ -566,7 +565,7 @@ console.log("initCode: ", initCode);
         <td align="left">InitCodeOverrides</td>
         <td align="left">
           <p>Optional object</p>
-          <SdkParamsTable items={initCodeOverridesParams} />
+          <DataTable items={initCodeOverridesParams} />
         </td>
         <td align="left">
           InitCodeOverrides allows you to override the default paramaters 
@@ -577,7 +576,7 @@ console.log("initCode: ", initCode);
 </TabItem>
 
 <TabItem value="Return Type" label="Return Type">
-  <SdkParamsTable items={createNewAccountReturn} />
+  <DataTable items={createNewAccountReturn} />
 </TabItem>
 
 </Tabs>
@@ -620,11 +619,11 @@ console.log("initCode: ", initCode);
 </TabItem>
 
 <TabItem value="Param type" label="Param Types">
-  <SdkParamsTable items={createInitCodeParams} />
+  <DataTable items={createInitCodeParams} />
 </TabItem>
 
 <TabItem value="Return Type" label="Return Type">
-  <SdkParamsTable items={createInitCodeReturn} />
+  <DataTable items={createInitCodeReturn} />
 </TabItem>
 
 </Tabs>
@@ -684,7 +683,7 @@ console.log("callData: " + callData);
         <td align="left">MetaTransaction</td>
         <td align="left">
           <p>Object</p>
-          <SdkParamsTable items={metaTransactionType} />
+          <DataTable items={metaTransactionType} />
         </td>
         <td align="left">
           MetaTransaction is the type of a transaction to construct a Gnosis
@@ -696,7 +695,7 @@ console.log("callData: " + callData);
 </TabItem>
 
 <TabItem value="Return Type" label="Return Type">
-  <SdkParamsTable items={createCallDataSingleTransactionReturn} />
+  <DataTable items={createCallDataSingleTransactionReturn} />
 </TabItem>
 
 </Tabs>
@@ -768,7 +767,7 @@ console.log("callData: " + callData);
         <td align="left">MetaTransaction[]</td>
         <td align="left">
           <p>Object[]</p>
-          <SdkParamsTable items={metaTransactionType} />
+          <DataTable items={metaTransactionType} />
         </td>
         <td align="left">
           MetaTransaction is the type of a transaction to construct a Gnosis
@@ -789,7 +788,7 @@ console.log("callData: " + callData);
 </TabItem>
 
 <TabItem value="Return Type" label="Return Type">
-  <SdkParamsTable items={createCallDataBatchTransactionReturn} />
+  <DataTable items={createCallDataBatchTransactionReturn} />
 </TabItem>
 
 </Tabs>
@@ -859,7 +858,7 @@ const [preVerificationGas, verificationGasLimit, callGasLimit] = await estimateU
         <td align="left">userOperation</td>
         <td align="left">
           <p><font color="#e25894"><code>UserOperation</code></font> object</p>
-          <RpcRequestTable items={userOperationParamaters} />
+          <DataTable items={userOperationReturnParamsV06} />
         </td>
       </tr>
       <tr>
@@ -907,9 +906,9 @@ const [preVerificationGas, verificationGasLimit, callGasLimit] = await estimateU
             <tr>
               <td>
                 <p><font color="#e25894"><code>StateOverrideSet</code></font> object. (optional)</p>
-                 <RpcRequestTable items={stateOverrideSetParameters} />
+                 <DataTable items={stateOverrideSetParameters} />
                  <p><font color="#e25894"><code>AddressToState</code></font> object</p>
-                 <RpcRequestTable items={addressToStateParameters} />
+                 <DataTable items={addressToStateParameters} />
               </td>
               <td>
               Wrapper for state overrides for gas estimation

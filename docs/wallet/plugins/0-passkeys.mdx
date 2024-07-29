@@ -10,6 +10,11 @@ import TabItem from "@theme/TabItem";
 Passkeys can be used to secure onchain smart accounts using **fingerprint**, **face recognition**, or the device **PIN** code. Users no longer need to manage and remember complex private keys; instead, they can effortlessly access their digital wallets using passkey-enabled devices, synced across devices via Apple's **iCloud Keychain**, or other cross-platform password managers like **Proton Pass** and **Bitwarden**.
 
 In the context of an Ethereum wallet, **Passkeys** serve as substitutes for traditional seedphrase backups. Unlike the default curve (secp256k1) used for Externally Owned Accounts (EOA), Passkeys generate unique digital keys using the **secp256r1** curve. These keys benefit from device secure enclave cryptography, which enhances security by preventing password reuse. Passkeys are built on the WebAuthn standard, leveraging public-key cryptography. Developed collaboratively by the FIDO Alliance, which includes Apple, Google, Microsoft, and others, Passkeys strictly adhere to WebAuthn standards.
+
+## Safe Passkeys
+
+These contracts can utilize EIP-7212 precompiles for signature verification on supported networks or alternatively employ any verifier contract as a fallback mechanism.
+
 ## Demo with Safe Accounts
  
 This example showcases a **Safe** Smart Account deployment utilizing 4337 and Passkeys, and minting an NFT. It employs experimental and unaudited contracts (at the moment of writing), such as WebAuthnSigner and FCLP256Verifier, developed by the **Safe** and FreshCryptoLib Teams.
