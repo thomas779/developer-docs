@@ -91,14 +91,14 @@ const config = {
         respectPrefersColorScheme: false,
       },
       image: 'img/posters/atelier-meta.png',
-      // announcementBar: {
-      //   id: 'private_beta_paymaster',
-      //   content:
-      //     'JUST IN: Smooth Onboarding with Safe Passkeys <button><a target="_blank" rel="noopener noreferrer" href="https://www.candide.dev/blog/safe-passkeys-smooth-onboarding">Read Announcement</a></button>',
-      //   backgroundColor: '#f0f6ff',
-      //   textColor: '#000000',
-      //   isCloseable: false,
-      // },
+      announcementBar: {
+        id: 'social_recovery_audit',
+        content:
+          'Formal Verification and Audits of the Safe Account Recovery Module Now Complete <button><a target="_blank" rel="noopener noreferrer" href="https://docs.candide.dev/wallet/plugins/recovery-with-guardians">Start Building</a></button>',
+        backgroundColor: '#f0f6ff',
+        textColor: '#000000',
+        isCloseable: false,
+      },
       metadata: [{
         name:
           'twitter:card',
