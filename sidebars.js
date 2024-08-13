@@ -26,6 +26,7 @@ const sidebars = {
       collapsed: false,
       label: 'Guides',
       items: [
+        'dapps/guides/sponsor-gas',
         'dapps/guides/batch-transactions',
         'dapps/guides/verify-signatures',
       ],
