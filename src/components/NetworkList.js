@@ -36,14 +36,6 @@ export function NetworkList() {
         }}
       />
       <img
-        src="/img/networks/1101.png"
-        alt="Polygon zkEVM"
-        style={{
-          width: "45px",
-          marginRight: "10px",
-        }}
-      />
-      <img
         src="/img/networks/100.svg"
         alt="Gnosis"
         style={{
@@ -78,14 +70,6 @@ export function NetworkList() {
       <img
         src="/img/networks/56.png"
         alt="BnB Chain"
-        style={{
-          width: "45px",
-          marginRight: "10px",
-        }}
-      />
-      <img
-        src="/img/networks/42170.png"
-        alt="Arbitrum Nova"
         style={{
           width: "45px",
           marginRight: "10px",
