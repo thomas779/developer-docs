@@ -6,29 +6,42 @@ keywords: [deployments, addresses, etherscan, verifed]
 
 # Contract Deployments
 
-The latest version of Entrypoint, and Candide plugins contracts are deployed at the addresses listed below.
-
-For Safe 4337 module deployments, refer to [safe-global/safe-modules](https://github.com/safe-global/safe-modules/tree/main/modules/4337) github.
-
 import { NetworkList } from "/src/components/NetworkList";
 
 <NetworkList />
 
 
-## Mainnet Networks
+## Account Abstraction EntryPoint
 
+EP releases on [eth-infinitism github](https://github.com/eth-infinitism/account-abstraction/releases).
+
+| Version               | Address                                    |
+| ----------------------| -------------------------------------------|
+| v0.6                  | 0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789 |
+| v0.7                  | 0x0000000071727de22e5e9d8baf0edac6f37da032 |
+
+## Social Recovery Module
+
+The address is expected to be different with different recovery grace periods. 
+Below are some that are deployed. The Module can be found on [candide-contracts](https://github.com/candidelabs/candide-contracts).
+
+| Recovery Grace Period | Address                                    |
+| ----------------------| -------------------------------------------|
+| 3 days                | 0x38275826E1933303E508433dD5f289315Da2541c |
+| 7 days                | 0x088f6cfD8BB1dDb1BB069CCb3fc1A98927D233f2 |
+| 14 days               | 0x9BacD92F4687Db306D7ded5d4513a51EA05df25b |
+| 3 mins (sepolia only) | 0x949d01d424bE050D09C16025dd007CB59b3A8c66 |
+
+
+## Candide Paymasters
 | Contract              | Address                                    |
 | ----------------------| -------------------------------------------|
-| EntryPoint            | 0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789 |
-| CandidePaymaster      | 0x3fe285dcd76bcce4ac92d38a6f2f8e964041e020 |
-| SocialRecoveryModule  | 0xbc1920b63F35FdeD45382e2295E645B5c27fD2DA |
+| CandidePaymaster V2   | 0x3fe285dcd76bcce4ac92d38a6f2f8e964041e020 |
 
+## Safe 4337 Module
 
-## Testnet Networks
+Refer to [safe-4337-module](https://github.com/safe-global/safe-modules-deployments/tree/main/src/assets/safe-4337-module)
 
-| Contract              | Address                                    |
-| ----------------------| -------------------------------------------|
-| EntryPoint            | 0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789 |
-| CandidePaymaster      | 0x3fe285dcd76bcce4ac92d38a6f2f8e964041e020 |
-| SocialRecoveryModule  | 0x831153c6b9537d0fF5b7DB830C2749DE3042e776 |
+## Safe Passkeys
 
+Refer to [safe-passkey-module](https://github.com/safe-global/safe-modules-deployments/tree/main/src/assets/safe-passkey-module)
