@@ -29,7 +29,7 @@ const createConfirmRecoveryParams = [
   },
 ];
 
-const createdMultiConfirmRecoveryParams = [
+const createMultiConfirmRecoveryParams = [
   {
     key: "accountAddress",
     type: "string",
@@ -46,9 +46,20 @@ const createdMultiConfirmRecoveryParams = [
     description: "The new threshold for the safe.",
   },
   {
-    key: "signatures",
-    type: "string[]",
-    description: "The guardians' signatures.",
+    key: "signatureData",
+    type: [
+      {
+        key: "signer",
+        type: "bigint",
+        description: "signer",
+      },
+      {
+        key: "signature",
+        type: "string[]",
+        description: "signature",
+      },
+    ],
+    description: "The guardians signers and signatures pair list.",
   },
   {
     key: "execute",
@@ -83,20 +94,9 @@ const createFinalizeRecoveryParams = [
   },
 ];
 
-const createCancelRecoveryParams = [
-  {
-    key: "accountAddress",
-    type: "string",
-    description: "The target account address.",
-  },
-];
+const createCancelRecoveryParams = [];
 
 const createAddGuardianWithThresholdParams = [
-  {
-    key: "accountAddress",
-    type: "string",
-    description: "The target account address.",
-  },
   {
     key: "guardianAddress",
     type: "string",
@@ -110,11 +110,6 @@ const createAddGuardianWithThresholdParams = [
 ];
 
 const createRevokeGuardianWithThresholdParams = [
-  {
-    key: "accountAddress",
-    type: "string",
-    description: "The target account address.",
-  },
   {
     key: "prevGuardianAddress",
     type: "string",
@@ -134,12 +129,7 @@ const createRevokeGuardianWithThresholdParams = [
   },
 ];
 
-const createChangeThresholdParams = [
-  {
-    key: "accountAddress",
-    type: "string",
-    description: "The target account address.",
-  },
+const createChangeThresholdMetaTransactionParams = [
   {
     key: "threshold",
     type: "bigint",
@@ -150,9 +140,9 @@ const createChangeThresholdParams = [
 
 const getRecoveryHashParams = [
   {
-    key: "rpcUrl",
+    key: "nodeUrl",
     type: "string",
-    description: "The URL of the Ethereum RPC endpoint.",
+    description: "The Node URL of the Ethereum RPC endpoint.",
   },
   {
     key: "accountAddress",
@@ -178,9 +168,9 @@ const getRecoveryHashParams = [
 
 const getRecoveryRequestParams = [
   {
-    key: "rpcUrl",
+    key: "nodeUrl",
     type: "string",
-    description: "The URL of the Ethereum RPC endpoint.",
+    description: "The Node URL of the Ethereum RPC endpoint.",
   },
   {
     key: "accountAddress",
@@ -191,9 +181,9 @@ const getRecoveryRequestParams = [
 
 const getRecoveryApprovalsParams = [
   {
-    key: "rpcUrl",
+    key: "nodeUrl",
     type: "string",
-    description: "The URL of the Ethereum RPC endpoint.",
+    description: "The Node URL of the Ethereum RPC endpoint.",
   },
   {
     key: "accountAddress",
@@ -214,9 +204,9 @@ const getRecoveryApprovalsParams = [
 
 const hasGuardianApprovedParams = [
   {
-    key: "rpcUrl",
+    key: "nodeURL",
     type: "string",
-    description: "The URL of the Ethereum RPC endpoint.",
+    description: "The Node URL of the Ethereum RPC endpoint.",
   },
   {
     key: "accountAddress",
@@ -242,9 +232,9 @@ const hasGuardianApprovedParams = [
 
 const isGuardianParams = [
   {
-    key: "rpcUrl",
+    key: "nodeRpcUrl",
     type: "string",
-    description: "The URL of the Ethereum RPC endpoint.",
+    description: "The Node URL of the Ethereum RPC endpoint.",
   },
   {
     key: "accountAddress",
@@ -260,9 +250,9 @@ const isGuardianParams = [
 
 const guardiansCountParams = [
   {
-    key: "rpcUrl",
+    key: "nodeRpcUrl",
     type: "string",
-    description: "The URL of the Ethereum RPC endpoint.",
+    description: "The Node URL of the Ethereum RPC endpoint.",
   },
   {
     key: "accountAddress",
@@ -273,9 +263,9 @@ const guardiansCountParams = [
 
 const thresholdParams = [
   {
-    key: "rpcUrl",
+    key: "nodeURL",
     type: "string",
-    description: "The URL of the Ethereum RPC endpoint.",
+    description: "The Node URL of the Ethereum RPC endpoint.",
   },
   {
     key: "accountAddress",
@@ -286,9 +276,9 @@ const thresholdParams = [
 
 const getGuardiansParams = [
   {
-    key: "rpcUrl",
+    key: "nodeRpcUrl",
     type: "string",
-    description: "The URL of the Ethereum RPC endpoint.",
+    description: "The Node URL of the Ethereum RPC endpoint.",
   },
   {
     key: "accountAddress",
@@ -299,9 +289,9 @@ const getGuardiansParams = [
 
 const nonceParams = [
   {
-    key: "rpcUrl",
+    key: "nodeRpcUrl",
     type: "string",
-    description: "The URL of the Ethereum RPC endpoint.",
+    description: "The Node URL of the Ethereum RPC endpoint.",
   },
   {
     key: "accountAddress",
@@ -323,7 +313,7 @@ const RecoveryRequestParams = [
   },
   {
     key: "executeAfter",
-    type: "number",
+    type: "bigint",
     description: "Timestamp indicating when the execution can happen.",
   },
   {
@@ -335,9 +325,9 @@ const RecoveryRequestParams = [
 
 const sendEthCallRequestParams = [
   {
-    key: "rpcUrl",
+    key: "nodeRpcUrl",
     type: "string",
-    description: "The URL of the Ethereum RPC endpoint.",
+    description: "The Node URL of the Ethereum RPC endpoint.",
   },
   {
     key: "ethCallTransaction",
@@ -354,13 +344,13 @@ const sendEthCallRequestParams = [
 export {
   createEnableModuleParams,
   createConfirmRecoveryParams,
-  createdMultiConfirmRecoveryParams,
+  createMultiConfirmRecoveryParams,
   createExecuteRecoveryParams,
   createFinalizeRecoveryParams,
   createCancelRecoveryParams,
   createAddGuardianWithThresholdParams,
   createRevokeGuardianWithThresholdParams,
-  createChangeThresholdParams,
+  createChangeThresholdMetaTransactionParams,
   getRecoveryHashParams,
   getRecoveryRequestParams,
   getRecoveryApprovalsParams,

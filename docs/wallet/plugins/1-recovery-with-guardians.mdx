@@ -10,13 +10,13 @@ import { DataTable } from "/src/components/Table";
 import {
   createEnableModuleParams,
   createConfirmRecoveryParams,
-  createdMultiConfirmRecoveryParams,
+  createMultiConfirmRecoveryParams,
   createExecuteRecoveryParams,
   createFinalizeRecoveryParams,
   createCancelRecoveryParams,
   createAddGuardianWithThresholdParams,
   createRevokeGuardianWithThresholdParams,
-  createChangeThresholdParams,
+  createChangeThresholdMetaTransactionParams,
   getRecoveryHashParams,
   getRecoveryRequestParams,
   getRecoveryApprovalsParams,
@@ -49,7 +49,11 @@ Learn more on how the Social Recovery Module work on this [post](../../../blog/m
 
 #### Audits
 
-Contracts, Formal Verification and Audits be found on the github repo [candide-contracts](https://github.com/candidelabs/candide-contracts).
+- Contracts, Formal Verification and Audits be found on the github repo [candide-contracts](https://github.com/candidelabs/candide-contracts).
+
+#### Deployment addresses
+
+- Deployment addresses for different grace periods can be found [here](/docs/wallet/technical-reference/deployments/#social-recovery-module).
 
 ## Usage
 
@@ -63,21 +67,21 @@ Prefer to run a simple example? Fork this repo and add your first guardian [here
 <TabItem value="npm" label="npm">
 
 ```bash
-npm i abstractionkit@0.1.12
+npm i abstractionkit@0.1.16
 ```
 
 </TabItem>
 <TabItem value="yarn" label="yarn">
 
 ```bash
-yarn add abstractionkit@0.1.12
+yarn add abstractionkit@0.1.16
 ```
 
 </TabItem>
 </Tabs>
 
 :::note
-We're installing `v0.1.12` of `abstractionkit`, an experimental version that includes the Guardian Recovery Module, only on Sepolia Testnet.
+We're installing `v0.1.16` of `abstractionkit`, the beta version of the SDK that includes the Guardian Recovery Module.
 :::
 
 ### Import
@@ -87,9 +91,17 @@ import { SocialRecoveryModule } from "abstractionkit";
 ```
 ### How to use
 
-Initialize a `SocialRecoveryModule` instance
+Initialize a SocialRecoveryModule instance. By default, the grace period for recovery is set to 14 days. 
+
 ```ts
-const srm = new SocialRecoveryModule();
+const srm = new SocialRecoveryModule(); // 14 days
+```
+
+If you need a different grace period, you can override it by providing 
+a [different grace period address](/docs/wallet/technical-reference/deployments/#social-recovery-module)
+during initialization.
+```ts
+const srm = new SocialRecovery("0x38275826E1933303E508433dD5f289315Da2541c"); // 3 days
 ```
 
 Then consume the module methods like the following:
@@ -100,7 +112,6 @@ const guardianAddress= "0x2.."
 const metaTransaction1 = srm.createEnableModuleMetaTransaction(accountAddress);
 
 const metaTransaction2 = srm.createAddGuardianWithThresholdMetaTransaction(
-    accountAddress,
     guardianAddress,
     1n //threshold
 );
@@ -210,7 +221,7 @@ Creates a MetaTransaction that lets the owner change the guardian threshold requ
 
 <Tabs>
   <TabItem value="Param type" label="Param Types">
-    <DataTable items={createChangeThresholdParams} />
+    <DataTable items={createChangeThresholdMetaTransactionParams} />
   </TabItem>
   <TabItem value="Return type" label="Return Types">
     <table>
@@ -279,7 +290,7 @@ Once triggered, the recovery will start the recovery period delay, before it can
 
 <Tabs>
   <TabItem value="Param type" label="Param Types">
-    <DataTable items={createdMultiConfirmRecoveryParams} />
+    <DataTable items={createMultiConfirmRecoveryParams} />
   </TabItem>
   <TabItem value="Return type" label="Return Types">
     <table>
