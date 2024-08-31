@@ -13,13 +13,15 @@ In the context of an Ethereum wallet, **Passkeys** serve as substitutes for trad
 
 ## Safe Passkeys
 
-These contracts can utilize EIP-7212 precompiles for signature verification on supported networks or alternatively employ any verifier contract as a fallback mechanism.
+The Safe Passkeys contracts are developed by the Safe Protocol Team. 
 
-## Demo with Safe Accounts
+The contracts and its audits are available on the [Safe-Modules repo](https://github.com/safe-global/safe-modules/tree/main/modules/passkey). 
+The deployment addresses can be found in our [Contracts Deployment](/wallet/technical-reference/deployments/#safe-passkeys)
+## Demo
  
-This example showcases a **Safe** Smart Account deployment utilizing 4337 and Passkeys, and minting an NFT. It employs experimental and unaudited contracts (at the moment of writing), such as WebAuthnSigner and FCLP256Verifier, developed by the **Safe** and FreshCryptoLib Teams.
+These example showcases a Safe Smart Account deployment utilizing 4337 and Passkeys, and minting an NFT.
 
-- **Safe Passkeys Webapp**:
+- **Safe Passkeys WebApp**:
     - [Live Demo](https://passkeys.candide.dev/) 
     - [Source Code](https://github.com/candidelabs/abstractionkit/tree/experimental/examples/SafeAccountExamples/PasskeysCreateAccountandSendTransaction)
 
@@ -32,21 +34,21 @@ This example showcases a **Safe** Smart Account deployment utilizing 4337 and Pa
 <TabItem value="npm" label="npm">
 
 ```bash
-npm i abstractionkit@0.1.12
+npm i abstractionkit@0.1.16
 ```
 
 </TabItem>
 <TabItem value="yarn" label="yarn">
 
 ```bash
-yarn add abstractionkit@0.1.12
+yarn add abstractionkit@0.1.16
 ```
 
 </TabItem>
 </Tabs>
 
 :::note 
-We're installing `v0.1.12` of `abstractionkit`, an alpha version that includes the Passkeys plugin, only on Sepolia Testnet.
+We're installing `v0.1.16` of `abstractionkit`, the beta version of the SDK that includes the Safe Passkeys.
 
 We will often import WebAuthn API helper functions and classes from [/webauthn](https://github.com/candidelabs/abstractionkit/blob/experimental/examples/SafeAccountExamples/WebAuthnCreateAccountAndSendTransaction/src/webauthn.ts). Make sure to copy it and using it during your developement. 
 :::
@@ -98,10 +100,10 @@ const webauthPublicKey: WebauthPublicKey = {
 
 ### Step 4: Initialize Smart Account
 
-Initialize the Safe Smart Account as usual. The `SafeAccountWebAuth` class uses the same methods as the other for everything related to creating a userOp.
+Initialize the Safe Smart Account as usual. The `SafeAccountV0_3_0` supports Entrypoint v0.7, while `SafeAccountV0_2_0` supports Entrypoint v0.6.
 
 ```ts
-import { SafeAccountWebAuth as SafeAccount } from "abstractionkit";
+import { SafeAccountV0_3_0 as SafeAccount } from "abstractionkit";
 
 const smartAccount = SafeAccount.initializeNewAccount([webauthPublicKey])
 ```
@@ -115,15 +117,15 @@ to create a multisig secured by both types.
 This step follows the same flow as the normal Safe flow with  [createUserOperation](../../abstractionkit/safe-account/#createuseroperation), with the addition of the webauthn dummy signature. 
 
 ```ts
-import { DummySignature } from "abstractionkit";
+import { WebauthDummySignerSignaturePair } from "abstractionkit";
 
 let userOperation = await smartAccount.createUserOperation(
-    [transaction] // constructed MetaTransaction 
-    jsonRpcNodeProvider, //the node rpc.
-    bundlerUrl, //the bundler rpc.
+    [transaction] // constructed your MetaTranasction 
+    jsonRpcNodeProvider, //The Node rpc endpoint.
+    bundlerUrl, //The Bundler rpc endpoint.
     {
-        dummySignatures:[DummySignature.webAuthn]
-    }
+        dummySignatures: [WebauthDummySignerSignaturePair]
+    },
 )
 ```
 
@@ -134,15 +136,10 @@ let userOperation = await smartAccount.createUserOperation(
 Calculate the Safe EIP712 hash for the UserOp
 
 ```ts
-const entrypoint = "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"
-
 const safeInitOpHash = SafeAccount.getUserOperationEip712Hash(
     userOperation,
     chainId,
-    0n, // validAfter
-    0n, // validUntil
-    entrypoint
-)
+);
 ```
 
 ### Step 2: Request a WebAuthn assertion
@@ -193,17 +190,28 @@ const signerSignaturePair: SignerSignaturePair = {
 
 userOperation.signature = SafeAccount.formatSignaturesToUseroperationSignature(
     [signerSignaturePair],
-    userOperation.nonce == 0n
+	{ isInit: userOperation.nonce == 0n },
 )
+```
+
+## Submit the UserOp onchain
+
+```ts
+const sendUserOperationResponse = await smartAccount.sendUserOperation(
+    userOperation,
+    bundlerUrl,
+);
+const userOperationReceiptResult = await sendUserOperationResponse.included();
 ```
 
 ## Additional Notes
 
 ### Saving Public Credentials  
-It's crucial to securely store the Passkey's public credentials, specifically *x, y, and rawId*, 
+It's crucial to store the Passkey's public credentials, specifically the *x, y, and rawId*, 
 in a retrievable location. Losing this data would mean users can't recover their accounts 
-with Passkeys. This information isn't sensitive, so you can set up a server using 
-[@simplewebauthn/server](https://simplewebauthn.dev/docs/packages/server) for this purpose.
+with Passkeys. This information isn't sensitive, so you can set up a simple server to do so, 
+or you can you use[@simplewebauthn/server](https://simplewebauthn.dev/docs/packages/server) for 
+this purpose.
 
 ### Sync & Recovery
 
@@ -226,7 +234,7 @@ Learn more on [Yubico](https://www.yubico.com/blog/a-yubico-faq-about-passkeys/)
 #### Password Managers
 Passkey backups are not limited to hardware manufactures, they are supported across different 
 password managers like [Windows Hello](https://support.microsoft.com/en-us/windows/passkeys-in-windows-301c8944-5ea2-452b-9886-97e4d2ef4422), 
-[Bitwarden](https://bitwarden.com/), [ProtonPass](https://proton.me/blog/proton-pass-passkeys),
+[Bitwarden](https://bitwarden.com/passwordless-passkeys/), [ProtonPass](https://proton.me/blog/proton-pass-passkeys),
 [1Password](https://1password.com/product/passkeys), [LastPass](https://www.lastpass.com/features/passwordless-authentication) and others.  
 
 ### Device Support
