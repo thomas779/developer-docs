@@ -1,6 +1,6 @@
 ---
 slug: unbundling-candide-core-wallet-contract
-title: Unbundling CANDIDE Core Wallet Contract
+title: Unbundling Candide Core Wallet Contract
 description: How we leveraged Safe to build an ERC-4337 compatible Wallet
 image: "./candide_erc4337_poster.png"
 authors: [sherif]
@@ -9,17 +9,17 @@ tags: [wallet]
 
 ![candide-contracts-4337](./candide_erc4337_poster.png)
 
-CANDIDE Wallet released its second version of its core contract on testnet, addressing key issues from its previous version. The new contract is simple and doesn't require complex fallbacks or delegate calls like the previous one. Only four methods are added to Safe Contracts, allowing it to be ERC-4337 compatible.
+Candide Wallet released its second version of its core contract on testnet, addressing key issues from its previous version. The new contract is simple and doesn't require complex fallbacks or delegate calls like the previous one. Only four methods are added to Safe Contracts, allowing it to be ERC-4337 compatible.
 
-CANDIDE Wallet is an [EIP-4337](https://eips.ethereum.org/EIPS/eip-4337) Smart Wallet. This ERC is a specification to add account abstraction functionality to Ethereum and EVM-compatible chains without modifying the consensus rules.
+Candide Wallet is an [EIP-4337](https://eips.ethereum.org/EIPS/eip-4337) Smart Wallet. This ERC is a specification to add account abstraction functionality to Ethereum and EVM-compatible chains without modifying the consensus rules.
 
-To understand CANDIDE Contracts, it is vital to know the key component that the Global ERC-4337 EntryPoint contract needs from a Smart Account. A Smart Account needs 2 essential methods for the EntryPoint to interact with it: `validateUserOp` and `execute`. CANDIDE wallet has 2 more methods for both setup and replacing the EntryPoint for upgradability.
+To understand Candide Contracts, it is vital to know the key component that the Global ERC-4337 EntryPoint contract needs from a Smart Account. A Smart Account needs 2 essential methods for the EntryPoint to interact with it: `validateUserOp` and `execute`. Candide wallet has 2 more methods for both setup and replacing the EntryPoint for upgradability.
 
 ![candide-contracts-entrypoint](./candide_contracts_and_entrypoint.png)
 
 ### The Setup method 
 
-CANDIDE wallet is a modified version of Safe to accommodate for the entrypoint. The setup method simply calls the setup in Safe with one more argument:  the _entryPoint address 
+Candide wallet is a modified version of Safe to accommodate for the entrypoint. The setup method simply calls the setup in Safe with one more argument:  the _entryPoint address 
 
 ![setup-method-with-entrypoint](./setupwithentrypoint.png)
 
@@ -49,7 +49,7 @@ Lastly, if a new EntryPoint is introduced, whether to add new functionality, imp
 ![replace-entrypoint](./replaceentrypoint.png)
 
 
-Those are essentially the four main methods used for CANDIDE Wallet contracts. Find the [CandideWallet.sol](https://github.com/candidelabs/CandideWalletContracts/blob/main/contracts/candideWallet/CandideWallet.sol) on github.
+Those are essentially the four main methods used for Candide Wallet contracts. Find the [CandideWallet.sol](https://github.com/candidelabs/CandideWalletContracts/blob/main/contracts/candideWallet/CandideWallet.sol) on github.
 
 
 

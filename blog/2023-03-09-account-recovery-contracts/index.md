@@ -1,7 +1,7 @@
 ---
 slug: making-accounts-recoverable
 title: Making Ethereum Accounts Recoverable - The Seedless Way
-description: Introducing a new Account Recovery module with time delay for CANDIDE Wallet
+description: Introducing a new Account Recovery module with time delay for Candide Wallet
 image: "./twitter-friendly-poster.png"
 authors: [andrew]
 tags: [wallet]
@@ -13,7 +13,7 @@ Securing private keys is a major challenge in making Ethereum wallets accessible
 
 ## How it works
 
-We introduce a new Account Recovery module for CANDIDE Wallet. The Account Recovery module is designed to work for both a single-owner account and an N by M multi-sig account. In the case of the single-owner account, the signer key is typically stored on the user's device. More specifically, an owner can add recovery methods (also known as Guardians) to change the ownership of the account, in case their signer key is lost or compromised.
+We introduce a new Account Recovery module for Candide Wallet. The Account Recovery module is designed to work for both a single-owner account and an N by M multi-sig account. In the case of the single-owner account, the signer key is typically stored on the user's device. More specifically, an owner can add recovery methods (also known as Guardians) to change the ownership of the account, in case their signer key is lost or compromised.
 
 ### Recovery Contacts
 
@@ -27,14 +27,14 @@ Recovery methods are typical Ethereum accounts. They can be:
 
 Normal operations of the Account do not require the approval of any Recovery Contacts in the module. When a user loses access to their wallet, they can reach out to their recovery contacts or methods to sign a transaction to recover their account.
 
-The owner of the account decides the threshold for the number of guardians needed for recovery, as well as the number of guardians. A typical single-owner account can have 3 guardians with a threshold of 2. This increases the likelihood that a single guardian can overtake the account. By default, CANDIDE Wallet makes the threshold the majority (> 50%), making the experience more straightforward on its interface.
+The owner of the account decides the threshold for the number of guardians needed for recovery, as well as the number of guardians. A typical single-owner account can have 3 guardians with a threshold of 2. This increases the likelihood that a single guardian can overtake the account. By default, Candide Wallet makes the threshold the majority (> 50%), making the experience more straightforward on its interface.
 
 ### Privacy in mind
 Owners are encouraged to add fresh recovery addresses. This makes them private and eliminates the possibility of malicious contacts cooperating against an owner. By design, a recovery contact does not need to necessarily store value in their account to maintain their duties, even during a recovery process. We explore this design below in detail.
 
 ### Recovery Delay Period
 
-A recovery period for an account is a period during which the ownership transfer is delayed after all recovery contacts confirm their signatures. This delay period is intended to provide users with additional protection against the risk of malicious guardians overtaking the account. During the delay period, the owner of the account can cancel a recovery in the process if they still own the account. The length of the period can vary. CANDIDE Wallet by default offers a fixed grace period of several days.
+A recovery period for an account is a period during which the ownership transfer is delayed after all recovery contacts confirm their signatures. This delay period is intended to provide users with additional protection against the risk of malicious guardians overtaking the account. During the delay period, the owner of the account can cancel a recovery in the process if they still own the account. The length of the period can vary. Candide Wallet by default offers a fixed grace period of several days.
 
 ### Censorship Resistant
 
@@ -65,7 +65,7 @@ We assume that the signer key belongs to its real owner. The probability of the 
 
 ## The Contract
 
-The Account Recovery module is a smart contracts contract that gets added to the main Wallet Contract. Since CANDIDE Wallet is based on Safe, they implement the Account functionality while separating module logic from the Account core contract. Adding and removing a module requires confirmation from the owner. Modules are security-critical, so they need to be as secure as all other contracts. Events are emitted whenever a module is added or removed and whenever a module transaction was successful or failed.
+The Account Recovery module is a smart contracts contract that gets added to the main Wallet Contract. Since Candide Wallet is based on Safe, they implement the Account functionality while separating module logic from the Account core contract. Adding and removing a module requires confirmation from the owner. Modules are security-critical, so they need to be as secure as all other contracts. Events are emitted whenever a module is added or removed and whenever a module transaction was successful or failed.
 
 We will be using today's lingo `Guardians` in our code and explanation to reference a Recovery Contact or Device.
 
