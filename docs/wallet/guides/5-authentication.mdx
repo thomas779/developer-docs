@@ -18,7 +18,7 @@ Candide supports on-chain Passkeys, allowing users to sign transactions directly
 Using their default phone/computer auth system, such as PIN, biometrics, or FaceID, signatures 
 are authenticated on-chain through smart contracts. All without reliance on centralized infrastructure. 
 
-See a demo on [passkeys.candide.dev](https://passkeys.candide.dev), and learn more on Passkeys [here](../plugins/0-passkeys.mdx).
+See a demo on [passkeys.candide.dev](https://passkeys.candide.dev), and learn more on the Passkeys [doc page](../plugins/0-passkeys.mdx).
 
 ## Multisig
 
@@ -27,7 +27,7 @@ approvals for transactions. This feature is ideal for implementing two-factor au
 and is well-suited for wallets targeting companies or DAOs, where transactions often require multiple key 
 approvals. 
 
-Visit dedicated guide on [MultiSig](../multisig)
+Visit the dedicated guide on [Multisig](../multisig).
 
 ## Traditional Signers
 
@@ -76,7 +76,7 @@ EOAs exposes a JavaScript Ethereum Provider API.
 <TabItem value="ethers" label="ethers example">
 
 ```ts
-import { SafeAccountV0_2_0 as SafeAccount } from "abstractionkit";
+import { SafeAccountV0_3_0 as SafeAccount } from "abstractionkit";
 import { BrowserProvider } from "ethers";
 
 const provider = new BrowserProvider(window.ethereum);
@@ -90,7 +90,7 @@ const smartAccount = SafeAccount.initializeNewAccount([signerAddress]);
 <TabItem value="viem" label="viem example">
 
 ```ts
-import { SafeAccountV0_2_0 as SafeAccount } from "abstractionkit";
+import { SafeAccountV0_3_0 as SafeAccount } from "abstractionkit";
 import { createWalletClient, custom } from "viem";
 
 const client = createWalletClient({
@@ -181,7 +181,7 @@ Traditional wallets encrypts the private key in local storage. In this setup, th
 #### Signup Account Owner
 
 ```ts
-import { SafeAccountV0_2_0 as SafeAccount } from "abstractionkit";
+import { SafeAccountV0_3_0 as SafeAccount } from "abstractionkit";
 
 const ownerPublicAddress = process.env.PUBLIC_KEY;
 

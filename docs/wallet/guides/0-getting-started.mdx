@@ -25,19 +25,19 @@ Candide builds open-source software for ERC-4337 account abstraction standard. T
 ```bash
 mkdir safe-batch-mint
 cd safe-batch-mint
+yarn init
 ```
 
 2. Install required dependencies
 
 ```bash
-yarn add abstractionkit
+yarn add abstractionkit dotenv
 ```
 
 3. Configure Environment Variables
 
-- Create a .env file in ./src and add the following environment variables with your own values
+- Create a `.env` file and add the following environment variables with your own values
 - We will be using Sepolia Testnet for this example
-- `yarn add dotenv` to load environment variables from the .env file
 
 ```bash title=".env"
 CHAIN_ID=11155111
@@ -73,7 +73,7 @@ Since this is our first transaction, we will need to deploy the account in the s
 
 ```ts title="index.ts"
 import * as dotenv from "dotenv";
-import { SafeAccountV0_2_0 as SafeAccount } from "abstractionkit";
+import { SafeAccountV0_3_0 as SafeAccount } from "abstractionkit";
   
 async function main(): Promise<void> {
   //get values from .env
@@ -89,13 +89,18 @@ async function main(): Promise<void> {
 main();
 ```
 
-Let's run this code with `npx ts-node index.ts`
-
-If everything worked, you will get the address of the account in the console.
+Let's run this code
 
 ```cli title="Terminal"
-Account address(sender): 0x32afdcfa1e3bfe70d03ecb55b5c8045c26515c9d
+npx ts-node index.ts
 ```
+
+If everything worked, you will get the calculate address of the account in the console.
+
+<details>
+<summary>Result example</summary>
+Account address(sender): 0x32afdcfa1e3bfe70d03ecb55b5c8045c26515c9d
+</details>
 
 :::tip Fund the Account
 Now that you have generated the smart account, go ahead and fund it with some Sepolia ETH here.
@@ -109,7 +114,7 @@ We will be creating two transactions to mint 2 NFTs. You can use your fav librar
 
 ```ts title="index.ts"
 import {
-  SafeAccountV0_2_0 as SafeAccount
+  SafeAccountV0_3_0 as SafeAccount
   // highlight-start
   MetaTransaction,
   getFunctionSelector,
@@ -194,7 +199,7 @@ console.log("UserOperation sent. Waiting to be included ......")
 ```
 
 
-3. Track the userOperation and wait its inclusion onchain 
+3. Track the userOperation and wait for its inclusion onchain 
 ```ts
 // highlight-start
 let userOperationReceiptResult = await sendUserOperationResponse.included()
@@ -210,7 +215,11 @@ if (userOperationReceiptResult.success) {
 }
 ```
 
-Now let's run this code again with `npx ts-node index.ts`
+Now let's run this code again
+
+```cli title="Terminal"
+npx ts-node index.ts
+```
 
 You've now sent your first user operation! If everything went well, you should see the bundler returning a user operation receipt
 
@@ -261,7 +270,7 @@ Below is the complete example code that you can copy directly to implement the f
 import * as dotenv from 'dotenv'
 
 import { 
-    SafeAccountV0_2_0 as SafeAccount,
+    SafeAccountV0_3_0 as SafeAccount,
     MetaTransaction,
     calculateUserOperationMaxGasCost,
     getFunctionSelector,

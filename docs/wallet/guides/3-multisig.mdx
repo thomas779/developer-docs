@@ -27,33 +27,33 @@ If you are coming from the [getting-started](../getting-started) guide, you only
 ```bash
 mkdir safe-smart-multisig
 cd safe-smart-multisig
+yarn init
 ```
 
 2. Install required dependencies
 
 ```bash
-yarn add abstractionkit
+yarn add abstractionkit dotenv
 ```
 
 3. Configure Environment Variables
 
 - Create a .env file in ./src and add the following environment variables with your own values
 - We will be using Sepolia Testnet for this example
-- `yarn add dotenv` to load environment variables from the .env file
 
-```bash title=".env"
+```terminal title=".env"
 CHAIN_ID=11155111
 BUNDLER_URL=https://sepolia.voltaire.candidewallet.com/rpc
 JSON_RPC_NODE_PROVIDER=NODE_PROVIDER_URL
 
-// highlight-start
+//highlight-start
 #account owner pub & private key
 PUBLIC_ADDRESS1=
 PRIVATE_KEY1=
 
 PUBLIC_ADDRESS2=
 PRIVATE_KEY2=
-// highlight-end
+//highlight-end
 ```
 
 :::info
@@ -80,7 +80,7 @@ Since this is our first transaction, we will need to deploy the account in the s
 
 ```ts title="index.ts"
 import * as dotenv from "dotenv";
-import { SafeAccountV0_2_0 as SafeAccount } from "abstractionkit";
+import { SafeAccountV0_3_0 as SafeAccount } from "abstractionkit";
   
 async function main(): Promise<void> {
   //get values from .env
@@ -104,16 +104,23 @@ async function main(): Promise<void> {
 main();
 ```
 
-Let's run this code with `npx ts-node index.ts`
-
-If everything worked, you will get the address of the account in the console.
+Let's run this code
 
 ```cli title="Terminal"
-Account address(sender): 0x32afdcfa1e3bfe70d03ecb55b5c8045c26515c9d
+npx ts-node index.ts
 ```
 
+If everything worked, you will get the calculate address of the account in the console.
+
+<details>
+<summary>Result example</summary>
+Account address(sender): 0x32afdcfa1e3bfe70d03ecb55b5c8045c26515c9d
+</details>
+
 :::tip
-Now that you have generated the smart account, go ahead and fund it with some Sepolia ETH here.
+Now that you have generated the smart account, go ahead and fund it with some Sepolia ETH here. 
+
+Too lazy to go through a faucet? Add a [sponsor paymaster step](../send-gasless-tx/#step-5-get-paymaster-data/).
 :::
 
 ### Step 3: Generate the callData
@@ -202,7 +209,7 @@ console.log("UserOperation sent. Waiting to be included ......")
 ```
 
 
-3. Track the userOperation and wait its inclusion onchain 
+3. Track the userOperation and wait for its inclusion onchain 
 ```ts
 let userOperationReceiptResult = await sendUserOperationResponse.included()
 
@@ -216,9 +223,13 @@ if (userOperationReceiptResult.success) {
 }
 ```
 
-Now let's run this code again with `npx ts-node index.ts`
+Now let's run this code again
 
-You've now sent your first user operation with a multisig wallet! If everything went well, you should see the bundler returning a user operation receipt
+```cli title="Terminal"
+npx ts-node index.ts
+```
+
+You've now sent your first userOperation with a multisig wallet! If everything went well, you should see the bundler returning a receipt
 
 <details>
 <summary>Result</summary>
@@ -265,8 +276,8 @@ Below is the complete example code that you can copy directly to implement the f
 ```ts
 import * as dotenv from 'dotenv'
 
-import { 
-    SafeAccountV0_2_0 as SafeAccount,
+import {
+    SafeAccountV0_3_0 as SafeAccount,
     MetaTransaction,
     calculateUserOperationMaxGasCost,
     getFunctionSelector,

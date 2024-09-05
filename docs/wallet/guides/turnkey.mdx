@@ -95,7 +95,7 @@ let userOperation = await smartAccount.createUserOperation(
 <TabItem value="ethers" label="ethers">
 
 ```ts
-import { SafeAccountV0_2_0 as SafeAccount } from "abstractionkit";
+import { SafeAccountV0_3_0 as SafeAccount } from "abstractionkit";
 
 import { TurnkeySigner } from "@turnkey/ethers";
 import { TurnkeyClient } from "@turnkey/http";
@@ -133,7 +133,7 @@ const sendTx = guardianSigner.sendTransaction({
 <TabItem value="viem" label="viem">
 
 ```ts 
-import { SafeAccountV0_2_0 as SafeAccount } from "abstractionkit";
+import { SafeAccountV0_3_0 as SafeAccount } from "abstractionkit";
 import { createWalletClient, http } from "viem";
 
 import { TurnkeyClient } from "@turnkey/http";
