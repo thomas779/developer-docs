@@ -65,7 +65,16 @@ const sidebars = {
       className: 'category-not-collapsible',
       items: [
         'wallet/abstractionkit/introduction',
-        'wallet/abstractionkit/safe-account',
+        {
+          type: 'category',
+          label: 'Safe Account',
+          collapsed: true,
+          link: { type: 'doc', id: 'wallet/abstractionkit/safe-account' },
+          items: [
+            'wallet/abstractionkit/safe-account-v3',
+            'wallet/abstractionkit/safe-account-v2',
+          ]
+        },
         'wallet/abstractionkit/bundler',
         'wallet/abstractionkit/paymaster',
         'wallet/abstractionkit/utilities',
@@ -109,8 +118,8 @@ const sidebars = {
               type: 'category',
               label: 'Bundler',
               collapsed: true,
+              link: { type: 'doc', id: 'wallet/technical-reference/bundler-error-codes' },
               items: [
-                'wallet/technical-reference/bundler-error-codes',
                 'wallet/technical-reference/-32500-transaction-rejected-by-entrypoint-simulation',
                 'wallet/technical-reference/-32501-transaction-rejected-by-paymaster',
                 'wallet/technical-reference/-32502-transaction-rejected-by-opcode-validation',
@@ -128,8 +137,8 @@ const sidebars = {
               type: 'category',
               label: 'Entrypoint',
               collapsed: true,
+              link: { type: 'doc', id: 'wallet/technical-reference/entrypoint-error-codes' },
               items: [
-                'wallet/technical-reference/entrypoint-error-codes',
                 'wallet/technical-reference/aa10-sender-already-constructed',
                 'wallet/technical-reference/aa13-initCode-failed-or-oog',
                 'wallet/technical-reference/aa14-initcode-must-return-sender',

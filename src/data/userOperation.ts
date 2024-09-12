@@ -63,7 +63,7 @@ export const userOperationReturnParamsV06 = [
 ];
 
 
-export const userOperationParamsV07 = [
+export const userOperationParamV07 = [
   {
     key: "sender",
     type: "string",
