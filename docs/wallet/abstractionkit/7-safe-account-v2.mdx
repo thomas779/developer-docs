@@ -28,9 +28,9 @@ import {
   createAccountAddressAndInitCodeReturnV2,
   createInitializerCallDataParamV2,
   createInitializerCallDataReturnV2,
-  signUserOperationParam,
+  signUserOperationParamV06,
   signUserOperationReturn,
-  sendUserOperationParam,
+  sendUserOperationParamV06,
   sendUserOperationReturn,
   userOperationReceiptResultType,
   estimateUserOperationGasParam,
@@ -283,7 +283,7 @@ console.log(signature);
 </TabItem>
 
 <TabItem value="Param type" label="Param Types">
-    <DataTable items={signUserOperationParam} />
+    <DataTable items={signUserOperationParamV06} />
     UserOperationV6
     <DataTable items={userOperationReturnParamsV06} />
 </TabItem>
@@ -324,7 +324,7 @@ console.log("receipt: ", receipt);
 </TabItem>
 
 <TabItem value="Param type" label="Param Types">
-    <DataTable items={sendUserOperationParam} />
+    <DataTable items={sendUserOperationParamV06} />
     UserOperationV6
     <DataTable items={userOperationReturnParamsV06} />
 </TabItem>
@@ -543,6 +543,17 @@ Creates the initilizer calldata
 
 <Tabs>
   <TabItem value="example" label="Example">
+
+```ts
+import { SafeAccountV0_3_0 as SafeAccount } from "abstractionkit";
+
+const initializeCallData = SafeAccount.createInitializerCallData(
+  [ownerPublicAddress], // owners
+  1, //threshold
+);
+console.log("initializeCallData: " + initializeCallData);
+```
+
   </TabItem>
   <TabItem value="param type" label="Param Types">
     <DataTable items={createInitializerCallDataParamV2}/>
@@ -553,10 +564,16 @@ Creates the initilizer calldata
   <TabItem value="return type" label="Return Types">
     <DataTable items={createInitializerCallDataReturnV2}/>
   </TabItem>
-
-
-
 </Tabs>
+
+<details>
+<summary>Example Response</summary>
+
+```terminal
+initializeCallData: 0xb63e800d000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000010000000000000000000000002dd68b007b46fbe91b9a7c3eda5a7a1063cb5b47000000000000000000000000000000000000000000000000000000000000014000000000000000000000000075cf11467937ce3f2f357ce24ffc3dbf8fd5c2260000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001000000000000000000000000bdbc5fbc9ca8c3f514d073ec3de840ac84fc6d3100000000000000000000000000000000000000000000000000000000000000648d0dc49f0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000100000000000000000000000075cf11467937ce3f2f357ce24ffc3dbf8fd5c22600000000000000000000000000000000000000000000000000000000
+```
+
+</details>
 
 ### createAccountCallDataSingleTransaction
 
@@ -645,7 +662,7 @@ const tx2: MetaTransaction = {
   data: "0x",
 };
 
-const callData = smartAccount.createAccountCallDataBatchTransactions([tx1, tx2]);
+const callData = SafeAccount.createAccountCallDataBatchTransactions([tx1, tx2]);
 // highlight-end
 
 console.log("callData: " + callData);
@@ -688,7 +705,7 @@ Estimate gas limits for a userOperation
 ```ts
 import { 
   SafeAccountV0_2_0 as SafeAccount, 
-  UserOperation
+  UserOperationV6
 } from "abstractionkit";
 
 const bundlerRPC = "https://sepolia.voltaire.candidewallet.com/rpc";
@@ -697,7 +714,7 @@ const ownerPublicAddress = "0xBdbc5FBC9cA8C3F514D073eC3de840Ac84FC6D31";
 const smartAccount = SafeAccount.initializeNewAccount([ownerPublicAddress])
 
 // Use createUserOperation() to help you construct the userOp below
-let userOperation = {..}
+let userOperation: UserOperationV6 = smartAccount.createUserOperation(..);
 
 //highlight-start
 const [preVerificationGas, verificationGasLimit, callGasLimit] = await estimateUserOperationGas(userOperation, bundlerRPC);
