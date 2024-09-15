@@ -8,7 +8,6 @@ export function BundlerEndPointTable({ items }) {
       leftHeading="Network"
       rightHeading="RPC address"
       centerHeading="Chain ID"
-      farRightHeading="Type"
       renderLeftItem={(item) => (
         <div
           style={{
@@ -28,7 +27,6 @@ export function BundlerEndPointTable({ items }) {
       )}
       renderRightItem={(item) => <a>{item.address}</a>}
       renderCenterItem={(item) => <span>{item.chainId}</span>}
-      renderFarRightItem={(item) => <span>{item.type}</span>}
     />
   );
 }

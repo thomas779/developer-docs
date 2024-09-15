@@ -7,6 +7,19 @@ keywords: [bundler, "4337", "sdk", account-abstraction]
 
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
+import { DataTable } from "/src/components/Table"
+import {
+  chainIdReturn,
+  supportedEntryPointsReturn,
+  estimateUserOperationGasParam,
+  estimateUserOperationGasReturn,
+  sendUserOperationParam,
+  sendUserOperationReturn,
+  getUserOperationByHashParam,
+  getUserOperationByHashReturn,
+  getUserOperationReceiptParam,
+} from '/src/data/bundler';
+import { userOperationReturnParamsV06, userOperationParamV07, userOperationReceiptResultType } from '/src/data/userOperation';
 
 # Bundler
 
@@ -54,30 +67,26 @@ Returns chain ID of the current network that the bundler is operating in
 <TabItem value="example.ts" label="example.ts">
 
 ```ts title="example.ts"
-import { bundler } from "./bundler";
-
-const getChainId = await bundler.chainId();
-```
-
-</TabItem>
-<TabItem value="bundler.ts" label="bundler.ts">
-
-```ts title="bundler.ts"
 import { Bundler } from "abstractionkit";
 
 const bundlerRPC = "https://sepolia.voltaire.candidewallet.com/rpc";
-
-const bundler: Bundler = new Bundler(bundlerRPC, entrypointAddress);
+const bundler: Bundler = new Bundler(bundlerRPC);
+// highlight-start
+const getChainId = await bundler.chainId();
+// highlight-end
 ```
 
 </TabItem>
+  <TabItem value="Return Type" label="Return Type">
+    <DataTable items={chainIdReturn} />
+  </TabItem>
 </Tabs>
 
 <details>
 <summary>Example Response</summary>
 
 ```ts
-{ chainId: '0xaa36a7' }
+0xaa36a7
 ```
 
 </details>
@@ -96,22 +105,18 @@ Returns the list of the entryPoint addresses supported by the bundler
 <TabItem value="example.ts" label="example.ts">
 
 ```ts title="example.ts"
-import { bundler } from "./bundler";
-
-const entrypointAddresses = await bundler.supportedEntryPoints();
-```
-
-</TabItem>
-<TabItem value="bundler.ts" label="bundler.ts">
-
-```ts title="bundler.ts"
 import { Bundler } from "abstractionkit";
 
 const bundlerRPC = "https://sepolia.voltaire.candidewallet.com/rpc";
-
-const bundler: Bundler = new Bundler(bundlerRPC, entrypointAddress);
+const bundler: Bundler = new Bundler(bundlerRPC);
+//highlight-start
+const entrypointAddresses = await bundler.supportedEntryPoints();
+//highlight-end
 ```
 
+</TabItem>
+<TabItem value="Return Type" label="Return Type">
+  <DataTable items={supportedEntryPointsReturn} />
 </TabItem>
 </Tabs>
 
@@ -119,9 +124,10 @@ const bundler: Bundler = new Bundler(bundlerRPC, entrypointAddress);
 <summary>Example Response</summary>
 
 ```ts
-{
-  supportedEntryPoints: [ '0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789' ]
-}
+[
+  '0x0000000071727De22E5E9d8BAf0edAc6f37da032',
+  '0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789'
+]
 ```
 
 </details>
@@ -141,40 +147,30 @@ See a full example in [getting-started guide](../../guides/getting-started)
 <TabItem value="example.ts" label="example.ts">
 
 ```ts title="example.ts"
-import { GasEstimationResult, UserOperation } from "abstractionkit";
+import { Bundler, UserOperationV7 } from "abstractionkit";
 
-import { bundler } from "./bundler";
+const bundlerRPC = "https://sepolia.voltaire.candidewallet.com/rpc";
+const bundler: Bundler = new Bundler(bundlerRPC);
 
-const userOperation: UserOperation = {
-  sender: "0x32afdcfa1e3bfe70d03ecb55b5c8045c26515c9d",
-  nonce: "0x04",
-  initCode: "0x",
-  callData: "0x..",
-  callGasLimit: 0,
-  verificationGasLimit: 0,
-  preVerificationGas: 0,
-  maxFeePerGas: 0,
-  maxPriorityFeePerGas: 0,
-  paymasterAndData: "0x",
-  signature: "0x",
-};
+// Use createUserOperation() to help you construct the userOp below
+const userOperation = smartAccount.createUserOperation(..)
+const entryPointAddress = "0x0000000071727De22E5E9d8BAf0edAc6f37da032";
 
-const entrypointAddress = "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789";
-
-const estimation = (await bundler.estimateUserOperationGas(user_operation, entrypointAddress)) as GasEstimationResult;
+// highlight-start
+const estimation = await bundler.estimateUserOperationGas(userOperation, entryPointAddress);
+// highlight-end
 ```
 
 </TabItem>
-<TabItem value="bundler.ts" label="bundler.ts">
-
-```ts title="bundler.ts"
-import { Bundler } from "abstractionkit";
-
-const bundlerRPC = "https://sepolia.voltaire.candidewallet.com/rpc";
-
-const bundler: Bundler = new Bundler(bundlerRPC, entrypointAddress);
-```
-
+<TabItem value="Param Type" label="Param Type">
+  <DataTable items={estimateUserOperationGasParam} />
+  UserOperationV7
+  <DataTable items={userOperationParamV07} />
+  UserOperationV6
+  <DataTable items={userOperationReturnParamsV06} />
+</TabItem>
+<TabItem value="Return Type" label="Return Type">
+  <DataTable items={estimateUserOperationGasReturn} />
 </TabItem>
 </Tabs>
 
@@ -183,10 +179,9 @@ const bundler: Bundler = new Bundler(bundlerRPC, entrypointAddress);
 
 ```ts
 {
-  callGasLimit: 82472,
-  preVerificationGas: 56580,
-  verificationGas: 32953,
-  deadline: 281474976710655
+  callGasLimit: 58588n,
+  preVerificationGas: 45628n,
+  verificationGasLimit: 94374n
 }
 ```
 
@@ -207,50 +202,38 @@ See a full example in [getting-started guide](../../guides/getting-started)
 <TabItem value="example.ts" label="example.ts">
 
 ```ts title="example.ts"
-import { GasEstimationResult, UserOperation } from "abstractionkit";
-
-import { bundler } from "./bundler";
-
-const userOperation: UserOperation = {
-  sender: '0x32afdcfa1e3bfe70d03ecb55b5c8045c26515c9d',
-  nonce: '0x05',
-  initCode: '0x',
-  callData: '0x1234...',
-  callGasLimit: '0x014228',
-  verificationGasLimit: '0x01822b',
-  preVerificationGas: '0xdd04',
-  maxFeePerGas: '0x121dca4f9c',
-  maxPriorityFeePerGas: '0x080e9fd8eb',
-  paymasterAndData: '0x',
-  signature: '0x1234..'
-}
-
-const entrypointAddress = "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789";
-
-const userOperationHash = (await bundler.sendUserOperation(user_operation, entrypointAddress));
-```
-
-</TabItem>
-<TabItem value="bundler.ts" label="bundler.ts">
-
-```ts title="bundler.ts"
 import { Bundler } from "abstractionkit";
 
 const bundlerRPC = "https://sepolia.voltaire.candidewallet.com/rpc";
-
 const bundler: Bundler = new Bundler(bundlerRPC);
+const entrypointAddress = "0x0000000071727De22E5E9d8BAf0edAc6f37da032";
+// Use createUserOperation() to help you construct the userOp below
+const userOperation = smartAccount.createUserOperation(..)
+
+// highlight-start
+const userOperationHash = await bundler.sendUserOperation(userOperation, entrypointAddress);
+// highlight-end
 ```
 
 </TabItem>
+<TabItem value="Param Type" label="Param Type">
+  <DataTable items={sendUserOperationParam} />
+  UserOperationV7
+  <DataTable items={userOperationParamV07} />
+  UserOperationV6
+  <DataTable items={userOperationReturnParamsV06} />
+</TabItem>
+<TabItem value="Return Type" label="Return Type">
+  <DataTable items={sendUserOperationReturn} />
+</TabItem>
+
 </Tabs>
 
 <details>
 <summary>Example Response</summary>
 
 ```ts
-{
-  userOperationHash: '0x0ff052095987556f476c6e6b7cdff65cc6191d2cede50a109fe6977c3287fc9a'
-}
+'0x0ff052095987556f476c6e6b7cdff65cc6191d2cede50a109fe6977c3287fc9a'
 ```
 
 </details>
@@ -269,23 +252,27 @@ Returns a UserOperation by its hash returned from sendUserOperation
 <TabItem value="example.ts" label="example.ts">
 
 ```ts title="example.ts"
-import { bundler } from "./bundler";
-
-const userOperationHash = "0xb348b32bc9b9e90620839c3926db401558806b03b2a46dc6de21d3a4ed8412fb";
-const userOperation = await bundler.getUserOperationByHash(userOperationHash);
-```
-
-</TabItem>
-<TabItem value="bundler.ts" label="bundler.ts">
-
-```ts title="bundler.ts"
 import { Bundler } from "abstractionkit";
 
 const bundlerRPC = "https://sepolia.voltaire.candidewallet.com/rpc";
-
 const bundler: Bundler = new Bundler(bundlerRPC);
+const userOperationHash = "0xb348b32bc9b9e90620839c3926db401558806b03b2a46dc6de21d3a4ed8412fb";
+
+// highlight-start
+const userOperation = await bundler.getUserOperationByHash(userOperationHash);
+// highlight-end
 ```
 
+</TabItem>
+<TabItem value="Param Type" label="Param Type">
+  <DataTable items={getUserOperationByHashParam} />
+</TabItem>
+<TabItem value="Return Type" label="Return Type">
+  <DataTable items={getUserOperationByHashReturn} />
+  UserOperationV7
+  <DataTable items={userOperationParamV07} />
+  UserOperationV6
+  <DataTable items={userOperationReturnParamsV06} />
 </TabItem>
 </Tabs>
 
@@ -329,26 +316,27 @@ Returns the receipt of a UserOperation by its hash returned from `sendUserOperat
 <TabItem value="example.ts" label="example.ts">
 
 ```ts title="example.ts"
-import { bundler } from "./bundler";
-
-const userOperationHash = "0xb348b32bc9b9e90620839c3926db401558806b03b2a46dc6de21d3a4ed8412fb";
-const userOperationReceipt = await bundler.getUserOperationReceipt(
-  userOperationHash
-);
-```
-
-</TabItem>
-<TabItem value="bundler.ts" label="bundler.ts">
-
-```ts title="bundler.ts"
 import { Bundler } from "abstractionkit";
 
 const bundlerRPC = "https://sepolia.voltaire.candidewallet.com/rpc";
-
 const bundler: Bundler = new Bundler(bundlerRPC);
+const userOperationHash = "0xb348b32bc9b9e90620839c3926db401558806b03b2a46dc6de21d3a4ed8412fb";
+
+// highlight-start
+const userOperationReceipt = await bundler.getUserOperationReceipt(
+  userOperationHash
+);
+// highlight-end
 ```
 
 </TabItem>
+<TabItem value="Param Type" label="Param Type">
+  <DataTable items={getUserOperationReceiptParam} />
+</TabItem>
+<TabItem value="Return Type" label="Return Type">
+  <DataTable items={userOperationReceiptResultType} />
+</TabItem>
+
 </Tabs>
 
 <details>
