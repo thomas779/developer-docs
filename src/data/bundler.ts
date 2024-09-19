@@ -110,7 +110,7 @@ export const getUserOperationByHashReturn = [
   },
 ];
 
-export const getUserOperationReceipt = [
+export const getUserOperationReceiptParam = [
   {
     key: "userOpHash",
     type: "string",

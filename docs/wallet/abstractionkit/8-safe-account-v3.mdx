@@ -30,7 +30,7 @@ import {
   signUserOperationReturn,
   sendUserOperationParamV7,
   sendUserOperationReturn,
-  estimateUserOperationGasParam,
+  estimateUserOperationGasParamV7,
   formatEip712SignaturesToUseroperationSignatureReturn,
   formatEip712SignaturesToUseroperationSignatureParam,
   createAccountCallDataSingleTransactionParam,
@@ -678,7 +678,7 @@ const [preVerificationGas, verificationGasLimit, callGasLimit] = await estimateU
 </TabItem>
 
   <TabItem value="Param type" label="Param Types">
-    <DataTable items={estimateUserOperationGasParam} />
+    <DataTable items={estimateUserOperationGasParamV7} />
     UserOperationV7
     <DataTable items ={userOperationParamV07} />
     <DataTable items={ecdsaSignatureType} />
