@@ -1,7 +1,8 @@
 import { stateOverrideSetParameters } from "../requestRpcData";
 import {
   userOperationReturnParamsV06,
-  userOperationParamsV07,
+  userOperationParamV07,
+  stateOverrideSetType,
 } from "./userOperation";
 
 export const signerType = [
@@ -189,6 +190,12 @@ export const createInitializerCallDataParamV2 = [
       "Pass the owner(s) address(es) of the account. It can be a single owner account, a multi-sig, or a WebAuthn",
   },
   {
+    key: "threshold",
+    type: "number",
+    description:
+      "Pass the owner(s) address(es) of the account. It can be a single owner account, a multi-sig, or a WebAuthn",
+  },
+  {
     key: "overrides?",
     type: [
       {
@@ -200,18 +207,6 @@ export const createInitializerCallDataParamV2 = [
         key: "safeModuleSetupddress?",
         type: "string",
         description: "Address used for setting up the Safe module.",
-      },
-      {
-        key: "safeAccountSingleton?",
-        type: "SafeAccountSingleton",
-        description:
-          'Safe contract singleton address. Default is "0x29fcB43b46531BcA003ddC8FCB67FFE91900C762".',
-      },
-      {
-        key: "safeAccountFactoryAddress?",
-        type: "string",
-        description:
-          'Address of the Safe Factory. Default is "0x4e1DCf7AD4e460CfD30791CCC4F9c8a4f820ec67".',
       },
       {
         key: "multisendContractAddress?",
@@ -241,7 +236,8 @@ export const createInitializerCallDataParamV2 = [
   },
 ];
 
-export const createInitializerCallDataParamV3 = createInitializerCallDataParamV2;
+export const createInitializerCallDataParamV3 =
+  createInitializerCallDataParamV2;
 
 export const createInitializerCallDataReturnV2 = [
   {
@@ -251,8 +247,8 @@ export const createInitializerCallDataReturnV2 = [
   },
 ];
 
-export const createInitializerCallDataReturnV3 = createInitializerCallDataParamV2;
-
+export const createInitializerCallDataReturnV3 =
+  createInitializerCallDataReturnV2;
 
 export const smartAccountParameters = [
   {
@@ -400,7 +396,7 @@ export const getUserOperationEip712HashReturnV2 = [
 export const getUserOperationEip712HashParamV3 = [
   {
     key: "userOperation",
-    type: userOperationParamsV07,
+    type: userOperationParamV07,
     description: "UserOperation to hash",
   },
   {
@@ -591,41 +587,6 @@ export const signerSignaturePair = [
   },
 ];
 
-export const stateOverrideSetType = [
-  {
-    key: "[address: string]",
-    type: [
-      {
-        key: "balance",
-        type: "bigint",
-        description: "Override the balance of the address",
-      },
-      {
-        key: "nonce",
-        type: "bigint",
-        description: "Override the nonce of the address",
-      },
-      {
-        key: "code",
-        type: "string",
-        description: "Override the code of the address",
-      },
-      {
-        key: "state",
-        type: "Dictionary<string>",
-        description: "Override the storage slots of the address",
-      },
-      {
-        key: "stateDiff",
-        type: "Dictionary<string>",
-        description:
-          "Apply state differences to the storage slots of the address",
-      },
-    ],
-    description: "Overrides for a specific address",
-  },
-];
-
 export const signerTypePairType = [
   {
     key: "SignerSignaturePair[]",
@@ -773,10 +734,44 @@ export const createUserOperationV7Overrides =
     }
   );
 
-export const signUserOperationParam = [
+  export const signUserOperationParamV06 = [
+    {
+      key: "userOperation",
+      type: "UserOperationV6",
+      description: "userOperation to sign",
+    },
+    {
+      key: "privateKeys",
+      type: "string[]",
+      description: "private keys of owners/signers",
+    },
+    {
+      key: "chainId",
+      type: "bigint",
+      description: "target chain id",
+    },
+    {
+      key: "overrides?",
+      type: [
+        {
+          key: "validAfter?",
+          type: "bigint",
+          description: "Timestamp the signature will be valid after",
+        },
+        {
+          key: "validUntil?",
+          type: "bigint",
+          description: "Timestamp the signature will be valid until",
+        },
+      ],
+      description: "overrides for the default values",
+    },
+  ];  
+
+export const signUserOperationParamV07 = [
   {
     key: "userOperation",
-    type: "UserOperationV6 | UserOperationV7",
+    type: "UserOperationV7",
     description: "userOperation to sign",
   },
   {
@@ -816,10 +811,23 @@ export const signUserOperationReturn = [
   },
 ];
 
-export const sendUserOperationParam = [
+export const sendUserOperationParamV7 = [
   {
     key: "userOperation",
-    type: "UserOperationV6 | UserOperationV7",
+    type: "UserOperationV7",
+    description: "userOperation to send",
+  },
+  {
+    key: "bundlerRpc",
+    type: "string",
+    description: "bundler rpc to send userOperation",
+  },
+];
+
+export const sendUserOperationParamV06 = [
+  {
+    key: "userOperation",
+    type: "UserOperationV6",
     description: "userOperation to send",
   },
   {
@@ -854,123 +862,39 @@ export const sendUserOperationReturn = [
   },
 ];
 
-export const userOperationReceiptType = [
-  {
-    key: "blockHash",
-    type: "string",
-    description: "The hash of the block in which the transaction was included.",
-  },
-  {
-    key: "blockNumber",
-    type: "bigint",
-    description:
-      "The number of the block in which the transaction was included.",
-  },
-  {
-    key: "from",
-    type: "string",
-    description: "The address that initiated the transaction.",
-  },
-  {
-    key: "cumulativeGasUsed",
-    type: "bigint",
-    description:
-      "The total amount of gas used in the block up to and including this transaction.",
-  },
-  {
-    key: "gasUsed",
-    type: "bigint",
-    description: "The amount of gas used by this transaction.",
-  },
-  {
-    key: "logs",
-    type: "string",
-    description: "Logs generated by the transaction.",
-  },
-  {
-    key: "logsBloom",
-    type: "string",
-    description: "The bloom filter for the logs generated by the transaction.",
-  },
-  {
-    key: "transactionHash",
-    type: "string",
-    description: "The unique hash of the transaction.",
-  },
-  {
-    key: "transactionIndex",
-    type: "bigint",
-    description: "The index of the transaction within the block.",
-  },
-  {
-    key: "effectiveGasPrice",
-    type: "bigint",
-    description:
-      "The effective gas price for the transaction. This field is optional and may not be present in all receipts.",
-  },
-];
-
-export const userOperationReceiptResultType = [
-  {
-    key: "userOpHash",
-    type: "string",
-    description: "The hash of the user operation.",
-  },
-  {
-    key: "entryPoint",
-    type: "string",
-    description:
-      "The address of the entry point contract that processed the operation.",
-  },
-  {
-    key: "sender",
-    type: "string",
-    description: "The address of the sender of the user operation.",
-  },
-  {
-    key: "nonce",
-    type: "bigint",
-    description: "The nonce of the user operation.",
-  },
-  {
-    key: "paymaster",
-    type: "string",
-    description:
-      "The address of the paymaster that paid for the gas of the user operation.",
-  },
-  {
-    key: "actualGasCost",
-    type: "bigint",
-    description:
-      "The actual gas cost incurred for executing the user operation.",
-  },
-  {
-    key: "actualGasUsed",
-    type: "bigint",
-    description: "The actual amount of gas used for the user operation.",
-  },
-  {
-    key: "success",
-    type: "boolean",
-    description: "Indicates whether the user operation was successful.",
-  },
-  {
-    key: "logs",
-    type: "string",
-    description:
-      "The logs produced during the execution of the user operation.",
-  },
-  {
-    key: "receipt",
-    type: userOperationReceiptType,
-    description: "The detailed receipt of the user operation.",
-  },
-];
-
-export const estimateUserOperationGasParam = [
+export const estimateUserOperationGasParamV6 = [
   {
     key: "userOperation",
-    type: "UserOperationV6 | UserOperationV7",
+    type: "UserOperationV6",
+    description: "userOperation to send",
+  },
+  {
+    key: "bundlerRpc",
+    type: "string",
+    description: "bundler rpc to send userOperation",
+  },
+  {
+    key: "overrides?",
+    type: [
+      {
+        key: "stateOverrideSet?",
+        type: stateOverrideSetType,
+        description: "Timestamp the signature will be valid after",
+      },
+      {
+        key: "dummySignatures?",
+        type: signerTypePairType,
+        description: "Provide dummy signatures for the operation",
+      },
+    ],
+    description: "overrides for the default values",
+  },
+];
+
+export const estimateUserOperationGasParamV7 = [
+  {
+    key: "userOperation",
+    type: "UserOperationV7",
     description: "userOperation to send",
   },
   {

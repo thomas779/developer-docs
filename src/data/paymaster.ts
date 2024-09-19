@@ -1,3 +1,5 @@
+import { stateOverrideSetType } from "./userOperation";
+
 // Paymaster V2
 export const pm_supportedEntryPointReturnParam = [
   {
@@ -182,32 +184,37 @@ export const pm_sponsorUserOperationReturnParamsV06 = [
     description:
       "Maximum priority fee per gas (similar to EIP-1559 max_priority_fee_per_gas). Optional Return",
   },
+];
+
+export const sponsorMetaData = [
+  {
+    key: "name",
+    type: "string",
+    description: "Name of Sponsor who is sponsoring the Gas Policy",
+  },
+  {
+    key: "description",
+    type: "string",
+    description: "A short description of the sponsor",
+  },
+  {
+    key: "url",
+    type: "string",
+    description: "Website of the Sponsor",
+  },
+  {
+    key: "icons",
+    type: "string[]",
+    description:
+      "Logos or Icons that the Sponsor is using to promote their Gas Policy",
+  },
+];
+
+export const sponsorMetaDataType = [
   {
     key: "sponsorMetadata",
     description: "Information about the Gas Policy Sponsor",
-    type: [
-      {
-        key: "name",
-        type: "string",
-        description: "Name of Sponsor who is sponsoring the Gas Policy",
-      },
-      {
-        key: "description",
-        type: "string",
-        description: "A short description of the sponsor",
-      },
-      {
-        key: "url",
-        type: "string",
-        description: "Website of the Sponsor",
-      },
-      {
-        key: "icons",
-        type: "string[]",
-        description:
-          "Logo or Icon that the Sponsor is using to promote their Gas Policy",
-      },
-    ],
+    type: sponsorMetaData,
   },
 ];
 
@@ -247,7 +254,7 @@ export const paymasterMetadataReturnParametersV07 = [
         type: "string",
         description: "Address of paymaster contract",
       },
-      { 
+      {
         key: "paymasterData",
         type: "string",
         description: "Data for paymaster",
@@ -255,15 +262,36 @@ export const paymasterMetadataReturnParametersV07 = [
       {
         key: "paymasterVerificationGasLimit",
         type: "string",
-        description: "The amount of gas to allocate for the paymaster validation code",
+        description:
+          "The amount of gas to allocate for the paymaster validation code",
       },
       {
         key: "paymasterPostOpGasLimit",
         type: "string",
-        description: "The amount of gas to allocate for the paymaster post-operation code",
-      }
+        description:
+          "The amount of gas to allocate for the paymaster post-operation code",
+      },
     ],
-    description: "Dummy values to use for estimating user operation gas before sponsorship",
+    description:
+      "Dummy values to use for estimating user operation gas before sponsorship",
+  },
+  ...sponsorMetaDataType,
+];
+
+export const getPaymasterMetaDataParam = [
+  {
+    key: "entrypoint",
+    type: "string",
+    description: "Target EntryPoint Contract Address",
+  },
+];
+
+export const getPaymasterMetaDataReturn = [
+  {
+    key: "paymastermetadata",
+    type: "Promise<PaymasterMetadataV7 | PaymasterMetadataV6 | null>",
+    description:
+      "Returns a promise with the paymaster metadata associated with the target entrypoint",
   },
 ];
 
@@ -316,5 +344,363 @@ export const pm_sponsorUserOperationReturnParamsV07 = [
     type: "string",
     description:
       "Maximum priority fee per gas (similar to EIP-1559 max_priority_fee_per_gas)",
+  },
+];
+
+// SDK
+
+export const createSponsorPaymasterUserOperationParam = [
+  {
+    key: "userOperation",
+    type: "UserOperationV6 | UserOperationV7",
+    description: "UserOperation to Sponsor. Supports EntryPoint v0.6 and v0.7",
+  },
+  {
+    key: "bundlerUrl",
+    type: "string",
+    description: "Bundler URL to estimate the gas",
+  },
+  {
+    key: "CreatePaymasterUserOperationOverrides",
+    type: "string",
+    description: "Bundler URL to estimate the gas",
+  },
+];
+
+export const createSponsorPaymasterUserOperationReturn = [
+  {
+    key: "userOperation",
+    type: "UserOperationV6 | UserOperationV7",
+    description: "UserOperation with paymaster data included",
+  },
+  ...sponsorMetaDataType,
+];
+
+export const createPaymasterUserOperationOverridesType = [
+  {
+    key: "callGasLimit",
+    type: "bigint",
+    description:
+      "Set the callGasLimit instead of estimating gas using the bundler.",
+  },
+  {
+    key: "verificationGasLimit",
+    type: "bigint",
+    description:
+      "Set the verificationGasLimit instead of estimating gas using the bundler.",
+  },
+  {
+    key: "preVerificationGas",
+    type: "bigint",
+    description:
+      "Set the preVerificationGas instead of estimating gas using the bundler.",
+  },
+  {
+    key: "callGasLimitPercentageMultiplier",
+    type: "number",
+    description:
+      "Set the callGasLimitPercentageMultiplier instead of estimating gas using the bundler.",
+  },
+  {
+    key: "verificationGasLimitPercentageMultiplier",
+    type: "number",
+    description:
+      "Set the verificationGasLimitPercentageMultiplier instead of estimating gas using the bundler.",
+  },
+  {
+    key: "preVerificationGasPercentageMultiplier",
+    type: "number",
+    description:
+      "Set the preVerificationGasPercentageMultiplier instead of estimating gas using the bundler.",
+  },
+  {
+    key: "stateOverrideSetType",
+    type: stateOverrideSetType,
+    description:
+      "Pass state overrides for gas estimation, including balance, nonce, code, and state or stateDiff for the account at each address.",
+  },
+];
+
+export const createTokenPaymasterUserOperationParam = [
+  {
+    key: "smartAccount",
+    type: "(callData: string, tokenAddress: string, paymasterAddress: string, approveAmount: bigint) => string",
+    description:
+      "The SmartAccount object that created the target userOperation",
+  },
+  {
+    key: "userOperation",
+    type: "UserOperationV6 | UserOperationV7",
+    description: "The userOperation to sponsor gas with erc-20 paymaster",
+  },
+  {
+    key: "tokenAddress",
+    type: "string",
+    description: "The address of the token to approve.",
+  },
+  {
+    key: "bundlerRpc",
+    type: "string",
+    description: "The Bundler RPC to estimate the gas",
+  },
+  {
+    key: "overrides",
+    type: createPaymasterUserOperationOverridesType,
+    description: "Overrides for the default values",
+  },
+];
+
+export const createTokenPaymasterUserOperationReturn = [
+  {
+    key: "userOperation",
+    type: "Promise<UserOperationV6 | UserOperationV7>",
+    description: "The userOperation to sponsor gas with erc-20 paymaster",
+  },
+];
+
+export const getSupportedERC20TokensAndPaymasterMetadataParam = [
+  {
+    key: "entrypoint",
+    type: "string",
+    description: "Target EntryPoint Contract Address",
+  },
+];
+
+export const getSupportedERC20TokensAndPaymasterMetadataReturn = [
+  {
+    key: "supportedERC20TokensAndMetadata",
+    type: "Promise<SupportedERC20TokensAndMetadataV7 | SupportedERC20TokensAndMetadataV6 | null>",
+    description:
+      "Returns the supported ERC-20 Tokens alongside the metadata related to the tokens and the paymaster.",
+  },
+];
+
+export const basePaymasterMetadataType = [
+  {
+    key: "name",
+    type: "string",
+    description: "The name of the Paymaster.",
+  },
+  {
+    key: "description",
+    type: "string",
+    description: "A brief description of the Paymaster.",
+  },
+  {
+    key: "icons",
+    type: "string[]",
+    description:
+      "An array of icon URLs representing the Paymaster's brand or logo.",
+  },
+  {
+    key: "address",
+    type: "string",
+    description: "The contract address of the Paymaster.",
+  },
+  {
+    key: "sponsoredEventTopic",
+    type: "string",
+    description:
+      "The event topic that will be emitted when a UserOperation is sponsored by the Paymaster.",
+  },
+];
+
+export const paymasterMetadataV7Type = [
+  ...basePaymasterMetadataType,
+  {
+    key: "dummyPaymasterAndData",
+    type: [
+      {
+        key: "paymaster",
+        type: "string",
+        description: "The address of the Paymaster.",
+      },
+      {
+        key: "paymasterVerificationGasLimit",
+        type: "bigint",
+        description:
+          "The amount of gas allocated for the Paymaster verification step.",
+      },
+      {
+        key: "paymasterPostOpGasLimit",
+        type: "bigint",
+        description:
+          "The amount of gas allocated for the Paymaster post-operation step.",
+      },
+      {
+        key: "paymasterData",
+        type: "string",
+        description: "Encoded data for the Paymaster.",
+      },
+    ],
+    description: "Dummy Paymaster data used for gas estimation.",
+  },
+];
+
+export const paymasterMetadataV6Type = [
+  ...basePaymasterMetadataType,
+  {
+    key: "dummyPaymasterAndData",
+    type: "string",
+    description: "Dummy Paymaster data used for gas estimation.",
+  },
+];
+
+export const erc20TokenType = [
+  {
+    key: "name",
+    type: "string",
+    description: "The name of the ERC20 token.",
+  },
+  {
+    key: "symbol",
+    type: "string",
+    description: "The symbol representing the ERC20 token.",
+  },
+  {
+    key: "address",
+    type: "string",
+    description: "The contract address of the ERC20 token.",
+  },
+  {
+    key: "decimal",
+    type: "number",
+    description: "The number of decimal places for the token.",
+  },
+  {
+    key: "exchangeRate",
+    type: "bigint",
+    description: "The exchange rate of the token.",
+  },
+];
+
+export const supportedERC20TokensAndMetadataV7Type = [
+  {
+    key: "paymasterMetadata",
+    type: paymasterMetadataV7Type,
+    description: "The Paymaster metadata",
+  },
+
+  {
+    key: "tokens",
+    type: erc20TokenType,
+    description: "Supported erc20 tokens",
+  },
+];
+
+export const supportedERC20TokensAndMetadataV6Type = [
+  {
+    key: "paymasterMetadata",
+    type: paymasterMetadataV6Type,
+    description: "The Paymaster metadata",
+  },
+
+  {
+    key: "tokens",
+    type: erc20TokenType,
+    description: "Supported erc20 tokens",
+  },
+];
+
+export const calculateUserOperationErc20TokenMaxGasCostParam = [
+  {
+    key: "userOperation",
+    type: "UserOperationV6 | UserOperationV7",
+    description: "UserOperation to Sponsor. Supports EntryPoint v0.6 and v0.7",
+  },
+  {
+    key: "erc20TokenAddress",
+    type: "string",
+    description: "ERC-20 Token Address",
+  },
+];
+
+export const calculateUserOperationErc20TokenMaxGasCostReturn = [
+  {
+    key: "cost",
+    type: "Promise<bigint>",
+    description:
+      "Returns maximum amount that the operation will cost in the erc-20 token",
+  },
+];
+
+export const createPaymasterUserOperationParam = [
+  {
+    key: "userOperationInput",
+    type: "UserOperationV6 | UserOperationV7",
+    description: "UserOperation to Sponsor. Supports EntryPoint v0.6 and v0.7",
+  },
+  {
+    key: "bundlerRpc",
+    type: "string",
+    description: "Bundler URL to estimate the gas",
+  },
+  {
+    key: "context?",
+    type: candidePaymasterContext,
+    description: "Paymaster context data",
+  },
+  {
+    key: "CreatePaymasterUserOperationOverrides",
+    type: createPaymasterUserOperationOverridesType,
+    description: "Bundler URL to estimate the gas",
+  },
+];
+
+export const createPaymasterUserOperationReturn = [
+  {
+    key: "userOperation",
+    type: "Promise<UserOperationV7 | UserOperationV6, SponsorMetadata | undefined>",
+    description: "UserOperation with paymaster data included",
+  },
+];
+
+export const getSupportedERC20TokenDataParam = [
+  {
+    key: "erc20TokenAddress",
+    type: "string",
+    description: "ERC-20 Token Address",
+  },
+  {
+    key: "entrypoint?",
+    type: "string",
+    description: "Target EntryPoint Address. Defaults to ENTRYPOINT_V7",
+  },
+];
+
+export const getSupportedERC20TokenDataReturn = [
+  {
+    key: "ERC20Token",
+    type: "Promise<ERC20Token | null>",
+    description: "ERC-20 Token",
+  },
+];
+
+export const isSupportedERC20TokenParam = [
+  {
+    key: "erc20TokenAddress",
+    type: "string",
+    description: "ERC-20 Token Address",
+  },
+  {
+    key: "entrypoint?",
+    type: "string",
+    description: "Target EntryPoint Address. Defaults to ENTRYPOINT_V7",
+  },
+];
+
+export const isSupportedERC20TokenReturn = [
+  {
+    key: "isSupported",
+    type: "boolean",
+    description: "Returns true if the erc20 token is supported",
+  },
+];
+
+export const getSupportedEntrypointsReturn = [
+  {
+    key: "entrypoint addresses",
+    type: "Promise<string[]>",
+    description: "A promise of a list of entrypoints addresses",
   },
 ];

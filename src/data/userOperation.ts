@@ -259,3 +259,38 @@ export const userOperationReceiptResultType = [
   },
 ];
 
+export const stateOverrideSetType = [
+  {
+    key: "[address: string]",
+    type: [
+      {
+        key: "balance",
+        type: "bigint",
+        description: "Override the balance of the address",
+      },
+      {
+        key: "nonce",
+        type: "bigint",
+        description: "Override the nonce of the address",
+      },
+      {
+        key: "code",
+        type: "string",
+        description: "Override the code of the address",
+      },
+      {
+        key: "state",
+        type: "Dictionary<string>",
+        description: "Override the storage slots of the address",
+      },
+      {
+        key: "stateDiff",
+        type: "Dictionary<string>",
+        description:
+          "Apply state differences to the storage slots of the address",
+      },
+    ],
+    description: "Overrides for a specific address",
+  },
+];
+

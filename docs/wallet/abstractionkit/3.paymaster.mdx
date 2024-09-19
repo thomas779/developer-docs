@@ -12,16 +12,42 @@ import {
   stateOverrideSetParameters,
   addressToStateParameters
 } from "/src/requestRpcData";
-import {  userOperationReturnParamsV06 } from "/src/data/userOperation";
+import { userOperationReturnParamsV06 } from "/src/data/userOperation";
 import {
-  paymasterMetadataReturnParametersV06, 
-  candidePaymasterContext, 
-  tokensParamatersV2, 
-  pm_supportedEntryPointReturnParam 
+  getPaymasterMetaDataParam,
+  getPaymasterMetaDataReturn,
+  paymasterMetadataV7Type,
+  paymasterMetadataV6Type,
+  paymasterMetadataReturnParametersV06,
+  candidePaymasterContext,
+  tokensParamatersV2,
+  getSupportedEntrypointsReturn,
+  createSponsorPaymasterUserOperationParam,
+  createSponsorPaymasterUserOperationReturn,
+  createPaymasterUserOperationOverridesType,
+  PrependTokenPaymasterApproveAccount,
+  createTokenPaymasterUserOperationParam,
+  createTokenPaymasterUserOperationReturn,
+  calculateUserOperationErc20TokenMaxGasCostParam,
+  calculateUserOperationErc20TokenMaxGasCostReturn,
+  createPaymasterUserOperationParam,
+  createPaymasterUserOperationReturn,
+  getSupportedERC20TokenDataParam,
+  getSupportedERC20TokenDataReturn,
+  isSupportedERC20TokenParam,
+  isSupportedERC20TokenReturn,
+  erc20TokenType,
+  sponsorMetaData,
 } from "/src/data/paymaster";
 import { smartAccountParameters } from "../../../src/data/accountParamAndReturnData";
+import { userOperationParamV07 } from "../../../src/data/userOperation";
 
-A `CandidePaymaster` is a class interacts with Candide's ERC-4337 Paymaster API.
+A `CandidePaymaster` is a class interacts with Candide's ERC-4337 Paymaster API. 
+
+Supports:
+- Gas sponsorship through Gas Policies
+- ERC-20 Token Sponsorship
+- Multi-EntryPoins at `v0.6` and `v0.7`
 
 ## Usage
 
@@ -33,486 +59,67 @@ import { CandidePaymaster } from "abstractionkit";
 
 ### How to use
 
-Initialize a Paymaster with your RPC url. Get an API key from the [dashboard](httsp://dashboard.candide.dev)
+Initialize a Paymaster with your RPC url. Get an API key from the [dashboard](httsp://dashboard.candide.dev).
 
 ```ts title="paymaster.ts"
 import { CandidePaymaster } from "abstractionkit";
 
 const paymasterRpc = "https://api.candide.dev/paymaster/$version/$network/$apikey";
-
 const paymaster: CandidePaymaster = new CandidePaymaster(paymasterRPC);
 ```
 
 Then you can consume Paymaster methods:
 
 ```ts
-const paymasterMetaData = await paymaster.getPaymasterMetaData();
+const supportedEntryPoints = await paymaster.getSupportedEntrypoints();
 ```
 
 ## Methods
 
-### getPaymasterMetaData
-
-Returns the metadata associated with the Paymaster, along with dummyPaymasterAndData useful for gas estimates
-
-#### Usage
-
-<Tabs>
-<TabItem value="example.ts" label="example.ts">
-
-```ts title="example.ts"
-import { paymaster } from "./paymaster";
-
-const paymasterResult = await paymaster.getPaymasterMetaData();
-```
-
-</TabItem>
-
-<TabItem value="response type" label="Response Type">
-<table>
-  <thead>
-    <th align="left">Paramater</th>
-    <th align="left">Type</th>
-  </thead>
-  <tbody>
-    <tr>
-      <td align="left">paymasterMetadata</td>
-      <td align="left">
-        <p><font color="#e25894"><code>PaymasterMetadata</code></font> Object</p>
-        <DataTable items={paymasterMetadataReturnParametersV06} />
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-</TabItem>
-</Tabs>
-
-<details>
-<summary>Example Response</summary>
-
-```ts
-{
-  name: 'Candide Paymaster',
-  description: 'Candide Paymaster a fast, secure and feature-rich 4337 Paymaster',
-  icons: [],
-  address: '0x3fE285DcD76BCcE4Ac92d38A6F2F8E964041e020',
-  sponsoredEventTopic: '0xa050a122b4c0e369e3385eb6b7cccd8019638b2764de67bec0af99130ddf8471',
-  dummyPaymasterAndData: '0x3fE285DcD76BCcE4Ac92d38A6F2F8E964041e0207ddefa2f027691116d0a7aa6418246622d70b12a0100000000ffff000000000000000000000000000000000000000000000000000000000000ffff000000000000000000000000000000000000000000000000000000000000ffff010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101011c'
-}
-```
-
-</details>
-
-#### source code
-
-[getPaymasterMetaData](https://github.com/candidelabs/abstractionkit/blob/0c363636cd97d47cac39e4e6b8daf4283710adde/src/paymaster/CandidePaymaster.ts#L56C40-L56C57)
-
-### getSupportedERC20TokensAndPaymasterMetadata
-
-Returns the ERC-20 Tokens that the paymaster accepts as gas tokens on the current network, along with its metadata
-
-#### Usage
-
-<Tabs>
-<TabItem value="example.ts" label="example.ts">
-
-```ts title="example.ts"
-import { paymaster } from "./paymaster.ts";
-
-const result = await paymaster.getSupportedERC20TokensAndPaymasterMetadata();
-```
-
-</TabItem>
-
-<TabItem value="response type" label="Response Types">
-<table>
-  <thead>
-    <th align="left">Paramater</th>
-    <th align="left">Type</th>
-  </thead>
-  <tbody>
-    <tr>
-      <td align="left">tokens</td>
-      <td align="left">
-        <p><font color="#e25894"><code>ERC20Token[]</code></font> Object[]</p>
-        <DataTable items={tokensParamatersV2} />
-      </td>
-    </tr>
-    <tr>
-      <td align="left">paymasterMetadata</td>
-      <td align="left">
-        <p><font color="#e25894"><code>PaymasterMetadata</code></font> Object</p>
-        <DataTable items={paymasterMetadataReturnParametersV06} />
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-</TabItem>
-</Tabs>
-
-<details>
-<summary>Example Response</summary>
-
-```ts
-{
-  tokens: [
-    {
-      symbol: 'CTT',
-      address: '0xFa5854FBf9964330d761961F46565AB7326e5a3b',
-      decimal: 18,
-      fee: 0n,
-      exchangeRate: 1001219705870085130n
-    }
-  ],
-  paymasterMetadata: {
-    name: 'Candide Paymaster',
-    description: 'Candide Paymaster a fast, secure and feature-rich 4337 Paymaster',
-    icons: [],
-    address: '0x3fE285DcD76BCcE4Ac92d38A6F2F8E964041e020',
-    sponsoredEventTopic: '0xa050a122b4c0e369e3385eb6b7cccd8019638b2764de67bec0af99130ddf8471',
-    dummyPaymasterAndData: '0x3fE285DcD76BCcE4Ac92d38A6F2F8E964041e020Fa5854FBf9964330d761961F46565AB7326e5a3b0100000000ffff000000000000000000000000000000000000000000000000000000000000ffff000000000000000000000000000000000000000000000000000000000000ffff010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101011c'
-  }
-}
-```
-
-</details>
-
-#### Source code
-[getSupportedERC20TokensAndPaymasterMetadata](https://github.com/candidelabs/abstractionkit/blob/0c363636cd97d47cac39e4e6b8daf4283710adde/src/paymaster/CandidePaymaster.ts#L63C63-L63C94)
-
-### getSupportedEntrypoint
-
-Returns the supported Entrypoints by the paymaster
-
-#### Usage
-
-<Tabs>
-<TabItem value="example.ts" label="example.ts">
-
-```ts title="example.ts"
-import { paymaster } from "./paymaster";
-
-const paymasterResult = await paymaster.getSupportedEntrypoint();
-```
-
-</TabItem>
-<TabItem value="response type" label="Response Type">
-  <DataTable items={pm_supportedEntryPointReturnParam} />
-</TabItem>
-</Tabs>
-
-<details>
-<summary>Example Response</summary>
-
-```ts
-0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789
-```
-
-</details>
-
-#### source code
-[getSupportedEntrypoint](https://github.com/candidelabs/abstractionkit/blob/0c363636cd97d47cac39e4e6b8daf4283710adde/src/paymaster/CandidePaymaster.ts#L95)
-
-### isSupportedERC20Token
-
-Checks if a particular ERC-20 token is accepted as gas payment by the paymaster. Returns a boolean
-
-#### Usage
-<Tabs>
-<TabItem value="example.ts" label="example.ts">
-
-```ts title="example.ts"
-import { paymaster } from "./paymaster";
-
-const erc20TokenAddress = "0x7DdEFA2f027691116D0a7aa6418246622d70B12A";
-
-const isSupported = await paymaster.isSupportedERC20Token(erc20TokenAddress);
-```
-
-</TabItem>
-<TabItem value="Param type" label="Param Types">
-<table>
-  <thead>
-    <th align="left">Paramater</th>
-    <th align="left">Type</th>
-    <th align="left">Description</th>
-  </thead>
-  <tbody>
-    <tr>
-      <td align="left">Token Address</td>
-      <td align="left">
-        <font color="#e25894"><code>string</code></font>
-      </td>
-      <td>Onchain ERC-20 Token Address </td>
-    </tr>
-  </tbody>
-</table>
-</TabItem>
-<TabItem value="response type" label="Response Type">
-  <table>
-  <thead>
-    <th align="left">Paramater</th>
-    <th align="left">Type</th>
-    <th align="left">Description</th>
-  </thead>
-  <tbody>
-    <tr>
-      <td align="left">Checks for support</td>
-      <td align="left">
-        <font color="#e25894"><code>boolean</code></font>
-      </td>
-      <td>Returns true if the ERC-20 token is supported, returns false otherwise</td>
-    </tr>
-  </tbody>
-</table>
-</TabItem>
-
-</Tabs>
-
-<details>
-<summary>Example Response</summary>
-
-```ts
-true
-```
-
-</details>
-
-### getSupportedERC20TokenData
-
-Returns the token data given an erc20 address 
-
-#### Usage
-
-<Tabs>
-<TabItem value="example.ts" label="example.ts">
-
-```ts title="example.ts"
-import { paymaster } from "./paymaster";
-
-const erc20TokenAddress = "0xFa5854FBf9964330d761961F46565AB7326e5a3b";
-
-const erc20TokenData = await paymaster.getSupportedERC20TokenData(erc20TokenAddress);
-```
-
-</TabItem>
-<TabItem value="Param type" label="Param Types">
-<table>
-  <thead>
-    <th align="left">Paramater</th>
-    <th align="left">Type</th>
-    <th align="left">Description</th>
-  </thead>
-  <tbody>
-    <tr>
-      <td align="left">Token Address</td>
-      <td align="left">
-        <font color="#e25894"><code>string</code></font>
-      </td>
-      <td>Onchain ERC-20 Token Address </td>
-    </tr>
-  </tbody>
-</table>
-</TabItem>
-<TabItem value="response type" label="Response Type">
-<table>
-  <thead>
-    <th align="left">Paramater</th>
-    <th align="left">Type</th>
-  </thead>
-  <tbody>
-    <tr>
-      <td align="left">tokens</td>
-      <td align="left">
-        <p><font color="#e25894"><code>ERC20Token[]</code></font> Object[]</p>
-        <DataTable items={tokensParamatersV2} />
-      </td>
-    </tr>
-  </tbody>
-</table>
-</TabItem>
-</Tabs>
-<details title="Example Response">
-
-```js
-{
-  symbol: 'CTT',
-  address: '0xFa5854FBf9964330d761961F46565AB7326e5a3b',
-  decimal: 18,
-  fee: 0n,
-  exchangeRate: 1001219705870085130n
-}
-```
-
-</details>
-
-#### Source code
-[getSupportedERC20TokenData](https://github.com/candidelabs/abstractionkit/blob/cbfda80e4d8125ad93b936613c97f5780984a83a/src/paymaster/CandidePaymaster.ts#L150)
-
-### createPaymasterUserOperation
-
-Estimates gas limits and set paymasterAndData. Returns a complete userOperation
-
-#### Usage
-
-<Tabs>
-<TabItem value="example.ts" label="example.ts">
-
-```ts
-import { UserOperation } from "abstractionkit";
-
-const bundlerRPC = "https://sepolia.voltaire.candidewallet.com/rpc";
-
-// Use the SmartAccount methods to help you construct the useroperation below
-let userOperation = {
-  sender: '0xb8741a449d50ed0dcfe395287f85be152884c8d9',
-  nonce: 10n,
-  initCode: '0x',
-  callData: '0x541d63c800000000000000000000000038869bf66a61cf6bdb996a6ae40d5853fd43b52600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000001448d80ff0a000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000f2009a7af758ae5d7b6aae84fe4c5ba67c041dfe5336000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000246a627842000000000000000000000000b8741a449d50ed0dcfe395287f85be152884c8d9009a7af758ae5d7b6aae84fe4c5ba67c041dfe5336000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000246a627842000000000000000000000000b8741a449d50ed0dcfe395287f85be152884c8d9000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
-  callGasLimit: 0n,
-  verificationGasLimit: 0n,
-  preVerificationGas: 0n,
-  maxFeePerGas: 66195658616n,
-  maxPriorityFeePerGas: 120000n,
-  paymasterAndData: '0x',
-  signature: '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
-}
-
-//highlight-start
-userOperation = createPaymasterUserOperation(userOperation, bundlerRPC);
-//highlight-end
-```
-
-</TabItem>
-<TabItem value="Param type" label="Param Types">
-  <table>
-    <thead>
-      <th align="left">Paramater</th>
-      <th align="left">Type</th>
-    </thead>
-    <tbody>
-      <tr>
-        <td align="left">userOperation</td>
-        <td align="left">
-          <p><font color="#e25894"><code>UserOperation</code></font> object</p>
-          <DataTable items={userOperationReturnParamsV06} />
-        </td>
-      </tr>
-      <tr>
-        <td align="left">Bundler URL</td>
-        <td align="left">
-          <table>
-            <thead>
-              <th align="left">Type</th>
-              <th align="left">Description</th>
-            </thead>
-            <tr>
-              <td>
-                <font color="#e25894">string</font>
-              </td>
-              <td>The Bundler URL. It is used to fetch the gas limits</td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td align="left">context</td>
-        <td align="left">
-          <table>
-            <thead>
-              <th align="left">Type</th>
-              <th align="left">Description</th>
-            </thead>
-            <tr>
-              <td>
-                <p><font color="#e25894"><code>CandidePaymasterContext</code></font> object. (optional)</p>
-                 <DataTable items={candidePaymasterContext} />
-              </td>
-              <td> Context for information to pass to the paymaster</td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td align="left">StateOverrideSet</td>
-        <td align="left">
-          <table>
-            <thead>
-              <th align="left">Type</th>
-              <th align="left">Description</th>
-            </thead>
-            <tr>
-              <td>
-                <p><font color="#e25894"><code>StateOverrideSet</code></font> object. (optional)</p>
-                 <DataTable items={stateOverrideSetParameters} />
-                 <p><font color="#e25894"><code>AddressToState</code></font> object</p>
-                 <DataTable items={addressToStateParameters} />
-              </td>
-              <td>
-              Wrapper for state overrides for gas estimation
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</TabItem>
-<TabItem value="response type" label="Response Type">
-  <table>
-    <thead>
-      <th align="left">Paramater</th>
-      <th align="left">Type</th>
-    </thead>
-    <tbody>
-      <tr>
-        <td align="left">userOperation</td>
-        <td align="left">
-          <p><font color="#e25894">{`Promise<UserOperation>`}</font> object</p> 
-          <DataTable items={userOperationReturnParamsV06} />
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</TabItem>
-</Tabs>
-
-<details title="Example Response">
-
-```ts
-{
-  sender: '0xb8741a449d50ed0dcfe395287f85be152884c8d9',
-  nonce: 10n,
-  initCode: '0x',
-  callData: '0x541d63c800000000000000000000000038869bf66a61cf6bdb996a6ae40d5853fd43b52600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000001e48d80ff0a0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000018b009a7af758ae5d7b6aae84fe4c5ba67c041dfe5336000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000246a627842000000000000000000000000b8741a449d50ed0dcfe395287f85be152884c8d9009a7af758ae5d7b6aae84fe4c5ba67c041dfe5336000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000246a627842000000000000000000000000b8741a449d50ed0dcfe395287f85be152884c8d900fa5854fbf9964330d761961f46565ab7326e5a3b00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000044095ea7b30000000000000000000000003fe285dcd76bcce4ac92d38a6f2f8e964041e02000000000000000000000000000000000000000000000000000a1d1b51fe47c5c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
-  //highlight-start
-  callGasLimit: 116807n,
-  verificationGasLimit: 75441n,
-  preVerificationGas: 50444n,
-  //highlight-end
-  maxFeePerGas: 66195658616n,
-  maxPriorityFeePerGas: 120000n,
-  //highlight-start
-  paymasterAndData: '0x3fE285DcD76BCcE4Ac92d38A6F2F8E964041e020Fa5854FBf9964330d761961F46565AB7326e5a3b00000065bcd7fc00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000de84cb0d94beb10a4658077bd4ad19f4fdf94425ec730f342b8115d9907f6072f40bcea6a95bce74c29b84a7d4ee9fa67f4efb39e25a2e39a2ecb110b9a0af6b6a9589bfef7ec431b',
-  //highlight-end
-  signature: '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
-}
-```
-</details>
-
-#### Source code
-[createPaymasterUserOperation](https://github.com/candidelabs/abstractionkit/blob/cbfda80e4d8125ad93b936613c97f5780984a83a/src/paymaster/CandidePaymaster.ts#L188)
-
 ### createSponsorPaymasterUserOperation
+
+Returns the paymaster data if the the userOperation has a Gas Policy. Otherwise it returns an error message.
+
+#### Usage
+
+<Tabs>
+<TabItem value="example.ts" label="example.ts">
+
+```ts title="example.ts"
+import { CandidePaymaster } from "abstractionkit";
+
+const paymasterRpc = "https://api.candide.dev/paymaster/$version/$network/$apikey";
+const paymaster: CandidePaymaster = new CandidePaymaster(paymasterRPC);
+
+// Use createUserOperation() to help you construct a userOp
+const userOperation = smartAccount.createUserOperation(..)
+
+// highlight-start
+const [sponsoredUserOperation, sponsorMetadata] =
+  await paymaster.createSponsorPaymasterUserOperation(
+    userOperation,
+    bundlerUrl
+  );
+// highlight-start
+```
+
+</TabItem>
+<TabItem value="Param Type" label="Param Type">
+  <DataTable items={createSponsorPaymasterUserOperationParam} />
+  <p><font><code>CreatePaymasterUserOperationOverrides</code></font></p>
+  <DataTable items={createPaymasterUserOperationOverridesType} />
+</TabItem>
+<TabItem value="Return Type" label="Return Type">
+  <DataTable items={createSponsorPaymasterUserOperationReturn} />
+</TabItem>
+</Tabs>
 
 #### Source code
 [createSponsorPaymasterUserOperation](https://github.com/candidelabs/abstractionkit/blob/cbfda80e4d8125ad93b936613c97f5780984a83a/src/paymaster/CandidePaymaster.ts#L278C8-L278C43)
 
 ### createTokenPaymasterUserOperation
 
-Estimates gas limits and set `paymasterAndData` for ERC-20 Token Paymaster. Returns a complete userOperation
+Estimates gas limits and returns the user operation with the paymaster data for ERC-20 Token sponsorship. 
 
 #### Usage
 
@@ -520,29 +127,17 @@ Estimates gas limits and set `paymasterAndData` for ERC-20 Token Paymaster. Retu
 <TabItem value="example.ts" label="example.ts">
 
 ```ts
-import { SmartAccount, CandidePaymaster } from "abstractionkit";
+import { SafeAccountV0_3_0 as SafeAccount, CandidePaymaster } from "abstractionkit";
 
 const paymasterRPC="https://api.candide.dev/paymaster/$version/$network/$apikey";
 const erc20TokenAddress = "0xFa5854FBf9964330d761961F46565AB7326e5a3b"; // CTT test token
 const bundlerRPC = "https://sepolia.voltaire.candidewallet.com/rpc";
-const ownerPublicAddress = "0x2Ef844456580b6e1E22e1D584EBbC2467D9298B2"
 
+const ownerPublicAddress = "0x2Ef844456580b6e1E22e1D584EBbC2467D9298B2"
 const smartAccount = SafeAccount.initializeNewAccount([ownerPublicAddress])
 
-// use smartAccount.createUserOperation to get the below
-let userOperation = {
-  sender: '0xb8741a449d50ed0dcfe395287f85be152884c8d9',
-  nonce: 10n,
-  initCode: '0x',
-  callData: '0x541d63c800000000000000000000000038869bf66a61cf6bdb996a6ae40d5853fd43b52600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000001448d80ff0a000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000f2009a7af758ae5d7b6aae84fe4c5ba67c041dfe5336000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000246a627842000000000000000000000000b8741a449d50ed0dcfe395287f85be152884c8d9009a7af758ae5d7b6aae84fe4c5ba67c041dfe5336000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000246a627842000000000000000000000000b8741a449d50ed0dcfe395287f85be152884c8d9000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
-  callGasLimit: 0n,
-  verificationGasLimit: 0n,
-  preVerificationGas: 0n,
-  maxFeePerGas: 66195658616n,
-  maxPriorityFeePerGas: 120000n,
-  paymasterAndData: '0x',
-  signature: '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
-}
+// Use createUserOperation() to help you construct a userOp
+let userOperation = smartAccount.createUserOperation(..);
 
 const paymaster: CandidePaymaster = new CandidePaymaster(paymasterRPC);
 
@@ -551,86 +146,17 @@ userOperation = await paymaster.createTokenPaymasterUserOperation(
   smartAccount,
   userOperation,
   erc20TokenAddress,
-  bundlerUrl,
+  bundlerRPC,
 );
 // highlight-end
 ```
 
 </TabItem>
 <TabItem value="Param type" label="Param Types">
-  <table>
-    <thead>
-      <th align="left">Paramater</th>
-      <th align="left">Type</th>
-    </thead>
-    <tbody>
-      <tr>
-        <td align="left">Smart Account</td>
-        <td align="left">
-          <p><font color="#e25894"><code>SmartAccount</code></font> class</p>
-          <DataTable items={smartAccountParameters} />
-        </td>
-      </tr>
-      <tr>
-        <td align="left">userOperation</td>
-        <td align="left">
-          <p><font color="#e25894"><code>UserOperation</code></font> object</p>
-          <DataTable items={userOperationReturnParamsV06} />
-        </td>
-      </tr>
-      <tr>
-        <td align="left">ERC20 Token Address</td>
-        <td align="left">
-          <table>
-            <thead>
-              <th align="left">Type</th>
-              <th align="left">Description</th>
-            </thead>
-            <tr>
-              <td>
-                <font color="#e25894">string</font>
-              </td>
-              <td>Onchain ERC-20 Token Address used for gas payment</td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td align="left">Bundler URL</td>
-        <td align="left">
-          <table>
-            <thead>
-              <th align="left">Type</th>
-              <th align="left">Description</th>
-            </thead>
-            <tr>
-              <td>
-                <font color="#e25894">string</font>
-              </td>
-              <td>The Bundler URL. It is used to fetch the gas limits</td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <DataTable items={createTokenPaymasterUserOperationParam} />
 </TabItem>
 <TabItem value="response type" label="Response Type">
-  <table>
-    <thead>
-      <th align="left">Paramater</th>
-      <th align="left">Type</th>
-    </thead>
-    <tbody>
-      <tr>
-        <td align="left">userOperation</td>
-        <td align="left">
-          <p><font color="#e25894">{`Promise<UserOperation>`}</font> object</p> 
-          <DataTable items={userOperationReturnParamsV06} />
-        </td>
-      </tr>
-    </tbody>
-  </table>
+    <DataTable items={createTokenPaymasterUserOperationReturn} />
 </TabItem>
 </Tabs>
 
@@ -672,23 +198,11 @@ Calculates the maximum gas cost in ERC-20 tokens for a given userOperation
 ```ts
 import { CandidePaymaster } from "abstractionkit";
 
-const paymasterRPC="https://api.candide.dev/paymaster/$version/$network/$apikey";
 const erc20TokenAddress = "0xFa5854FBf9964330d761961F46565AB7326e5a3b"; // CTT test token
+// Use createUserOperation() to help you construct a userOp
+const userOperation = smartAccount.createUserOperation(..)
 
-let userOperation = {
-  sender: '0xb8741a449d50ed0dcfe395287f85be152884c8d9',
-  nonce: 10n,
-  initCode: '0x',
-  callData: '0x541d63c800000000000000000000000038869bf66a61cf6bdb996a6ae40d5853fd43b52600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000001e48d80ff0a0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000018b009a7af758ae5d7b6aae84fe4c5ba67c041dfe5336000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000246a627842000000000000000000000000b8741a449d50ed0dcfe395287f85be152884c8d9009a7af758ae5d7b6aae84fe4c5ba67c041dfe5336000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000246a627842000000000000000000000000b8741a449d50ed0dcfe395287f85be152884c8d900fa5854fbf9964330d761961f46565ab7326e5a3b00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000044095ea7b30000000000000000000000003fe285dcd76bcce4ac92d38a6f2f8e964041e02000000000000000000000000000000000000000000000000000a1d1b51fe47c5c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
-  callGasLimit: 116807n,
-  verificationGasLimit: 75441n,
-  preVerificationGas: 50444n,
-  maxFeePerGas: 66195658616n,
-  maxPriorityFeePerGas: 120000n,
-  paymasterAndData: '0x3fE285DcD76BCcE4Ac92d38A6F2F8E964041e020Fa5854FBf9964330d761961F46565AB7326e5a3b00000065bcd7fc00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000de84cb0d94beb10a4658077bd4ad19f4fdf94425ec730f342b8115d9907f6072f40bcea6a95bce74c29b84a7d4ee9fa67f4efb39e25a2e39a2ecb110b9a0af6b6a9589bfef7ec431b',
-  signature: '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
-}
-
+const paymasterRPC="https://api.candide.dev/paymaster/$version/$network/$apikey";
 const paymaster: CandidePaymaster = new CandidePaymaster(paymasterRPC);
 
 // highlight-start
@@ -701,58 +215,10 @@ const cost = await paymaster.calculateUserOperationErc20TokenMaxGasCost(
 
 </TabItem>
 <TabItem value="Param type" label="Param Types">
-  <table>
-    <thead>
-      <th align="left">Paramater</th>
-      <th align="left">Type</th>
-    </thead>
-    <tbody>
-      <tr>
-        <td align="left">userOperation</td>
-        <td align="left">
-          <p><font color="#e25894"><code>UserOperation</code></font> object</p>
-          <DataTable items={userOperationReturnParamsV06} />
-        </td>
-      </tr>
-      <tr>
-        <td align="left">ERC20 Token Address</td>
-        <td align="left">
-          <table>
-            <thead>
-              <th align="left">Type</th>
-              <th align="left">Description</th>
-            </thead>
-            <tr>
-              <td>
-                <font color="#e25894">string</font>
-              </td>
-              <td>Onchain ERC-20 Token Address used for gas payment</td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <DataTable items={calculateUserOperationErc20TokenMaxGasCostParam} />
 </TabItem>
-<TabItem value="response type" label="Response Type">
-  <table>
-    <thead>
-      <th align="left">Paramater</th>
-      <th align="left">Type</th>
-      <th align="left">Description</th>
-    </thead>
-    <tbody>
-      <tr>
-        <td align="left">Cost</td>
-        <td align="left">
-          <font color="#e25894">{`Promise<bigInt>`}</font>
-        </td>
-        <td align="left">
-          The maximum gas cost in ERC-20 tokens
-        </td>
-      </tr>
-    </tbody>
-  </table>
+<TabItem value="Return type" label="Return Types">
+  <DataTable items={calculateUserOperationErc20TokenMaxGasCostReturn} />
 </TabItem>
 </Tabs>
 
@@ -766,3 +232,265 @@ const cost = await paymaster.calculateUserOperationErc20TokenMaxGasCost(
 #### Source code
 [calculateUserOperationErc20TokenMaxGasCost](https://github.com/candidelabs/abstractionkit/blob/cbfda80e4d8125ad93b936613c97f5780984a83a/src/paymaster/CandidePaymaster.ts#L339C8-L339C50)
 
+## Advanced Methods
+
+### getPaymasterMetaData
+
+Returns the metadata associated with the Paymaster, along with dummyPaymasterAndData useful for gas estimates
+
+#### Usage
+
+<Tabs>
+<TabItem value="example.ts" label="example.ts">
+
+```ts title="example.ts"
+import { CandidePaymaster, SafeAccountV0_3_0 as SafeAccount } from "abstractionkit";
+
+const paymasterRPC="https://api.candide.dev/paymaster/$version/$network/$apikey";
+const paymaster: CandidePaymaster = new CandidePaymaster(paymasterRPC);
+
+const paymasterResult = await paymaster.getPaymasterMetaData(SafeAccount.DEFAULT_ENTRYPOINT_ADDRESS);
+```
+
+</TabItem>
+
+<TabItem value="Param type" label="Param Type">
+  <DataTable items={getPaymasterMetaDataParam} />
+</TabItem>
+
+<TabItem value="Return type" label="Return Type">
+  <DataTable items={getPaymasterMetaDataReturn} />
+  PaymasterMetadataV7
+  <DataTable items={paymasterMetadataV7Type} />
+  PaymasterMetadataV6
+  <DataTable items={paymasterMetadataV6Type} />
+</TabItem>
+
+</Tabs>
+
+<details>
+<summary>Example Response</summary>
+
+```ts
+{
+  name: 'CANDIDE Paymaster',
+  description: 'CANDIDE Paymaster a fast, secure and feature-rich 4337 Paymaster',
+  icons: [],
+  address: '0x8b1f6cb5d062aa2ce8d581942bbb960420d875ba',
+  sponsoredEventTopic: '0xa050a122b4c0e369e3385eb6b7cccd8019638b2764de67bec0af99130ddf8471',
+  dummyPaymasterAndData: {
+    paymaster: '0x8b1f6cb5d062aa2ce8d581942bbb960420d875ba',
+    paymasterVerificationGasLimit: '0xffff',
+    paymasterPostOpGasLimit: '0xffff',
+    paymasterData: '0x00010000000000ffff000000000000000000000000000000000000000000000000000000000000ffff010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101011c'
+  }
+}
+```
+
+</details>
+
+#### source code
+
+[getPaymasterMetaData](https://github.com/candidelabs/abstractionkit/blob/0c363636cd97d47cac39e4e6b8daf4283710adde/src/paymaster/CandidePaymaster.ts#L56C40-L56C57)
+
+### getSupportedEntrypoints
+
+Returns the supported Entrypoints by the paymaster
+
+#### Usage
+
+<Tabs>
+<TabItem value="example.ts" label="example.ts">
+
+```ts title="example.ts"
+import { CandidePaymaster } from "abstractionkit";
+
+const paymasterRPC="https://api.candide.dev/paymaster/$version/$network/$apikey";
+const paymaster: CandidePaymaster = new CandidePaymaster(paymasterRPC);
+
+const paymasterResult = await paymaster.getSupportedEntrypoints();
+```
+
+</TabItem>
+<TabItem value="Return type" label="Return Type">
+  <DataTable items={getSupportedEntrypointsReturn} />
+</TabItem>
+</Tabs>
+
+<details>
+<summary>Example Response</summary>
+
+```ts
+[
+  '0x0000000071727De22E5E9d8BAf0edAc6f37da032',
+  '0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789'
+] 
+```
+
+</details>
+
+#### source code
+[getSupportedEntrypoints](https://github.com/candidelabs/abstractionkit/blob/0c363636cd97d47cac39e4e6b8daf4283710adde/src/paymaster/CandidePaymaster.ts#L95)
+
+### isSupportedERC20Token
+
+Checks if a particular ERC-20 token is accepted as gas payment by the paymaster. Returns a boolean
+
+#### Usage
+<Tabs>
+<TabItem value="example.ts" label="example.ts">
+
+```ts title="example.ts"
+import { CandidePaymaster } from "abstractionkit";
+
+const paymasterRPC="https://api.candide.dev/paymaster/$version/$network/$apikey";
+const paymaster: CandidePaymaster = new CandidePaymaster(paymasterRPC);
+
+const erc20TokenAddress = "0xFa5854FBf9964330d761961F46565AB7326e5a3b"; // CTT on sepolia testnet
+
+const isSupported = await paymaster.isSupportedERC20Token(erc20TokenAddress);
+```
+
+</TabItem>
+<TabItem value="Param type" label="Param Types">
+  <DataTable items={isSupportedERC20TokenParam} />
+</TabItem>
+<TabItem value="response type" label="Response Type">
+  <DataTable items={isSupportedERC20TokenReturn} />
+</TabItem>
+
+</Tabs>
+
+<details>
+<summary>Example Response</summary>
+
+```ts
+true
+```
+
+</details>
+
+### getSupportedERC20TokenData
+
+Returns the token data given an erc20 address 
+
+#### Usage
+
+<Tabs>
+<TabItem value="example.ts" label="example.ts">
+
+```ts title="example.ts"
+import { CandidePaymaster } from "abstractionkit";
+
+const paymasterRpc = "https://api.candide.dev/paymaster/$version/$network/$apikey";
+
+const erc20TokenAddress = "0xFa5854FBf9964330d761961F46565AB7326e5a3b";
+const paymaster: CandidePaymaster = new CandidePaymaster(paymasterRPC);
+//highlight-start
+const erc20TokenData = await paymaster.getSupportedERC20TokenData(erc20TokenAddress);
+//highlight-end
+```
+
+</TabItem>
+<TabItem value="Param type" label="Param Types">
+  <DataTable items={getSupportedERC20TokenDataParam} />
+</TabItem>
+<TabItem value="Return type" label="Return Type">
+  <DataTable items={getSupportedERC20TokenDataReturn} />
+  <DataTable items={erc20TokenType} />
+</TabItem>
+</Tabs>
+<details title="Example Response">
+<summary>Example Response</summary>
+
+```js
+{
+  name: 'Candide Test Token',
+  symbol: 'CTT',
+  address: '0xFa5854FBf9964330d761961F46565AB7326e5a3b',
+  decimal: 18,
+  fee: 0n,
+  exchangeRate: 1001219705870085130n
+}
+```
+
+</details>
+
+#### Source code
+[getSupportedERC20TokenData](https://github.com/candidelabs/abstractionkit/blob/cbfda80e4d8125ad93b936613c97f5780984a83a/src/paymaster/CandidePaymaster.ts#L150)
+
+### createPaymasterUserOperation
+
+Estimates gas limits and set paymaster data. Returns a complete userOperation and the sponsor metadata if defined 
+
+#### Usage
+
+<Tabs>
+<TabItem value="example.ts" label="example.ts">
+
+```ts
+import { CandidePaymaster } from "abstractionkit";
+
+const bundlerRPC = "https://sepolia.voltaire.candidewallet.com/rpc";
+const paymasterRpc = "https://api.candide.dev/paymaster/$version/$network/$apikey";
+
+const paymaster: CandidePaymaster = new CandidePaymaster(paymasterRPC);
+
+// Use createUserOperation() to help you construct a userOp
+const userOperation = smartAccount.createUserOperation(..)
+
+//highlight-start
+const [sponsoredUserOp, sponsorMetadata] = paymaster.createPaymasterUserOperation(userOperation, bundlerRPC);
+//highlight-end
+
+console.log(sponsoredUserOp);
+console.log(sponsorMetadata);
+```
+
+</TabItem>
+<TabItem value="Param type" label="Param Types">
+  <DataTable items={createPaymasterUserOperationParam} />
+</TabItem>
+<TabItem value="Return type" label="Return Types">
+  <DataTable items={createPaymasterUserOperationReturn} />
+  <p><font><code>UserOperationV7</code></font></p>
+  <DataTable items={userOperationParamV07} />
+  <p><font><code>UserOperationV6</code></font></p>
+  <DataTable items={userOperationReturnParamsV06} />
+  <p><font><code>SponsorMetadata</code></font></p>
+  <DataTable items={sponsorMetaData}/>
+</TabItem>
+</Tabs>
+
+<details title="Example Response">
+<summary>Example Response</summary>
+
+```ts
+{
+  sender: '0xb5ba83cd38f6d7302fda5c0213aaa1483f8ec6f5',
+  nonce: 0n,
+  callData: '0x541d63c800000000000000000000000038869bf66a61cf6bdb996a6ae40d5853fd43b52600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000001448d80ff0a000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000f2009a7af758ae5d7b6aae84fe4c5ba67c041dfe5336000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000246a627842000000000000000000000000b5ba83cd38f6d7302fda5c0213aaa1483f8ec6f5009a7af758ae5d7b6aae84fe4c5ba67c041dfe5336000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000246a627842000000000000000000000000b5ba83cd38f6d7302fda5c0213aaa1483f8ec6f5000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
+  callGasLimit: 126318n,
+  verificationGasLimit: 895372n,
+  preVerificationGas: 59404n,
+  maxFeePerGas: 22056449241n,
+  maxPriorityFeePerGas: 21053883366n,
+  signature: '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff0000000000000000000000000000000000000000000000000000000000000041ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff',
+  factory: '0x4e1DCf7AD4e460CfD30791CCC4F9c8a4f820ec67',
+  factoryData: '0x1688f0b900000000000000000000000029fcb43b46531bca003ddc8fcb67ffe91900c7620000000000000000000000000000000000000000000000000000000000000060000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001e4b63e800d000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000010000000000000000000000002dd68b007b46fbe91b9a7c3eda5a7a1063cb5b47000000000000000000000000000000000000000000000000000000000000014000000000000000000000000075cf11467937ce3f2f357ce24ffc3dbf8fd5c22600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010000000000000000000000008e35fa6431ac9e2680991d7822df3df47b1f6a1000000000000000000000000000000000000000000000000000000000000000648d0dc49f0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000100000000000000000000000075cf11467937ce3f2f357ce24ffc3dbf8fd5c2260000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
+  paymaster: '0x8b1f6cb5d062aa2ce8d581942bbb960420d875ba',
+  paymasterVerificationGasLimit: 100000n,
+  paymasterPostOpGasLimit: 45000n,
+  paymasterData: '0x0200000066ec5650b403073db5c06bf3aa8171b902d0efc451d1ae1ac8f6c832fe24eb6407805d2506d0f34ebb9637864d9612b7f9eee7293e1d8a6d9d9d0cc90b621abbfc448e981c'
+}
+{
+  name: 'Candide',
+  description: 'Developers from across the globe use Candide Atelier to build on Safe Accounts and tap into a network of third-party gas sponsorship to ultimately supercharge their user growth',
+  url: 'https://candide.dev',
+  icons: [ 'https://docs.candide.dev/img/logo-dark.png' ]
+}
+```
+</details>
+
+#### Source code
+[createPaymasterUserOperation](https://github.com/candidelabs/abstractionkit/blob/cbfda80e4d8125ad93b936613c97f5780984a83a/src/paymaster/CandidePaymaster.ts#L188)
