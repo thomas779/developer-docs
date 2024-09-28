@@ -119,7 +119,7 @@ Account address(sender) : 0x1a02592A3484c2077d2E5D24482497F85e1980C6
 
 #### Source code
 
-[initializeNewAccount](https://github.com/candidelabs/abstractionkit/blob/0c363636cd97d47cac39e4e6b8daf4283710adde/src/account/Safe/SafeAccountV0_2_0.ts#L93)
+[initializeNewAccount](https://github.com/candidelabs/abstractionkit/blob/98853f30861382a534abf667ced83d47b6c9da0b/src/account/Safe/SafeAccountV0_2_0.ts#L80)
 
 ### createUserOperation
 
@@ -255,7 +255,7 @@ console.log(userOperation);
 </details>
 
 #### Source code
-[createUserOperation](https://github.com/candidelabs/abstractionkit/blob/0c363636cd97d47cac39e4e6b8daf4283710adde/src/account/Safe/SafeAccountV0_2_0.ts#L526C15-L526C34)
+[createUserOperation](https://github.com/candidelabs/abstractionkit/blob/98853f30861382a534abf667ced83d47b6c9da0b/src/account/Safe/SafeAccountV0_2_0.ts#L250)
 
 ### signUserOperation
 
@@ -301,7 +301,7 @@ console.log(signature);
 </details>
 
 #### Source code
-[signUserOperation](https://github.com/candidelabs/abstractionkit/blob/0c363636cd97d47cac39e4e6b8daf4283710adde/src/account/Safe/SafeAccountV0_2_0.ts#L664C9-L664C26)
+[signUserOperation](https://github.com/candidelabs/abstractionkit/blob/98853f30861382a534abf667ced83d47b6c9da0b/src/account/Safe/SafeAccount.ts#L1446)
 
 ### sendUserOperation
 
@@ -377,7 +377,7 @@ receipt: {
 </details>
 
 #### Source code
-[sendUserOperation](https://github.com/candidelabs/abstractionkit/blob/0c363636cd97d47cac39e4e6b8daf4283710adde/src/account/Safe/SafeAccountV0_2_0.ts#L745C15-L745C32)
+[sendUserOperation](https://github.com/candidelabs/abstractionkit/blob/98853f30861382a534abf667ced83d47b6c9da0b/src/account/Safe/SafeAccount.ts#L681)
 
 ## Advanced Methods
 
@@ -480,7 +480,7 @@ initCode: 0x...
 
 #### Source code
 
-[createInitCode](https://github.com/candidelabs/abstractionkit/blob/c51e68703c3bb07768888f4777123d061dde41aa/src/account/Safe/SafeAccountV0_2_0.ts#L234)
+[createInitCode](https://github.com/candidelabs/abstractionkit/blob/98853f30861382a534abf667ced83d47b6c9da0b/src/account/Safe/SafeAccountV0_2_0.ts#L224C16-L224C30)
 
 ### createAccountAddressAndInitCode
 
@@ -532,7 +532,7 @@ initCode: 0x...
 
 #### Source code
 
-[createAccountAddressAndInitCode](https://github.com/candidelabs/abstractionkit/blob/0c363636cd97d47cac39e4e6b8daf4283710adde/src/account/Safe/SafeAccountV0_2_0.ts#L110C16-L110C47)
+[createAccountAddressAndInitCode](https://github.com/candidelabs/abstractionkit/blob/98853f30861382a534abf667ced83d47b6c9da0b/src/account/Safe/SafeAccountV0_2_0.ts#L169)
 
 ### createInitializerCallData
 
@@ -573,6 +573,9 @@ initializeCallData: 0xb63e800d00000000000000000000000000000000000000000000000000
 ```
 
 </details>
+
+#### Source
+[createInitializerCallData](https://github.com/candidelabs/abstractionkit/blob/98853f30861382a534abf667ced83d47b6c9da0b/src/account/Safe/SafeAccountV0_2_0.ts#L187)
 
 ### createAccountCallDataSingleTransaction
 
@@ -625,7 +628,7 @@ callData : 0xf34308ef000000000000000000000000b4fbf271143f4fbf7b91a5ded31805e42b2
 
 #### Source code
 
-[createAccountCallDataSingleTransaction](https://github.com/candidelabs/abstractionkit/blob/0c363636cd97d47cac39e4e6b8daf4283710adde/src/account/Safe/SafeAccountV0_2_0.ts#L295)
+[createAccountCallDataSingleTransaction](https://github.com/candidelabs/abstractionkit/blob/98853f30861382a534abf667ced83d47b6c9da0b/src/account/Safe/SafeAccount.ts#L174)
 
 ### createAccountCallDataBatchTransactions
 
@@ -690,7 +693,7 @@ callData : 0xf34308ef000000000000000000000000b4fbf271143f4fbf7b91a5ded31805e42b2
 
 #### Source code
 
-[createAccountCallDataBatchTransactions](https://github.com/candidelabs/abstractionkit/blob/0c363636cd97d47cac39e4e6b8daf4283710adde/src/account/Safe/SafeAccountV0_2_0.ts#L313)
+[createAccountCallDataBatchTransactions](https://github.com/candidelabs/abstractionkit/blob/98853f30861382a534abf667ced83d47b6c9da0b/src/account/Safe/SafeAccount.ts#L209)
 
 ### estimateUserOperationGas
 
@@ -760,7 +763,7 @@ const [preVerificationGas, verificationGasLimit, callGasLimit] = await estimateU
 </details>
 
 #### Source code
-[estimateUserOperationGas](https://github.com/candidelabs/abstractionkit/blob/0c363636cd97d47cac39e4e6b8daf4283710adde/src/account/Safe/SafeAccountV0_2_0.ts#L484C15-L484C39)
+[estimateUserOperationGas](https://github.com/candidelabs/abstractionkit/blob/98853f30861382a534abf667ced83d47b6c9da0b/src/account/Safe/SafeAccount.ts#L1002)
 
 ### getUserOperationEip712Hash
 
@@ -786,6 +789,7 @@ console.log("Hello world");
 
 #### Source
 
+[getUserOperationEip712Hash](https://github.com/candidelabs/abstractionkit/blob/98853f30861382a534abf667ced83d47b6c9da0b/src/account/Safe/SafeAccountV0_2_0.ts#L136)
 
 ### formatEip712SignaturesToUseroperationSignature
 
@@ -889,7 +893,7 @@ userOperation.signature = formatedSig;
 </details>
 
 #### Source code
-[formatEip712SignaturesToUseroperationSignature](https://github.com/candidelabs/abstractionkit/blob/c51e68703c3bb07768888f4777123d061dde41aa/src/account/Safe/SafeAccountV0_2_0.ts#L789)
+[formatEip712SignaturesToUseroperationSignature](https://github.com/candidelabs/abstractionkit/blob/98853f30861382a534abf667ced83d47b6c9da0b/src/account/Safe/SafeAccount.ts#L436)
 
 ## Audits
 - [Audits by Ackee and OpenZeppelin](https://github.com/safe-global/safe-modules/blob/main/modules/4337/docs/v0.2.0/audit.md)

@@ -115,7 +115,7 @@ const [sponsoredUserOperation, sponsorMetadata] =
 </Tabs>
 
 #### Source code
-[createSponsorPaymasterUserOperation](https://github.com/candidelabs/abstractionkit/blob/cbfda80e4d8125ad93b936613c97f5780984a83a/src/paymaster/CandidePaymaster.ts#L278C8-L278C43)
+[createSponsorPaymasterUserOperation](https://github.com/candidelabs/abstractionkit/blob/98853f30861382a534abf667ced83d47b6c9da0b/src/paymaster/CandidePaymaster.ts#L607)
 
 ### createTokenPaymasterUserOperation
 
@@ -184,7 +184,7 @@ userOperation = await paymaster.createTokenPaymasterUserOperation(
 </details>
 
 #### Source code
-[createTokenPaymasterUserOperation](https://github.com/candidelabs/abstractionkit/blob/cbfda80e4d8125ad93b936613c97f5780984a83a/src/paymaster/CandidePaymaster.ts#L301C8-L301C41)
+[createTokenPaymasterUserOperation](https://github.com/candidelabs/abstractionkit/blob/98853f30861382a534abf667ced83d47b6c9da0b/src/paymaster/CandidePaymaster.ts#L654)
 
 ### calculateUserOperationErc20TokenMaxGasCost
 
@@ -230,7 +230,7 @@ const cost = await paymaster.calculateUserOperationErc20TokenMaxGasCost(
 </details>
 
 #### Source code
-[calculateUserOperationErc20TokenMaxGasCost](https://github.com/candidelabs/abstractionkit/blob/cbfda80e4d8125ad93b936613c97f5780984a83a/src/paymaster/CandidePaymaster.ts#L339C8-L339C50)
+[calculateUserOperationErc20TokenMaxGasCost](https://github.com/candidelabs/abstractionkit/blob/98853f30861382a534abf667ced83d47b6c9da0b/src/paymaster/CandidePaymaster.ts#L732)
 
 ## Advanced Methods
 
@@ -291,7 +291,7 @@ const paymasterResult = await paymaster.getPaymasterMetaData(SafeAccount.DEFAULT
 
 #### source code
 
-[getPaymasterMetaData](https://github.com/candidelabs/abstractionkit/blob/0c363636cd97d47cac39e4e6b8daf4283710adde/src/paymaster/CandidePaymaster.ts#L56C40-L56C57)
+[getPaymasterMetaData](https://github.com/candidelabs/abstractionkit/blob/98853f30861382a534abf667ced83d47b6c9da0b/src/paymaster/CandidePaymaster.ts#L227)
 
 ### getSupportedEntrypoints
 
@@ -330,7 +330,7 @@ const paymasterResult = await paymaster.getSupportedEntrypoints();
 </details>
 
 #### source code
-[getSupportedEntrypoints](https://github.com/candidelabs/abstractionkit/blob/0c363636cd97d47cac39e4e6b8daf4283710adde/src/paymaster/CandidePaymaster.ts#L95)
+[getSupportedEntrypoints](https://github.com/candidelabs/abstractionkit/blob/98853f30861382a534abf667ced83d47b6c9da0b/src/paymaster/CandidePaymaster.ts#L213)
 
 ### isSupportedERC20Token
 
@@ -369,6 +369,9 @@ true
 ```
 
 </details>
+
+#### Source
+[isSupportedERC20Token](https://github.com/candidelabs/abstractionkit/blob/98853f30861382a534abf667ced83d47b6c9da0b/src/paymaster/CandidePaymaster.ts#L249)
 
 ### getSupportedERC20TokenData
 
@@ -417,7 +420,7 @@ const erc20TokenData = await paymaster.getSupportedERC20TokenData(erc20TokenAddr
 </details>
 
 #### Source code
-[getSupportedERC20TokenData](https://github.com/candidelabs/abstractionkit/blob/cbfda80e4d8125ad93b936613c97f5780984a83a/src/paymaster/CandidePaymaster.ts#L150)
+[getSupportedERC20TokenData](https://github.com/candidelabs/abstractionkit/blob/98853f30861382a534abf667ced83d47b6c9da0b/src/paymaster/CandidePaymaster.ts#L270)
 
 ### createPaymasterUserOperation
 
@@ -493,4 +496,4 @@ console.log(sponsorMetadata);
 </details>
 
 #### Source code
-[createPaymasterUserOperation](https://github.com/candidelabs/abstractionkit/blob/cbfda80e4d8125ad93b936613c97f5780984a83a/src/paymaster/CandidePaymaster.ts#L188)
+[createPaymasterUserOperation](https://github.com/candidelabs/abstractionkit/blob/98853f30861382a534abf667ced83d47b6c9da0b/src/paymaster/CandidePaymaster.ts#L327)
