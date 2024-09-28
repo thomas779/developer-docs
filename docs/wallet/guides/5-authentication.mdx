@@ -90,7 +90,7 @@ const smartAccount = SafeAccount.initializeNewAccount([signerAddress]);
 <TabItem value="viem" label="viem example">
 
 ```ts
-import { SafeAccountV0_3_0 as SafeAccount } from "abstractionkit";
+import { SafeAccountV0_3_0 as SafeAccount, EIP712_SAFE_OPERATION_V7_TYPE } from "abstractionkit";
 import { createWalletClient, custom } from "viem";
 
 const client = createWalletClient({
@@ -121,7 +121,7 @@ const domain = {
   verifyingContract: smartAccount.safe4337ModuleAddress,
 };
 
-const types = SafeAccount.EIP712_SAFE_OPERATION_TYPE;
+const types = EIP712_SAFE_OPERATION_V7_TYPE;
 
 // formate according to EIP712 Safe Operation Type
 const { sender, ...userOp } = userOperation;
@@ -149,7 +149,7 @@ const domain = {
   verifyingContract: smartAccount.safe4337ModuleAddress,
 };
 
-const types = SafeAccount.EIP712_SAFE_OPERATION_TYPE;
+const types = EIP712_SAFE_OPERATION_V7_TYPE;
 
 // formate according to EIP712 Safe Operation Type
 const { sender, ...userOp } = userOperation;
