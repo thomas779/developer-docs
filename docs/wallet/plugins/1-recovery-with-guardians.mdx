@@ -87,17 +87,20 @@ import { SocialRecoveryModule } from "abstractionkit";
 ```
 ### How to use
 
-Initialize a SocialRecoveryModule instance. By default, the grace period for recovery is set to 14 days. 
+Initialize a SocialRecoveryModule instance. By default, the grace period for recovery is set to 3 days. 
 
 ```ts
-const srm = new SocialRecoveryModule(); // 14 days
+const srm = new SocialRecoveryModule(); // 3 days
 ```
 
 If you need a different grace period, you can override it by providing 
 a [different grace period address](/wallet/technical-reference/deployments/#social-recovery-module)
 during initialization.
 ```ts
-const srm = new SocialRecovery("0x38275826E1933303E508433dD5f289315Da2541c"); // 3 days
+import { SocialRecoveryModule, SocialRecoveryModuleGracePeriodSelector } from "abstractionkit";
+ 
+const gracePeriod = SocialRecoveryModuleGracePeriodSelector.After7Days;
+const srm = new SocialRecovery(gracePeriod); // 7 days
 ```
 
 Then consume the module methods like the following:
