@@ -36,7 +36,9 @@ const config = {
         docs: {
           routeBasePath: '/',
           sidebarPath: require.resolve('./sidebars.js'),
-          // editUrl: 'https://github.com/candidelabs/dev-docs/edit/master/website',
+          showLastUpdateTime: true,
+          showLastUpdateAuthor: true,
+          // editUrl: 'https://github.com/candidelabs/developer-docs/edit/main/website',
         },
         blog: false,
         theme: {
@@ -92,12 +94,12 @@ const config = {
       },
       image: 'img/posters/atelier-meta.png',
       announcementBar: {
-        id: 'social_recovery_audit',
+        id: 'abstractionkit_v0.2',
         content:
-          'Voltaire Bundler now supports EntryPoint v0.7  <button><a target="_blank" rel="noopener noreferrer" href="/blog/voltaire-entrypoint-v7-support/">Read Announcement</a></button>',
+          'AbstractionKit V0.2 release with Passkeys, Account Recovery, New EntryPoint and more  <button><a target="_blank" rel="noopener noreferrer" href="https://www.candide.dev/blog/introducing-abstractionkit-v0-2-0">Read Announcement</a></button>',
         backgroundColor: '#f0f6ff',
         textColor: '#000000',
-        isCloseable: false,
+        isCloseable: true, 
       },
       metadata: [{
         name:
