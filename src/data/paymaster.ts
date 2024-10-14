@@ -361,9 +361,9 @@ export const createSponsorPaymasterUserOperationParam = [
     description: "Bundler URL to estimate the gas",
   },
   {
-    key: "CreatePaymasterUserOperationOverrides",
-    type: "string",
-    description: "Bundler URL to estimate the gas",
+    key: "sponsorshipPolicyId",
+    type: "string?",
+    description: "Optional sponsorship policy id if using a Private Gas Policy",
   },
 ];
 

@@ -17,10 +17,13 @@ If you are coming from the [previous guide](../getting-started), you only need o
 <img src="/img/gasless-transaction-screen.png" style={{ width: "300px" }} />
 
 ## Quickstart
+If you need, you can fork and run this tutorial directly on [Github](https://github.com/candidelabs/abstractionkit/tree/main/examples/SafeAccountExamples/CreateAccountAndSendTransactionUsingSponsorPaymaster)
+
 ### Prerequisites
 
 - Node and a package manager (yarn or npm)
-- If you need, fork the full example of this tutorial on [Github](https://github.com/candidelabs/abstractionkit/tree/main/examples/SafeAccountExamples/CreateAccountAndSendTransactionUsingSponsorPaymaster)
+- An API key from the [dashboard](https://dashboard.candide.dev)
+- A Gas Policy, private or public, created on the dashboard
 
 ### Step 1: Get setup
 
@@ -48,8 +51,11 @@ CHAIN_ID=11155111
 BUNDLER_URL=https://sepolia.voltaire.candidewallet.com/rpc
 JSON_RPC_NODE_PROVIDER=NODE_PROVIDER_URL
 
-# API key for Sepolia and Amoy
-PAYMASTER_RPC=https://api.candide.dev/paymaster/v1/sepolia/f70ee1e3efa3f7a67ff392eb99dafc78
+# API key for Sepolia
+PAYMASTER_RPC=https://api.candide.dev/paymaster/$version/sepolia/$APY_KEY
+
+# Private gas policy ID 
+SPONSORSHIP_POLICY_ID=
 
 #account owner pub & private key
 PRIVATE_KEY=YOUR_PRIVATE_KEY
@@ -159,35 +165,51 @@ let userOperation = await smartAccount.createUserOperation(
 
 ### Step 5: Get Paymaster Data
 
-1. Import `CandidePaymaster`, and initiate an instance. Do not forget to add your paymaster url in your .env file with your API key
+ Sponsor gas for a user operation by first checking for publicly available gas policies set up by third parties. If no matching public gas policy is found for the user operation, it automatically falls back to a private gas policy.
 
-:::info
-Sponsored Gas Policies are in Beta. Use this public API to sponsor gas on Sepolia. Need an API key for Mainnets? Reach out on [discord](https://discord.gg/8q2H6BEJuf).
+- **Public Gas Policies**: These are gas policies provided by third parties that do not require a sponsorship policy ID.
+- **Private Gas Policies**: These require a sponsorship policy ID and can be used if no public gas policy matches the user operation.
 
-`PAYMASTER_RPC=https://api.candide.dev/paymaster/v1/sepolia/f70ee1e3efa3f7a67ff392eb99dafc78`
-:::
+1. Create a new app on the [dashboard](https://dashboard.candide.dev), and copy the paymaster RPC URL in your .env 
+2. Setup a Private Gas Policy on the dashboard, and copy its sponsor policy ID in your .env
+3. Import `CandidePaymaster` and call the method [createsponsorpaymasteruseroperation](/wallet/abstractionkit/paymaster/#createsponsorpaymasteruseroperation)
+
 
 <Tabs>
 <TabItem value="index.ts" label="index.ts">
 
 ```ts
 import {
-  ...
   // highlight-start
   CandidePaymaster,
-  UserOperationV7,
   // highlight-end
 } from "abstractionkit";
 
 const paymasterRPC = process.env.PAYMASTER_RPC as string;
-const paymaster: CandidePaymaster = new CandidePaymaster(paymasterRPC)
+const paymaster: CandidePaymaster = new CandidePaymaster(paymasterRPC);
+const sponsorshipPolicyId = process.env.SPONSORSHIP_POLICY_ID;
 
-let [paymasterUserOperation, _sponsorMetadata] =
-  await paymaster.createSponsorPaymasterUserOperation(
-    userOperation,
-    bundlerUrl
-  );
-userOperation = paymasterUserOperation as UserOperationV7;
+try {
+  [paymasterUserOperation, sponsorMetadata] =
+    await paymaster.createSponsorPaymasterUserOperation(
+      userOperation,
+      bundlerUrl,
+    );
+} catch (error) {
+  try {
+    [paymasterUserOperation, sponsorMetadata] =
+      await paymaster.createSponsorPaymasterUserOperation(
+        userOperation,
+        bundlerUrl,
+        sponsorshipPolicyId,
+      );
+  } catch (finalError) {
+    // Last fallback to propose to the user the option to pay gas in erc-20 tokens 
+    throw finalError;
+  }
+}
+
+userOperation = paymasterUserOperation;
 ```
 
 </TabItem>
@@ -196,6 +218,7 @@ userOperation = paymasterUserOperation as UserOperationV7;
 
 ```env
 PAYMASTER_RPC=https://api.candide.dev/paymaster/$version/$network/$apikey
+SPONSORSHIP_POLICY_ID=
 ```
 
 </TabItem>

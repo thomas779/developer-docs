@@ -24,7 +24,6 @@ import {
   getSupportedEntrypointsReturn,
   createSponsorPaymasterUserOperationParam,
   createSponsorPaymasterUserOperationReturn,
-  createPaymasterUserOperationOverridesType,
   PrependTokenPaymasterApproveAccount,
   createTokenPaymasterUserOperationParam,
   createTokenPaymasterUserOperationReturn,
@@ -78,7 +77,11 @@ const supportedEntryPoints = await paymaster.getSupportedEntrypoints();
 
 ### createSponsorPaymasterUserOperation
 
-Returns the paymaster data if the the userOperation has a Gas Policy. Otherwise it returns an error message.
+Returns the paymaster data if the the userOperation has a Gas Policy. Otherwise it returns an error message. Supports two types of Gas Policies:
+
+- **Public Gas Policies**: These are gas policies provided by third parties, which do not require a sponsorship policy ID.
+- **Private Gas Policies**: These require a sponsorship policy ID and can be used if no public gas policy matches the user operation.
+
 
 #### Usage
 
@@ -90,6 +93,7 @@ import { CandidePaymaster } from "abstractionkit";
 
 const paymasterRpc = "https://api.candide.dev/paymaster/$version/$network/$apikey";
 const paymaster: CandidePaymaster = new CandidePaymaster(paymasterRPC);
+const sponsorshipPolicyId = '1234';
 
 // Use createUserOperation() to help you construct a userOp
 const userOperation = smartAccount.createUserOperation(..)
@@ -98,7 +102,8 @@ const userOperation = smartAccount.createUserOperation(..)
 const [sponsoredUserOperation, sponsorMetadata] =
   await paymaster.createSponsorPaymasterUserOperation(
     userOperation,
-    bundlerUrl
+    bundlerUrl,
+    sponsorshipPolicyId, // optional
   );
 // highlight-start
 ```
@@ -106,8 +111,6 @@ const [sponsoredUserOperation, sponsorMetadata] =
 </TabItem>
 <TabItem value="Param Type" label="Param Type">
   <DataTable items={createSponsorPaymasterUserOperationParam} />
-  <p><font><code>CreatePaymasterUserOperationOverrides</code></font></p>
-  <DataTable items={createPaymasterUserOperationOverridesType} />
 </TabItem>
 <TabItem value="Return Type" label="Return Type">
   <DataTable items={createSponsorPaymasterUserOperationReturn} />
