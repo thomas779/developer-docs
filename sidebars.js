@@ -82,7 +82,7 @@ const sidebars = {
     },
     {
       type: 'category',
-      label: 'Paymaster',
+      label: 'Paymaster API',
       className: 'category-not-collapsible',
       collapsible: false,
       items: [

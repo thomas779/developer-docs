@@ -70,8 +70,13 @@ export const tokensParamatersV2 = [
 export const candidePaymasterContext = [
   {
     key: "token",
-    type: "string",
-    description: "ERC20 token address. (optional)",
+    type: "string?",
+    description: "ERC20 token address, if paying gas in erc-20 tokens (optional)",
+  },
+  {
+    key: "sponsorshipPolicyId",
+    type: "string?",
+    description: "Sponsorship Policy ID if using a private gas policy (optional)",
   },
 ];
 
