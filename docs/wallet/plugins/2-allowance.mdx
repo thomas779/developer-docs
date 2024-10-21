@@ -1,0 +1,366 @@
+---
+title: Allowance
+description: Hello World
+keywords: [allowance, safe, reccuring, reccuring-transfers, subscriptions]
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import { DataTable } from "/src/components/Table";
+import { metaTransactionType } from "../../../src/data/accountParamAndReturnData";
+import { createEnableModuleParams } from "/src/data/safeModule";
+import {
+    createOneTimeAllowanceParams,
+    createAddDelegateParams,
+    createAllowanceTransferParams,
+    createBaseExecuteAllowanceTransferParams,
+    createBaseSetAllowanceParams,
+    createDeleteAllowanceParams,
+    createRecurringAllowanceParams,
+    createRemoveDelegateParams,
+    createRenewAllowanceParams,
+    getTokensParams,
+    getTokensReturn,
+    getTokensAllowanceParams,
+    getTokensAllowanceReturn,
+    getDelegatesParams,
+    getDelegatesReturn,
+    baseGetDelegatesParams,
+    baseGetDelegatesReturn
+} from "/src/data/allowanceModule";
+
+The Safe Allowance Module is a powerful tool designed to enable users to automate token transfers securely. It provides a flexible framework that allows account owners to delegate specific rights and permissions to other accounts or contracts, ensuring that funds can be transferred or utilized according to predefined conditions.
+
+This module does not manage allowances in the traditional sense of ERC20 token contracts. Instead, it provides a method for granting authorization of specific accounts to a delegate: (an account or a smart contracts), allowing them to interact with the Main Account on behalf of the user. It ensures secure and controlled access to funds while facilitating automated transactions.
+
+By leveraging the Safe Allowance Module, wallet developers can implement sophisticated financial operations with ease. Whether it's managing delegated funds for multiple users, automating payment processes or delegating to smart contracts for various usecases.
+
+## Use Cases
+**Recurring Transfers**: Automate periodic transactions for reccuring transfers. Users can define the amount, frequency, duration, and receipients.
+
+**Subscriptions**: Set up automatic payments for subscriptions, utility bills, or membership fees.
+
+**Dollar-Cost Averaging (DCA)**: Facilitate DCA by delegating allowances to swap contracts.
+
+**And More..** by delegating to smart contracts for specific needs.
+
+## Audits
+
+- [Ackee Audit 2024](https://github.com/safe-global/safe-modules/blob/main/modules/allowances/docs/ackee-blockchain-safe-allowance-module-report.pdf)
+- [GnosisSafe Audit 2020](https://github.com/safe-global/safe-modules/blob/main/modules/allowances/docs/AllowanceModuleAuditOct2020.md)
+
+## Usage
+
+### Install
+
+<Tabs>
+<TabItem value="npm" label="npm">
+
+```bash
+npm i abstractionkit
+```
+
+</TabItem>
+<TabItem value="yarn" label="yarn">
+
+```bash
+yarn add abstractionkit
+```
+
+</TabItem>
+</Tabs>
+
+:::info
+The Allowance module is currently in an experimental release under `abstractionkit@0.2.1`
+:::
+
+### Import
+
+```ts
+import { AllowanceModule } from "abstractionkit";
+```
+
+## How to use
+
+AbstractionKit provides two types of methods for the Allowance Module
+1. The recommended methods that offer simplified interfaces. These are under [Methods](/wallet/plugins/allowance/#methods).
+2. Those prefixed with `createBase`, which match the exact contract method names and paramaters. These are under [Advanced Methods](wallet/plugins/allowance/#advanced-methods).
+
+While `createBase` methods allow direct interaction with the contract, they can be confusing for developers due to the multiple options and paramaters involved. The recommended methods improves usability by providing clearer and more intuitive method names and input parameters.
+
+
+:::tip
+If you're looking for a code example, take a look at [Allowance Module tests](https://github.com/candidelabs/abstractionkit/blob/experimental/test/safe/allowanceModule.test.js)  
+:::
+
+### 1. Initialize the Module 
+
+```ts
+const allowanceModule = new AllowanceModule();
+```
+
+### 2. Enable the Module
+
+```ts
+const enableModuleMetaTransaction = allowanceModule.createEnableModuleMetaTransaction(sourceAccountAddress);
+```
+
+### 3. Add Delegate
+
+```ts
+const addDelegateMetaTransaction = 
+    allowanceModule.createAddDelegateMetaTransaction(
+        delegateAddress,
+    );
+```
+
+### 4. Set Allowance
+
+In the example below, we show how to set a reccuring allowance through [createRecurringAllowanceMetaTransaction](wallet/plugins/allowance/#createrecurringallowancemetatransaction). You can also use one time allowences via [createOneTimeAllowanceMetaTransaction](wallet/plugins/allowance/#createonetimeallowancemetatransaction)  
+
+```ts
+const setAllowanceMetaTransaction = 
+    allowanceModule.createRecurringAllowanceMetaTransaction(
+        delegateAddress, // The address of the delegate to whom the recurring allowance is given.
+        allowanceToken, // The address of the token for which the allowance is set. 
+        1, // The amount of the token allowed for the delegate.
+        3, // The time period (in minutes) after which the allowance resets.
+        0 // The delay in minutes before the allowance can be used.
+    );
+```
+
+### 5. Create UserOperation 
+
+We batch all three MetaTransactions into a single UserOperation with [createUserOperation](wallet/abstractionkit/safe-account-v3/#createuseroperation). From there, you can continue the normal flow of signing and submiting the UserOperation onchain.
+
+```ts
+const userOperation =
+    await allowanceSourceAccount.createUserOperation(
+        [enableModuleMetaTransaction, addDelegateMetaTransaction, setAllowanceMetaTransaction],
+        jsonRpcNodeProvider,
+        bundlerUrl,
+    );
+```
+
+### 6. The Delegate execute the Allowance
+
+Once the allowance is set and the conditions are met, the delegate can execute the token transfer. The delegate can be an automated service, an EOA (Externally Owned Account), or a smart contract.
+
+```ts
+const allowanceTransferMetaTransaction =
+    allowanceModule.createAllowanceTransferMetaTransaction(
+        sourceAccountAddress, // The safe address from which the allowance is being transferred
+        allowanceToken,
+        transferRecipient, // The recipient address of the allowance transfer.
+        2, // The amount of tokens to be transferred.
+        delegateAddress, // The delegate address managing the transfer.
+    );
+```
+
+:::info
+Candide Atelier offers an automation tool to execute delegated allowances. Contact us directly for Beta access.
+:::
+
+## Methods
+
+### createEnableModuleMetaTransaction
+
+Creates a MetaTransaction to enable a specified module for a Safe account. This transaction allows the specified account to interact with the module.
+
+<Tabs>
+<TabItem value="Param type" label="Param Types">
+  <DataTable items={createEnableModuleParams} />
+</TabItem>
+<TabItem value="Return type" label="Return Types">
+    <DataTable items={metaTransactionType} />
+</TabItem>
+</Tabs>
+
+
+### createAddDelegateMetaTransaction
+
+Creates a MetaTransaction that allows adding a delegate to the account. This enables the specified delegate to perform actions on behalf of the account.
+
+<Tabs>
+<TabItem value="Param type" label="Param Types">
+  <DataTable items={createAddDelegateParams} />
+</TabItem>
+<TabItem value="Return type" label="Return Types">
+    <DataTable items={metaTransactionType} />
+</TabItem>
+</Tabs>
+
+
+### createOneTimeAllowanceMetaTransaction
+
+Creates a MetaTransaction that sets a one-time allowance for a delegate to use specified tokens. This transaction can be scheduled to start after a certain period.
+
+<Tabs>
+<TabItem value="Param type" label="Param Types">
+  <DataTable items={createOneTimeAllowanceParams} />
+</TabItem>
+<TabItem value="Return type" label="Return Types">
+    <DataTable items={metaTransactionType} />
+</TabItem>
+</Tabs>
+
+### createRecurringAllowanceMetaTransaction
+
+Creates a MetaTransaction that sets a recurring allowance for a delegate to use specified tokens. This transaction can be scheduled to start after a certain period and will automatically reset after the specified validity period.
+
+<Tabs>
+<TabItem value="Param type" label="Param Types">
+  <DataTable items={createRecurringAllowanceParams} />
+</TabItem>
+<TabItem value="Return type" label="Return Types">
+    <DataTable items={metaTransactionType} />
+</TabItem>
+</Tabs>
+
+### createAllowanceTransferMetaTransaction
+
+Creates a MetaTransaction that allows using the allowance to perform a transfer. This transaction enables the specified delegate to transfer tokens from the account's allowance.
+
+<Tabs>
+<TabItem value="Param type" label="Param Types">
+  <DataTable items={createAllowanceTransferParams} />
+</TabItem>
+<TabItem value="Return type" label="Return Types">
+  <DataTable items={metaTransactionType} />
+</TabItem>
+</Tabs>
+
+### createRenewAllowanceMetaTransaction
+
+Creates a MetaTransaction that allows renewing (resetting) the allowance for a specific delegate and token. This transaction enables the account to extend the delegate's allowance without having to delete and recreate it.
+
+<Tabs>
+<TabItem value="Param type" label="Param Types">
+  <DataTable items={createRenewAllowanceParams} />
+</TabItem>
+<TabItem value="Return type" label="Return Types">
+  <DataTable items={metaTransactionType} />
+</TabItem>
+</Tabs>
+
+### createDeleteAllowanceMetaTransaction
+
+Creates a MetaTransaction that allows removing the allowance for a specific delegate and token. This transaction sets all values except the `nonce` to 0, effectively revoking the delegate's permission to use the allowance.
+
+<Tabs>
+<TabItem value="Param type" label="Param Types">
+  <DataTable items={createDeleteAllowanceParams} />
+</TabItem>
+<TabItem value="Return type" label="Return Types">
+  <DataTable items={metaTransactionType} />
+</TabItem>
+</Tabs>
+
+## Helpers
+
+### getDelegates
+
+Retrieves a list of delegates associated with a specified Safe account. This function allows pagination to manage large sets of delegates.
+
+<Tabs>
+<TabItem value="Param type" label="Param Types">
+  <DataTable items={getDelegatesParams} />
+</TabItem>
+<TabItem value="Return type" label="Return Types">
+  <DataTable items={getDelegatesReturn} />
+</TabItem>
+</Tabs>
+
+### getTokensAllowance
+
+Retrieves the allowance for a specific delegate and token associated with a specified Safe account. This function returns an object containing details about the allowance, including the amount, spent, reset time, last reset time, and nonce.
+
+<Tabs>
+<TabItem value="Param type" label="Param Types">
+  <DataTable items={getTokensAllowanceParams} />
+</TabItem>
+<TabItem value="Return type" label="Return Types">
+  <DataTable items={getTokensAllowanceReturn} />
+</TabItem>
+</Tabs>
+
+### getTokens
+
+Retrieves the delegated tokens for a specific delegate associated with a Safe account.
+
+<Tabs>
+<TabItem value="Param type" label="Param Types">
+  <DataTable items={getTokensParams} />
+</TabItem>
+<TabItem value="Return type" label="Return Types">
+    <DataTable items={getTokensReturn} />
+</TabItem>
+</Tabs>
+
+### IsModuleEnabled
+
+Checks if a specified module is enabled for a given Safe account. This function returns a boolean indicating the module's status.
+
+See the method [IsModuleEnabled](/wallet/abstractionkit/safe-account-v3/#ismoduleenabled) in the Safe Account.
+
+### createRemoveDelegateMetaTransaction
+
+Creates a MetaTransaction that allows removing a delegate from the Safe account. It can also remove allowances if specified.
+
+<Tabs>
+<TabItem value="Param type" label="Param Types">
+  <DataTable items={createRemoveDelegateParams} />
+</TabItem>
+<TabItem value="Return type" label="Return Types">
+    <DataTable items={metaTransactionType} />
+</TabItem>
+</Tabs>
+
+## Advanced Methods
+
+### createBaseSetAllowanceMetaTransaction
+
+Creates a MetaTransaction to update the allowance for a specified token. This can only be done via a Safe transaction.
+
+<Tabs>
+<TabItem value="Param type" label="Param Types">
+  <DataTable items={createBaseSetAllowanceParams} />
+</TabItem>
+<TabItem value="Return type" label="Return Types">
+    <DataTable items={metaTransactionType} />
+</TabItem>
+</Tabs>
+
+### createBaseExecuteAllowanceTransferMetaTransaction
+
+Creates a MetaTransaction that allows using the allowance to perform a transfer. 
+
+<Tabs>
+<TabItem value="Param type" label="Param Types">
+  <DataTable items={createBaseExecuteAllowanceTransferParams} />
+</TabItem>
+<TabItem value="Return type" label="Return Types">
+    <DataTable items={metaTransactionType} />
+</TabItem>
+</Tabs>
+
+## Advanced Helpers
+
+### baseGetDelegates
+
+Retrieves a list of delegates associated with a specific Safe account. It supports pagination to manage large results.
+
+<Tabs>
+<TabItem value="Param type" label="Param Types">
+  <DataTable items={baseGetDelegatesParams} />
+</TabItem>
+<TabItem value="Return type" label="Return Types">
+    <DataTable items={baseGetDelegatesReturn} />
+</TabItem>
+</Tabs>
+
+
+
+
+
+

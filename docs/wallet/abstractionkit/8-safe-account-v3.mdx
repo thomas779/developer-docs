@@ -36,6 +36,8 @@ import {
   createAccountCallDataSingleTransactionParam,
   createAccountCallDataBatchTransactionsParam,
   createAccountCallDataBatchTransactionsReturn,
+  isModuleEnabledParams,
+  isModuleEnabledReturn,
 } from "../../../src/data/accountParamAndReturnData";
 import { userOperationParamV07, userOperationReceiptResultType } from "/src/data/userOperation";
 import {
@@ -867,6 +869,20 @@ userOperation.signature = formatedSig;
 
 #### Source code
 [formatEip712SignaturesToUseroperationSignature](https://github.com/candidelabs/abstractionkit/blob/98853f30861382a534abf667ced83d47b6c9da0b/src/account/Safe/SafeAccount.ts#L436)
+
+
+### isModuleEnabled
+
+Checks if a specified module is enabled for a given Safe account. This function returns a boolean indicating the module's status.
+
+<Tabs>
+<TabItem value="Param type" label="Param Types">
+  <DataTable items={isModuleEnabledParams} />
+</TabItem>
+<TabItem value="Return type" label="Return Types">
+    <DataTable items={isModuleEnabledReturn} />
+</TabItem>
+</Tabs>
 
 ## Audits 
 - [Audits by Ackee](https://github.com/safe-global/safe-modules/blob/main/modules/4337/docs/v0.3.0/audit.md)

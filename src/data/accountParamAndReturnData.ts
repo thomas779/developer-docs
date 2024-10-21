@@ -442,24 +442,34 @@ export const getUserOperationEip712HashReturnV3 = [
 
 export const metaTransactionType = [
   {
-    key: "to",
-    type: "string",
-    description: "To address",
-  },
-  {
-    key: "value",
-    type: "BigNumberish",
-    description: "value transfered if making a transfer",
-  },
-  {
-    key: "data",
-    type: "BytesLike",
-    description: "callData",
-  },
-  {
-    key: "operation",
-    type: "Operation: enum",
-    description: "Default to 0 for a Call. 1 for a Delegate Call. Optional",
+    key: "MetaTransaction",
+    type: [
+      {
+        key: "to",
+        type: "string",
+        description:
+          "To address, or the the target contract address for the transaction",
+      },
+      {
+        key: "value",
+        type: "BigNumberish",
+        description:
+          "Value transfered if making a native token transfer. (usually 0n for contract interaction with non-native tokens like erc-20 tokens)",
+      },
+      {
+        key: "data",
+        type: "BytesLike",
+        description: "The call data for the transaction",
+      },
+      {
+        key: "operation",
+        type: "Operation: enum",
+        description:
+          "Default to 0 for a Call. 1 for a Delegate Call. (Optional)",
+      },
+    ],
+    description:
+      "MetaTransaction is the type of transaction to construct a Safe operation.",
   },
 ];
 
@@ -734,39 +744,39 @@ export const createUserOperationV7Overrides =
     }
   );
 
-  export const signUserOperationParamV06 = [
-    {
-      key: "userOperation",
-      type: "UserOperationV6",
-      description: "userOperation to sign",
-    },
-    {
-      key: "privateKeys",
-      type: "string[]",
-      description: "private keys of owners/signers",
-    },
-    {
-      key: "chainId",
-      type: "bigint",
-      description: "target chain id",
-    },
-    {
-      key: "overrides?",
-      type: [
-        {
-          key: "validAfter?",
-          type: "bigint",
-          description: "Timestamp the signature will be valid after",
-        },
-        {
-          key: "validUntil?",
-          type: "bigint",
-          description: "Timestamp the signature will be valid until",
-        },
-      ],
-      description: "overrides for the default values",
-    },
-  ];  
+export const signUserOperationParamV06 = [
+  {
+    key: "userOperation",
+    type: "UserOperationV6",
+    description: "userOperation to sign",
+  },
+  {
+    key: "privateKeys",
+    type: "string[]",
+    description: "private keys of owners/signers",
+  },
+  {
+    key: "chainId",
+    type: "bigint",
+    description: "target chain id",
+  },
+  {
+    key: "overrides?",
+    type: [
+      {
+        key: "validAfter?",
+        type: "bigint",
+        description: "Timestamp the signature will be valid after",
+      },
+      {
+        key: "validUntil?",
+        type: "bigint",
+        description: "Timestamp the signature will be valid until",
+      },
+    ],
+    description: "overrides for the default values",
+  },
+];
 
 export const signUserOperationParamV07 = [
   {
@@ -995,5 +1005,26 @@ export const formatEip712SignaturesToUseroperationSignatureReturn = [
     key: "signature",
     type: "string",
     description: "The EIP-712 Signature",
+  },
+];
+
+export const isModuleEnabledParams = [
+  {
+    key: "nodeRpcUrl",
+    type: "string",
+    description: "The JSON-RPC API url for the target chain.",
+  },
+  {
+    key: "moduleAddress",
+    type: "string",
+    description: "The module address to check if enabled.",
+  },
+];
+
+export const isModuleEnabledReturn = [
+  {
+    key: "isEnabled",
+    type: "boolean",
+    description: "Indicates whether the specified module is enabled.",
   },
 ];
