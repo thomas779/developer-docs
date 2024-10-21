@@ -133,12 +133,17 @@ const config = {
           {
             to: 'https://dashboard.candide.dev',
             position: 'right',
-            label: 'Dashboard',
+            label: 'Dashboard↗',
+          },
+          {
+            to: 'https://candide.dev/blog',
+            position: 'right',
+            label: 'Blog↗',
           },
           {
             to: '/blog',
             position: 'right',
-            label: 'Blog',
+            label: 'Releases',
           },
           {
             href: 'https://github.com/candidelabs/',
