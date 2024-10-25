@@ -40,6 +40,12 @@ import {
   createAccountCallDataBatchTransactionsReturn,
   isModuleEnabledParams,
   isModuleEnabledReturn,
+  createSwapOwnerMetaTransactionsParams,
+  createSwapOwnerMetaTransactionsReturn,
+  createRemoveOwnerMetaTransactionParams,
+  createRemoveOwnerMetaTransactionReturn,
+  createAddOwnerWithThresholdMetaTransactionParams,
+  createAddOwnerWithThresholdMetaTransactionReturn,
 } from "../../../src/data/accountParamAndReturnData";
 import { userOperationReturnParamsV06, userOperationReceiptResultType } from "/src/data/userOperation";
 import {
@@ -907,6 +913,45 @@ Checks if a specified module is enabled for a given Safe account. This function 
 </TabItem>
 <TabItem value="Return type" label="Return Types">
     <DataTable items={isModuleEnabledReturn} />
+</TabItem>
+</Tabs>
+
+### createAddOwnerWithThresholdMetaTransaction
+
+Creates a meta-transaction to add a new owner to the Safe account with a specified threshold. This function returns an object containing the meta-transaction details, including the target address, encoded data, and transaction value.
+
+<Tabs>
+<TabItem value="Param type" label="Param Types">
+  <DataTable items={createAddOwnerWithThresholdMetaTransactionParams} />
+</TabItem>
+<TabItem value="Return type" label="Return Types">
+  <DataTable items={createAddOwnerWithThresholdMetaTransactionReturn} />
+</TabItem>
+</Tabs>
+
+### createSwapOwnerMetaTransactions
+
+Creates a meta-transaction to swap an owner in the Safe account. If a new owner verifier is not already deployed, it will deploy one and fetch the previous owner automatically. This function returns a promise that resolves to a list of meta-transactions containing the necessary details for the swap and deployment.
+
+<Tabs>
+<TabItem value="Param type" label="Param Types">
+  <DataTable items={createSwapOwnerMetaTransactionsParams} />
+</TabItem>
+<TabItem value="Return type" label="Return Types">
+  <DataTable items={createSwapOwnerMetaTransactionsReturn} />
+</TabItem>
+</Tabs>
+
+### createRemoveOwnerMetaTransaction
+
+Creates a meta-transaction to remove an owner from the Safe account, fetching the previous owner if not provided. This function returns a promise that resolves to a meta-transaction object containing the necessary details for the removal.
+
+<Tabs>
+<TabItem value="Param type" label="Param Types">
+  <DataTable items={createRemoveOwnerMetaTransactionParams} />
+</TabItem>
+<TabItem value="Return type" label="Return Types">
+  <DataTable items={createRemoveOwnerMetaTransactionReturn} />
 </TabItem>
 </Tabs>
 

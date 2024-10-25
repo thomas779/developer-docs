@@ -1028,3 +1028,201 @@ export const isModuleEnabledReturn = [
     description: "Indicates whether the specified module is enabled.",
   },
 ];
+
+export const createSwapOwnerMetaTransactionsParams = [
+  {
+    key: "nodeRpcUrl",
+    type: "string",
+    description:
+      "The JSON-RPC API URL for the target chain to fetch the previous owner.",
+  },
+  {
+    key: "newOwner",
+    type: "Signer",
+    description: "The public address of the new owner to be added.",
+  },
+  {
+    key: "oldOwner",
+    type: "Signer",
+    description: "The public address of the owner to be replaced.",
+  },
+  {
+    key: "overrides",
+    description: "Overrides for the default values used in the transaction.",
+    type: [
+      {
+        key: "prevOwner",
+        type: "string",
+        description:
+          "If set, it will be used as the previous owner instead of fetching it.",
+      },
+      {
+        key: "eip7212WebAuthnPrecompileVerifier",
+        type: "string",
+        description: "Address for the EIP-7212 WebAuthn precompile verifier.",
+      },
+      {
+        key: "eip7212WebAuthnContractVerifier",
+        type: "string",
+        description: "Address for the EIP-7212 WebAuthn contract verifier.",
+      },
+      {
+        key: "webAuthnSignerFactory",
+        type: "string",
+        description: "Address for the WebAuthn signer factory.",
+      },
+      {
+        key: "webAuthnSignerSingleton",
+        type: "string",
+        description: "Address for the WebAuthn signer singleton.",
+      },
+    ],
+  },
+];
+
+export const createSwapOwnerMetaTransactionsReturn = [
+  {
+    key: "MetaTransaction[]",
+    type: [
+      {
+        key: "to",
+        type: "string",
+        description:
+          "The target address for each meta-transaction (Safe account address).",
+      },
+      {
+        key: "data",
+        type: "string",
+        description:
+          "The encoded function call data for the swap owner transaction.",
+      },
+      {
+        key: "value",
+        type: "bigint",
+        description:
+          "The value to be sent with the meta-transaction, set to zero for these functions.",
+      },
+    ],
+    description:
+      "A promise that resolves to a list of meta-transactions for swapping the specified owner and deploying the verifier if necessary.",
+  },
+];
+
+export const createRemoveOwnerMetaTransactionParams = [
+  {
+    key: "nodeRpcUrl",
+    type: "string",
+    description:
+      "The JSON-RPC API URL for the target chain to fetch the previous owner.",
+  },
+  {
+    key: "ownerToDelete",
+    type: "Signer",
+    description: "The public address of the owner to be deleted.",
+  },
+  {
+    key: "threshold",
+    type: "number",
+    description:
+      "The new threshold value for owner confirmations after removal.",
+  },
+  {
+    key: "overrides",
+    description: "Overrides for the default values used in the transaction.",
+    type: [
+      {
+        key: "prevOwner",
+        type: "string",
+        description:
+          "If set, it will be used as the previous owner instead of fetching it.",
+      },
+      {
+        key: "eip7212WebAuthnPrecompileVerifier",
+        type: "string",
+        description: "Address for the EIP-7212 WebAuthn precompile verifier.",
+      },
+      {
+        key: "eip7212WebAuthnContractVerifier",
+        type: "string",
+        description: "Address for the EIP-7212 WebAuthn contract verifier.",
+      },
+      {
+        key: "webAuthnSignerFactory",
+        type: "string",
+        description: "Address for the WebAuthn signer factory.",
+      },
+      {
+        key: "webAuthnSignerSingleton",
+        type: "string",
+        description: "Address for the WebAuthn signer singleton.",
+      },
+    ],
+  },
+];
+
+export const createRemoveOwnerMetaTransactionReturn = [
+  {
+    key: "MetaTransaction",
+    type: [
+      {
+        key: "to",
+        type: "string",
+        description:
+          "The target address for the meta-transaction (Safe account address).",
+      },
+      {
+        key: "data",
+        type: "string",
+        description: "The encoded function call data for removing the owner.",
+      },
+      {
+        key: "value",
+        type: "bigint",
+        description:
+          "The value to be sent with the meta-transaction, set to zero for this function.",
+      },
+    ],
+    description:
+      "A promise that resolves to the meta-transaction object for removing the specified owner.",
+  },
+];
+
+export const createAddOwnerWithThresholdMetaTransactionParams = [
+  {
+    key: "newOwner",
+    type: "string",
+    description: "The public address of the new owner to be added.",
+  },
+  {
+    key: "threshold",
+    type: "number",
+    description: "The new threshold value for owner confirmations.",
+  },
+];
+
+export const createAddOwnerWithThresholdMetaTransactionReturn = [
+  {
+    key: "MetaTransaction",
+    type: [
+      {
+        key: "to",
+        type: "string",
+        description:
+          "The target address for the meta-transaction (Safe account address).",
+      },
+      {
+        key: "data",
+        type: "string",
+        description: "The encoded function call data for adding an owner.",
+      },
+      {
+        key: "value",
+        type: "bigint",
+        description:
+          "The value to be sent with the meta-transaction, set to zero for this function.",
+      },
+    ],
+    description:
+      "The meta-transaction object for adding a new owner with the specified threshold.",
+  },
+];
