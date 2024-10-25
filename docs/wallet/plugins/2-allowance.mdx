@@ -1,7 +1,8 @@
 ---
 title: Allowance
-description: Hello World
+description: Implement recurring transactions, scheduled orders, and subscription management using the Safe Allowance Module
 keywords: [allowance, safe, reccuring, reccuring-transfers, subscriptions]
+image: /img/posters/abstractionkit-meta.png
 ---
 
 import Tabs from "@theme/Tabs";
@@ -84,7 +85,7 @@ import { AllowanceModule } from "abstractionkit";
 
 AbstractionKit provides two types of methods for the Allowance Module
 1. The recommended methods that offer simplified interfaces. These are under [Methods](/wallet/plugins/allowance/#methods).
-2. Those prefixed with `createBase`, which match the exact contract method names and paramaters. These are under [Advanced Methods](wallet/plugins/allowance/#advanced-methods).
+2. Those prefixed with `createBase`, which match the exact contract method names and paramaters. These are under [Advanced Methods](/wallet/plugins/allowance/#advanced-methods).
 
 While `createBase` methods allow direct interaction with the contract, they can be confusing for developers due to the multiple options and paramaters involved. The recommended methods improves usability by providing clearer and more intuitive method names and input parameters.
 
@@ -116,7 +117,7 @@ const addDelegateMetaTransaction =
 
 ### 4. Set Allowance
 
-In the example below, we show how to set a reccuring allowance through [createRecurringAllowanceMetaTransaction](wallet/plugins/allowance/#createrecurringallowancemetatransaction). You can also use one time allowences via [createOneTimeAllowanceMetaTransaction](wallet/plugins/allowance/#createonetimeallowancemetatransaction)  
+In the example below, we show how to set a reccuring allowance through [createRecurringAllowanceMetaTransaction](/wallet/plugins/allowance/#createrecurringallowancemetatransaction). You can also use one time allowences via [createOneTimeAllowanceMetaTransaction](/wallet/plugins/allowance/#createonetimeallowancemetatransaction)  
 
 ```ts
 const setAllowanceMetaTransaction = 
@@ -131,7 +132,7 @@ const setAllowanceMetaTransaction =
 
 ### 5. Create UserOperation 
 
-We batch all three MetaTransactions into a single UserOperation with [createUserOperation](wallet/abstractionkit/safe-account-v3/#createuseroperation). From there, you can continue the normal flow of signing and submiting the UserOperation onchain.
+We batch all three MetaTransactions into a single UserOperation with [createUserOperation](/wallet/abstractionkit/safe-account-v3/#createuseroperation). From there, you can continue the normal flow of signing and submiting the UserOperation onchain.
 
 ```ts
 const userOperation =
