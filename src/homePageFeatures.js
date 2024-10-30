@@ -9,7 +9,7 @@ export default [
         },
         {
           title: 'Plugins',
-          description: "Safe modules for wallet providers to offer features to their end-users like Passkeys, account recovery and recurring transfers",
+          description: "Safe modules including Passkeys, Account Recovery and Allowances",
           to: './wallet/plugins/passkeys/',
         },
       ],
