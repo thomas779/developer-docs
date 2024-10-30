@@ -185,20 +185,20 @@ If the paymaster rejects the UserOperation, it returns a standard JSON-RPC error
   "method": "pm_sponsorUserOperation",
     "params": [
     {
-      sender: "0x2c298CcaFF..c236fCC66dB2"
-      nonce: "0x17",
-      initCode: "0x",
-      callData: "0xf3....0000",
-      callGasLimit: "0x12a87",
-      verificationGasLimit: "0x1a332",
-      preVerificationGas: "0xe95c",
-      maxFeePerGas: "0x5f4ecdc0",
-      maxPriorityFeePerGas: "0x59682f00",
-      paymasterAndData: "0x",
-      signature: "0x",
+      "sender": "0x2c298CcaFF..c236fCC66dB2",
+      "nonce": "0x17",
+      "initCode": "0x",
+      "callData": "0xf3....0000",
+      "callGasLimit": "0x12a87",
+      "verificationGasLimit": "0x1a332",
+      "preVerificationGas": "0xe95c",
+      "maxFeePerGas": "0x5f4ecdc0",
+      "maxPriorityFeePerGas": "0x59682f00",
+      "paymasterAndData": "0x",
+      "signature": "0x",
     },
     "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
-    { sponsorshipPolicyId : "1234" } // Optional if using a private gas policy
+    { "sponsorshipPolicyId" : "1234" } // sponsorshipPolicyId key value field is optional if using a private gas policy. 
   ]
 }
 ```
@@ -562,24 +562,24 @@ If the paymaster rejects the UserOperation, it returns a standard JSON-RPC error
   "method": "pm_sponsorUserOperation",
     "params": [
     {
-      sender: "0x2c298CcaFF..c236fCC66dB2"
-      nonce: "0x17",
-      factory: "0x..",
-      factoryData: "0xf3....0000",
-      callData: "0xf3....0000",
-      callGasLimit: "0x12a87",
-      verificationGasLimit: "0x1a332",
-      preVerificationGas: "0xe95c",
-      maxFeePerGas: "0x5f4ecdc0",
-      maxPriorityFeePerGas: "0x59682f00",
-      paymaster: "0x.."
-      paymasterVerificationGasLimit: "0x..",
-      paymasterPostOpGasLimit: "0x..",
-      paymasterAndData: "0x",
-      signature: "0x",
+      "sender": "0x2c298CcaFF..c236fCC66dB2",
+      "nonce": "0x17",
+      "factory": "0x..",
+      "factoryData": "0xf3....0000",
+      "callData": "0xf3....0000",
+      "callGasLimit": "0x12a87",
+      "verificationGasLimit": "0x1a332",
+      "preVerificationGas": "0xe95c",
+      "maxFeePerGas": "0x5f4ecdc0",
+      "maxPriorityFeePerGas": "0x59682f00",
+      "paymaster": "0x..",
+      "paymasterVerificationGasLimit": "0x..",
+      "paymasterPostOpGasLimit": "0x..",
+      "paymasterAndData": "0x",
+      "signature": "0x",
     },
     "0x0000000071727De22E5E9d8BAf0edAc6f37da032",
-    { sponsorshipPolicyId : "1234" } // Optional if using a private gas policy
+    { "sponsorshipPolicyId" : "1234" } // sponsorshipPolicyId key value field is optional if using a private gas policy.
   ]
 }
 ```

@@ -1,6 +1,6 @@
 export default [
     {
-      title: 'AbstractionKit SDK',
+      title: 'AbstractionKit',
       rows: [
         {
           title: 'Guides',
@@ -8,17 +8,10 @@ export default [
           to: './wallet/atelier-intro'
         },
         {
-          title: 'Account Recovery',
-          description: "A Safe Module to easily allow designated guardians to assist in the recovery process, without compromising on self-custody or security.",
-          to: './wallet/plugins/recovery-with-guardians/',
+          title: 'Plugins',
+          description: "Safe modules for wallet providers to offer features to their end-users like Passkeys, account recovery and recurring transfers",
+          to: './wallet/plugins/passkeys/',
         },
-        {
-          title: 'Passkeys',
-          description: "A Safe module allowing wallet developers to offer Safe Smart Accounts secured using Passkeys",
-          to: './wallet/abstractionkit/introduction',
-        },
-
-
       ],
     },
     {

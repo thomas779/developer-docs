@@ -74,8 +74,8 @@ const config = {
         routeBasePath: 'blog',
         showReadingTime: true,
         postsPerPage: 3,
-        blogTitle: 'Engineering Blog',
-        blogDescription: 'Candide Engineering Blog',
+        blogTitle: 'Releases',
+        blogDescription: 'Candide Releases',
         /**
          * Path to data on filesystem relative to site dir.
          */
@@ -96,7 +96,7 @@ const config = {
       announcementBar: {
         id: 'abstractionkit_v0.2',
         content:
-          'AbstractionKit V0.2 release with Passkeys, Account Recovery, New EntryPoint and more  <button><a target="_blank" rel="noopener noreferrer" href="https://www.candide.dev/blog/introducing-abstractionkit-v0-2-0">Read Announcement</a></button>',
+          'Create Recurring Transfers, offer DCA and Subscriptions with the new Safe Allowance Module  <button><a target="_blank" rel="noopener noreferrer" href="/blog/safe-allowance">Read The Release</a></button>',
         backgroundColor: '#f0f6ff',
         textColor: '#000000',
         isCloseable: true, 
@@ -114,7 +114,7 @@ const config = {
       },
       ],
       navbar: {
-        title: 'Atelier',
+        title: 'Candide Atelier',
         logo: {
           alt: 'Candide logo',
           src: 'img/logo-dark.png',
