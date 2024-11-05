@@ -7,7 +7,7 @@ import {
 
 export const signerType = [
   {
-    key: "Signer[]",
+    key: "Signer",
     type: "ECDSAPublicAddress | WebauthnPublicKey",
     description:
       "Signer type which can be either an ECDSA public address or a Webauthn public key",
@@ -107,7 +107,7 @@ export const initCodeOverrides = [
 
 export const createInitCodeParamV2 = [
   {
-    key: "owners",
+    key: "owners[]",
     type: signerType,
     description:
       "Pass the owner(s) address(es) of the account. It can be a single owner account, a multi-sig, or a WebAuthn",
@@ -130,7 +130,7 @@ export const createInitCodeReturnV2 = [
 
 export const createAccountAddressAndInitCodeParamV2 = [
   {
-    key: "owners",
+    key: "owners[]",
     type: signerType,
     description:
       "Pass the owner(s) address(es) of the account. It can be a single owner account, a multi-sig, or a WebAuthn",
@@ -157,7 +157,7 @@ export const createAccountAddressAndInitCodeReturnV2 = [
 
 export const createFactoryAddressAndDataParamV3 = [
   {
-    key: "owners",
+    key: "owners[]",
     type: signerType,
     description:
       "Pass the owner(s) address(es) of the account. It can be a single owner account, a multi-sig, or a WebAuthn",
@@ -184,7 +184,7 @@ export const createFactoryAddressAndDataReturnV3 = [
 
 export const createInitializerCallDataParamV2 = [
   {
-    key: "owners",
+    key: "owners[]",
     type: signerType,
     description:
       "Pass the owner(s) address(es) of the account. It can be a single owner account, a multi-sig, or a WebAuthn",
@@ -285,7 +285,7 @@ export const smartAccountParameters = [
 
 export const createAccountAddressParam = [
   {
-    key: "owners",
+    key: "owners[]",
     type: signerType,
     description:
       "Pass the owner(s) address(es) of the account. It can be a single owner account, a multi-sig, or a WebAuthn",
@@ -316,7 +316,7 @@ export const createNewAccountReturn = [
 
 export const initializeNewAccountParam = [
   {
-    key: "owners",
+    key: "owners[]",
     type: signerType,
     description:
       "Pass the owner(s) address(es) of the account. It can be a single owner account, a multi-sig, or a WebAuthn",
@@ -580,7 +580,7 @@ export const createCallDataReturn = [
 
 export const signerSignaturePair = [
   {
-    key: "Signer[]",
+    key: "Signer",
     type: "ECDSAPublicAddress | WebauthnPublicKey",
     description:
       "Signer type which can be either an ECDSA public address or a Webauthn public key",
@@ -680,7 +680,7 @@ export const createBaseUserOperationOverrides = [
     description: "Pass state overrides",
   },
   {
-    key: "dummySignatures",
+    key: "dummySignatures[]",
     type: signerTypePairType,
     description: "Provide dummy signatures for the operation",
   },
@@ -892,7 +892,7 @@ export const estimateUserOperationGasParamV6 = [
         description: "Timestamp the signature will be valid after",
       },
       {
-        key: "dummySignatures?",
+        key: "dummySignatures[]?",
         type: signerTypePairType,
         description: "Provide dummy signatures for the operation",
       },
@@ -1128,7 +1128,7 @@ export const createRemoveOwnerMetaTransactionParams = [
   },
   {
     key: "overrides",
-    description: "Overrides for the default values used in the transaction.",
+    description: "Optional Overrides for the default values used in the transaction.",
     type: [
       {
         key: "prevOwner",
@@ -1187,22 +1187,55 @@ export const createRemoveOwnerMetaTransactionReturn = [
   },
 ];
 
-export const createAddOwnerWithThresholdMetaTransactionParams = [
+export const createAddOwnerWithThresholdMetaTransactionsParams = [
   {
     key: "newOwner",
-    type: "string",
-    description: "The public address of the new owner to be added.",
+    type: signerType,
+    description:
+      "The public address of the new owner to be added",
   },
   {
     key: "threshold",
     type: "number",
     description: "The new threshold value for owner confirmations.",
   },
+  {
+    key: "overrides",
+    description: "Optional Overrides for the default values used in the transaction.",
+    type: [
+      {
+        key: "nodeRpcUrl",
+        type: "string?",
+        description:
+          "The JSON-RPC API url for the target chain, to check if the new webauthn owner is deployed or not",
+      },
+      {
+        key: "eip7212WebAuthnPrecompileVerifier",
+        type: "string?",
+        description: "Address for the EIP-7212 WebAuthn precompile verifier.",
+      },
+      {
+        key: "eip7212WebAuthnContractVerifier",
+        type: "string?",
+        description: "Address for the EIP-7212 WebAuthn contract verifier.",
+      },
+      {
+        key: "webAuthnSignerFactory",
+        type: "string?",
+        description: "Address for the WebAuthn signer factory.",
+      },
+      {
+        key: "webAuthnSignerSingleton",
+        type: "string?",
+        description: "Address for the WebAuthn signer singleton.",
+      },
+    ],
+  },
 ];
 
-export const createAddOwnerWithThresholdMetaTransactionReturn = [
+export const createAddOwnerWithThresholdMetaTransactionsReturn = [
   {
-    key: "MetaTransaction",
+    key: "Promise<MetaTransaction[]>",
     type: [
       {
         key: "to",

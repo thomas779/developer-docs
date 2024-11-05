@@ -44,8 +44,8 @@ import {
   createSwapOwnerMetaTransactionsReturn,
   createRemoveOwnerMetaTransactionParams,
   createRemoveOwnerMetaTransactionReturn,
-  createAddOwnerWithThresholdMetaTransactionParams,
-  createAddOwnerWithThresholdMetaTransactionReturn,
+  createAddOwnerWithThresholdMetaTransactionsParams,
+  createAddOwnerWithThresholdMetaTransactionsReturn,
 } from "../../../src/data/accountParamAndReturnData";
 import { userOperationReturnParamsV06, userOperationReceiptResultType } from "/src/data/userOperation";
 import {
@@ -916,16 +916,16 @@ Checks if a specified module is enabled for a given Safe account. This function 
 </TabItem>
 </Tabs>
 
-### createAddOwnerWithThresholdMetaTransaction
+### createAddOwnerWithThresholdMetaTransactions
 
 Creates a meta-transaction to add a new owner to the Safe account with a specified threshold. This function returns an object containing the meta-transaction details, including the target address, encoded data, and transaction value.
 
 <Tabs>
 <TabItem value="Param type" label="Param Types">
-  <DataTable items={createAddOwnerWithThresholdMetaTransactionParams} />
+  <DataTable items={createAddOwnerWithThresholdMetaTransactionsParams} />
 </TabItem>
 <TabItem value="Return type" label="Return Types">
-  <DataTable items={createAddOwnerWithThresholdMetaTransactionReturn} />
+  <DataTable items={createAddOwnerWithThresholdMetaTransactionsReturn} />
 </TabItem>
 </Tabs>
 
