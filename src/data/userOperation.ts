@@ -62,7 +62,6 @@ export const userOperationReturnParamsV06 = [
   },
 ];
 
-
 export const userOperationParamV07 = [
   {
     key: "sender",
@@ -294,3 +293,43 @@ export const stateOverrideSetType = [
   },
 ];
 
+export const GasOptionType = [
+  {
+    key: "Slow",
+    type: "1",
+    description: "Default Slow Gas",
+  },
+  {
+    key: "Medium",
+    type: "1.2",
+    description: "Medium Gas with a 20% increase",
+  },
+  {
+    key: "Fast",
+    type: "1.5",
+    description: "Medium Gas with a 50% increase",
+  },
+];
+
+export const PolygonChainType = [
+  {
+    key: "Mainnet",
+    type: "v2",
+    description: "Polygon PoS Mainnet",
+  },
+  {
+    key: "ZkMainnet",
+    type: "zkevm",
+    description: "Polygon zkEVM Mainnet",
+  },
+  {
+    key: "Amoy",
+    type: "amoy",
+    description: "Polygon Amoy PoS Testnet",
+  },
+  {
+    key: "Cardona",
+    type: "cardona",
+    description: "Polygon Cardona zkEVM Testnet",
+  },
+];

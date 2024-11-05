@@ -3,6 +3,8 @@ import {
   userOperationReturnParamsV06,
   userOperationParamV07,
   stateOverrideSetType,
+  GasOptionType,
+  PolygonChainType,
 } from "./userOperation";
 
 export const signerType = [
@@ -719,6 +721,16 @@ export const createBaseUserOperationOverrides = [
     type: "string",
     description: "Specify the multisend contract address",
   },
+  {
+    key: "gasLevel",
+    type: GasOptionType,
+    description: "Multiplier to determine the gas price for the user operation",
+  },
+  {
+    key: "polygonGasStation",
+    type: PolygonChainType,
+    description: "To specify the polygon network",
+  },
 ];
 
 export const createUserOperationV6Overrides =
@@ -1128,7 +1140,8 @@ export const createRemoveOwnerMetaTransactionParams = [
   },
   {
     key: "overrides",
-    description: "Optional Overrides for the default values used in the transaction.",
+    description:
+      "Optional Overrides for the default values used in the transaction.",
     type: [
       {
         key: "prevOwner",
@@ -1191,8 +1204,7 @@ export const createAddOwnerWithThresholdMetaTransactionsParams = [
   {
     key: "newOwner",
     type: signerType,
-    description:
-      "The public address of the new owner to be added",
+    description: "The public address of the new owner to be added",
   },
   {
     key: "threshold",
@@ -1201,7 +1213,8 @@ export const createAddOwnerWithThresholdMetaTransactionsParams = [
   },
   {
     key: "overrides",
-    description: "Optional Overrides for the default values used in the transaction.",
+    description:
+      "Optional Overrides for the default values used in the transaction.",
     type: [
       {
         key: "nodeRpcUrl",

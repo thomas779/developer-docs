@@ -8,7 +8,7 @@ keywords: [EVM, polygon, gas-estimates, account-abstraction]
 
 Smart Wallet developers face challenges with varying EVM gas estimates. AbstractionKit provides flexibility through overrides. 
 
-Using the [createUserOperation](/wallet/abstractionkit/safe-account/#createuseroperation) function, developers can pass their own values for `maxPriorityFeePerGas` and `maxFeePerGas`, ensuring reliable transaction processing.
+Using the [createUserOperation](/wallet/abstractionkit/safe-account-v3/#createuseroperation) function, developers can pass their own values for `maxPriorityFeePerGas` and `maxFeePerGas`.
 
 ```ts title="Gas Overrides example"
 const userOperation = await smartAccount.createUserOperation(
@@ -17,13 +17,32 @@ const userOperation = await smartAccount.createUserOperation(
     bundlerUrl,
     // highlight-start
     {
-        maxPriorityFeePerGas: 56139916666n, // fetched from Polygon Gas Station
-        maxFeePerGas: 134386409498n, // fetched from Polygon Gas Station
+        maxPriorityFeePerGas: 56139916666n,
+        maxFeePerGas: 134386409498n, 
     }
     // highlight-end
 )
 ```
 
-
 ### Polygon
-Dealing with Polygon's occasional gas fee spikes poses challenges. We recommend using [Polygon's Gas Station API](https://docs.polygon.technology/tools/gas/polygon-gas-station/#mainnet) for reliable real-time gas prices. Opt for the 'Fast' fee prediction and add a multiplier during congestion to optimize transaction costs
+Dealing with Polygon's occasional gas fee spikes poses challenges. AbstractionKit provides out of the box support for [Polygon's Gas Station API](https://docs.polygon.technology/tools/gas/polygon-gas-station/#mainnet) for reliable real-time gas prices. Opt for the 'Fast' fee prediction to add a multiplier during congestion to optimize transaction costs
+
+Using the [createUserOperation](/wallet/abstractionkit/safe-account-v3/#createuseroperation) function, developers can pass select the polygon network and the gas multiplier.
+
+```ts title="Gas Overrides example"
+// highlight-start
+import { PolygonChain, GasOption } from "abstractionkit";
+// highlight-end
+
+const userOperation = await smartAccount.createUserOperation(
+    [transaction],
+    jsonRpcNodeProvider,
+    bundlerUrl,
+    // highlight-start
+    {
+        gasLevel: GasOption.Fast, // Slow, Medium, Fast
+        polygonGasStation: PolygonChain.Mainnet, // fetched from Polygon Gas Station
+    }
+    // highlight-end
+)
+```
