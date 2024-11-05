@@ -71,12 +71,14 @@ export const candidePaymasterContext = [
   {
     key: "token",
     type: "string?",
-    description: "ERC20 token address, if paying gas in erc-20 tokens (optional)",
+    description:
+      "ERC20 token address, if paying gas in erc-20 tokens (optional)",
   },
   {
     key: "sponsorshipPolicyId",
     type: "string?",
-    description: "Sponsorship Policy ID if using a private gas policy (optional)",
+    description:
+      "Sponsorship Policy ID if using a private gas policy (optional)",
   },
 ];
 
@@ -572,6 +574,10 @@ export const erc20TokenType = [
     type: "number",
     description: "The number of decimal places for the token.",
   },
+];
+
+export const erc20TokenWithExchangeRate = [
+  ...erc20TokenType,
   {
     key: "exchangeRate",
     type: "bigint",
@@ -707,5 +713,73 @@ export const getSupportedEntrypointsReturn = [
     key: "entrypoint addresses",
     type: "Promise<string[]>",
     description: "A promise of a list of entrypoints addresses",
+  },
+];
+
+export const fetchTokenPaymasterExchangeRateParams = [
+  {
+    key: "erc20TokenAddress",
+    type: "string",
+    description: "ERC-20 Token Address",
+  },
+  {
+    key: "entrypoint",
+    type: "string?",
+    description:
+      "EntryPoint Address that the paymaster is supporting. Defaults to ENTRYPOINT_V7",
+  },
+];
+
+export const fetchTokenPaymasterExchangeRateReturn = [
+  {
+    key: "exchangeRate",
+    type: "bigInt",
+    description: "Returns the exchange rate to the native token",
+  },
+];
+
+export const fetchSupportedERC20TokensAndPaymasterMetadataParam = [
+  {
+    key: "entrypoint",
+    type: "string?",
+    description:
+      "EntryPoint Address. Defaults to V0.7",
+  },
+];
+
+export const fetchSupportedERC20TokensAndPaymasterMetadataReturn = [
+  {
+    key: "SupportedERC20TokensAndMetadataWithExchangeRate",
+    type: "Promise<SupportedERC20TokensAndMetadataV7WithExchangeRate | SupportedERC20TokensAndMetadataV6WithExchangeRate>",
+    description:
+      "A promise with the list of supported erc20 tokens and their exchange rate",
+  },
+];
+
+export const SupportedERC20TokensAndMetadataV7WithExchangeRateType = [
+  {
+    key: "paymasterMetadata",
+    type: paymasterMetadataV7Type,
+    description: "The Paymaster metadata",
+  },
+
+  {
+    key: "tokens",
+    type: erc20TokenWithExchangeRate,
+    description: "Supported erc20 tokens with Exchange Rate",
+  },
+];
+
+export const SupportedERC20TokensAndMetadataV6WithExchangeRateType = [
+  {
+    key: "paymasterMetadata",
+    type: paymasterMetadataV6Type,
+    description: "The Paymaster metadata",
+  },
+
+  {
+    key: "tokens",
+    type: erc20TokenWithExchangeRate,
+    description: "Supported erc20 tokens with Exchange Rate",
   },
 ];
