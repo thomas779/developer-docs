@@ -93,14 +93,14 @@ const config = {
         respectPrefersColorScheme: false,
       },
       image: 'img/posters/atelier-meta.png',
-      announcementBar: {
-        id: 'abstractionkit_v0.2',
-        content:
-          'Create Recurring Transfers, offer DCA and Subscriptions with the new Safe Allowance Module  <button><a target="_blank" rel="noopener noreferrer" href="/blog/safe-allowance">Read The Release</a></button>',
-        backgroundColor: '#f0f6ff',
-        textColor: '#000000',
-        isCloseable: true, 
-      },
+      // announcementBar: {
+      //   id: 'abstractionkit_v0.2',
+      //   content:
+      //     'Create Recurring Transfers, offer DCA and Subscriptions with the new Safe Allowance Module  <button><a target="_blank" rel="noopener noreferrer" href="/blog/safe-allowance">Read The Release</a></button>',
+      //   backgroundColor: '#f0f6ff',
+      //   textColor: '#000000',
+      //   isCloseable: true, 
+      // },
       metadata: [{
         name:
           'twitter:card',
@@ -123,7 +123,12 @@ const config = {
           {
             to: '/wallet/atelier-intro',
             position: 'left',
-            label: 'Smart Wallets',
+            label: 'SDK',
+          },
+          {
+            to: '/wallet/bundler/rpc-endpoints',
+            position: 'left',
+            label: 'API',
           },
           {
             to: '/dapps/getting-started',
