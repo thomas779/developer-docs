@@ -24,7 +24,7 @@ export default [
         },
         {
           title: 'Bundler',
-          description: 'Connect to the lighting-fast Voltaire Bundler to send ERC-4337 AA UserOperation.',
+          description: 'Connect to the Unified Bundler Mempool to send ERC-4337 AA UserOperations',
           to: './wallet/bundler/rpc-methods',
         },
       ],

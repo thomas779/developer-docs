@@ -6,7 +6,7 @@ export function BundlerEndPointTable({ items }) {
     <Table
       items={items}
       leftHeading="Network"
-      rightHeading="RPC address"
+      rightHeading="RPC"
       centerHeading="Chain ID"
       renderLeftItem={(item) => (
         <div
