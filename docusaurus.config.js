@@ -130,11 +130,11 @@ const config = {
             position: 'left',
             label: 'API',
           },
-          {
-            to: '/dapps/getting-started',
-            position: 'left',
-            label: 'Dapps',
-          },
+          // {
+          //   to: '/dapps/getting-started',
+          //   position: 'left',
+          //   label: 'Dapps',
+          // },
           {
             to: 'https://dashboard.candide.dev',
             position: 'right',
