@@ -6,71 +6,37 @@ image: /img/posters/voltaire-meta.png
 authors: [sherif]
 ---
 
-import { BundlerEndPointTable } from "/src/components/CustomTable";
+import { BundlerEndPointTable, ChainListTable } from "/src/components/CustomTable";
 export const chainList = [
   {
     network: "Arbitrum One",
     logo: "/img/networks/42161.png",
     chainId: 42161,
     chainHandle: "arbitrum",
-    address: "Available on Dashboard",
-    type: "Bundler",
-  },
-  {
-    network: "Arbitrum Nova",
-    logo: "/img/networks/42170.png",
-    chainId: 42170,
-    chainHandle: "arbitrum",
-    address: "Available on Dashboard",
-    type: "Bundler",
-  },
-  {
-    network: "Avalanche C-Chain",
-    logo: "/img/networks/43114.png",
-    chainId: 43114,
-    chainHandle: "avalanche",
-    address: "Available on Dashboard",
-    type: "Bundler",
   },
   {
     network: "Base",
     logo: "/img/networks/8453.png",
     chainId: 8453,
     chainHandle: "base",
-    address: "Available on Dashboard",
-    type: "Bundler",
   },
   {
     network: "BnB Smart Chain",
     logo: "/img/networks/56.png",
     chainId: 56,
     chainHandle: "bnb",
-    address: "Available on Dashboard",
-    type: "Bundler",
   },
   {
     network: "Celo",
     logo: "/img/networks/5567.png",
     chainId: 42220,
     chainHandle: "celo",
-    address: "Available on Dashboard",
-    type: "Bundler",
   },
   {
     network: "Ethereum",
     logo: "/img/networks/1.png",
     chainId: 1,
     chainHandle: "ethereum",
-    address: "Available on Dashboard",
-    type: "Bundler",
-  },
-  {
-    network: "Fuse",
-    logo: "/img/networks/122.svg",
-    chainId: 122,
-    chainHandle: "fuse",
-    address: "Available on Dashboard",
-    type: "Bundler",
   },
   {
     network: "Gnosis",
@@ -128,79 +94,66 @@ export const testChainList = [
     logo: "/img/networks/42161.png",
     chainId: 421614,
     chainHandle: "arbitrum",
-    address: "https://arbitrum-sepolia.voltaire.candidewallet.com/rpc",
-    type: "Bundler",
   },
   {
     network: "Avalanche Fuji Testnet",
     logo: "/img/networks/43114.png",
     chainId: 43113,
     chainHandle: "fuji",
-    address: "https://fuji.voltaire.candidewallet.com/rpc",
-    type: "Bundler",
   },
   {
     network: "Base Sepolia",
     logo: "/img/networks/8453.png",
     chainId: 84532,
     chainHandle: "base-sepolia",
-    address: "https://base-sepolia.voltaire.candidewallet.com/rpc",
-    type: "Bundler",
   },
   {
     network: "Optimism Sepolia",
     logo: "/img/networks/10.png",
     chainId: 11155420,
     chainHandle: "optimism-sepolia",
-    address: "https://optimism-sepolia.voltaire.candidewallet.com/rpc",
-    type: "Bundler",
   },
   {
     network: "Polygon Amoy",
     logo: "/img/networks/137.png",
     chainId: 80002,
     chainHandle: "amoy",
-    address: "https://amoy.voltaire.candidewallet.com/rpc",
-    type: "Bundler",
   },
   {
     network: "Sepolia",
     logo: "/img/networks/1.png",
     chainId: 11155111,
     chainHandle: "sepolia",
-    address: "https://sepolia.voltaire.candidewallet.com/rpc",
-    type: "Bundler",
   },
   {
     network: "Celo Alfajores",
     logo: "/img/networks/5567.png",
     chainId: 44787,
     chainHandle: "celo-alfajores",
-    address: "Available upon request",
-    type: "Bundler",
   },
   {
     network: "BnB Smart Chain Tesnet",
     logo: "/img/networks/56.png",
     chainId: 97,
     chainHandle: "bnb",
-    address: "Available upon request",
-    type: "Bundler",
   },
 ];
 
+Candide's Bundler endpoint includes methods for ERC-4337. Learn more about the various [ERC-4337 Methods](./2-rpc-methods.mdx).
+
+## Supported Networks
+
 Public endpoints below are accessible with rate limiting, while production-grade endpoints are available through our [dashboard](https://dashboard.candide.dev).
 
+:::tip 
 If you require a specific network not listed below, send us a note and we will let you know if we can support it.
+:::
 
-## Testnet
+### Mainnet
+<ChainListTable items={chainList} />
 
-<BundlerEndPointTable items={testChainList} />
-
-
-## Mainnet
- 
-<BundlerEndPointTable items={chainList} />
+### Testnet
+<ChainListTable items={testChainList} />
 
 
 ## Unifed Mempool
@@ -217,7 +170,7 @@ To guide this evolution, the ERC-4337 Team introduced a framework, inspired by V
 - **Mechanism:** Each bundler creates bundles independently, reducing initial complexity.  
 - **Trade-off:** No shared mempool means no cross-communication between bundlers, not censorship proof, and not decentrlizated.
 
-*Protection:* Some protection against front-running can be achieved using Flashbot Protect on Ethereum Mainnet. 
+*Protection:* Some protection against front-running can be achieved using Flashbot Protect on Ethereum Mainnet.
 
 <details>
 <summary>The Bundler is compliant with the ERC-4337 Standard</summary>
