@@ -16,6 +16,7 @@ If you are coming from the [getting-started](../getting-started) guide, you only
 ### Prerequisites
 
 - Node and a package manager (yarn or npm)
+- Bundler API key from the [Candide Dashboard](https://dashboard.candide.dev) 
 - Some Sepolia ETH. Find Faucets [here](https://ethereum.org/en/developers/docs/networks/#sepolia)
 - If you need, fork the full example of this tutorial on [Github](https://github.com/candidelabs/abstractionkit/tree/main/examples/SafeAccountExamples/CreateAccountAndSendTransactionMultiSigners)
 
@@ -43,7 +44,7 @@ yarn add abstractionkit dotenv
 
 ```terminal title=".env"
 CHAIN_ID=11155111
-BUNDLER_URL=https://sepolia.voltaire.candidewallet.com/rpc
+BUNDLER_URL=https://api.candide.dev/bundler/version/network/YOUR_API_KEY
 JSON_RPC_NODE_PROVIDER=NODE_PROVIDER_URL
 
 //highlight-start

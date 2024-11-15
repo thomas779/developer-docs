@@ -10,10 +10,12 @@ Learn how to create a smart wallet and to send your first user operation
 
 Candide builds open-source software for ERC-4337 account abstraction standard. This guarantees smooth compatibility with any platform that follow the ERC-4337 protocol, fostering effortless integration, and providing the flexibility of independent hosting to avoid any vendor lock-in.
 ## Quickstart
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/t1ycwhN-Lvw?si=OMAiB7lK50XMkF68" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ### Prerequisites
 
 - Node and a package manager (yarn or npm)
+- Bundler API key from the [Candide Dashboard](https://dashboard.candide.dev) 
 - Some Sepolia ETH. Find Faucets [here](https://ethereum.org/en/developers/docs/networks/#sepolia)
 - If you need, fork the full example of this tutorial on [Github](https://github.com/candidelabs/abstractionkit/tree/main/examples/SafeAccountExamples/CreateAccountAndSendTransaction)
 
@@ -41,17 +43,13 @@ yarn add abstractionkit dotenv
 
 ```bash title=".env"
 CHAIN_ID=11155111
-BUNDLER_URL=https://sepolia.voltaire.candidewallet.com/rpc
+BUNDLER_URL=https://api.candide.dev/bundler/version/network/YOUR_API_KEY
 JSON_RPC_NODE_PROVIDER=NODE_PROVIDER_URL
 
 #account owner pub & private key
 PRIVATE_KEY=YOUR_PRIVATE_KEY
 PUBLIC_ADDRESS=YOUR_PUBLIC_KEY
 ```
-:::info
-We host free [Bundler endpoints](../../bundler/rpc-endpoints) on testnets. You do not need to create an account.
-:::
-
 
 4. Create a empty file and a function to run our script
 

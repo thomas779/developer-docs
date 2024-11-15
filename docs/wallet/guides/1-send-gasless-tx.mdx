@@ -22,6 +22,7 @@ If you need, you can fork and run this tutorial directly on [Github](https://git
 ### Prerequisites
 
 - Node and a package manager (yarn or npm)
+- Bundler API key from the [Candide Dashboard](https://dashboard.candide.dev) 
 - An API key from the [dashboard](https://dashboard.candide.dev)
 - A Gas Policy, private or public, created on the dashboard
 
@@ -48,7 +49,7 @@ yarn add abstractionkit dotenv
 
 ```bash title=".env"
 CHAIN_ID=11155111
-BUNDLER_URL=https://sepolia.voltaire.candidewallet.com/rpc
+BUNDLER_URL=https://api.candide.dev/bundler/version/network/YOUR_API_KEY
 JSON_RPC_NODE_PROVIDER=NODE_PROVIDER_URL
 
 # API key for Sepolia

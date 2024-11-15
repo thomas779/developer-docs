@@ -142,7 +142,7 @@ This example mints the same NFT twice in a single useroperation
 import { MetaTransaction } from "abstractionkit";
 
 const jsonRpcNodeProvider = "https://rpc2.sepolia.org";
-const bundlerUrl = "https://sepolia.voltaire.candidewallet.com/rpc";
+const bundlerUrl = "https://api.candide.dev/bundler/version/network/YOUR_API_KEY";
 
 const transaction: MetaTransaction = {
     to: "0xD9de104e3386d9A45a61BcE269c43E48B534e4E7", // NFT contract address
@@ -355,7 +355,7 @@ console.log("receipt: ", receipt);
 ```terminal
 sendUserOperationResponse: {
   userOperationHash: '0x61b3e2c57ad7ad1ae788f0ac84c79b28aab8aeaf872be173cadc72ab8b3d4418',
-  bundler: { rpcUrl: 'https://sepolia.voltaire.candidewallet.com/rpc' },
+  bundler: { rpcUrl: 'https://api.candide.dev/bundler/version/network/YOUR_API_KEY' },
   entrypointAddress: '0x0000000071727De22E5E9d8BAf0edAc6f37da032'
 }
 
@@ -673,7 +673,7 @@ import {
   UserOperationV7
 } from "abstractionkit";
 
-const bundlerRPC = "https://sepolia.voltaire.candidewallet.com/rpc";
+const bundlerRPC = "https://api.candide.dev/bundler/version/network/YOUR_API_KEY";
 
 const ownerPublicAddress = "0xBdbc5FBC9cA8C3F514D073eC3de840Ac84FC6D31";
 const smartAccount = SafeAccount.initializeNewAccount([ownerPublicAddress])
