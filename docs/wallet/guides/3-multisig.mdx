@@ -174,9 +174,6 @@ let userOperation = await smartAccount.createUserOperation(
   [transaction1, transaction2], // you can batch multiple transactions to be executed in one userop
   jsonRpcNodeProvider, // the node rpc is used to fetch the current nonce and fetch gas prices.
   bundlerUrl, // the bundler rpc is used to estimate the gas limits
-  // highlight-start
-  { numberOfSigners: 2 } // set the number of signers for accurate gas estimation
-  // highlight-end
 )
 
 const cost = calculateUserOperationMaxGasCost(userOperation)
@@ -343,9 +340,6 @@ async function main(): Promise<void> {
         ],
         jsonRpcNodeProvider, //the node rpc is used to fetch the current nonce and fetch gas prices.
         bundlerUrl, //the bundler rpc is used to estimate the gas limits.
-        {
-            numberOfSigners:2 // set the number of signers for accurate gas estimation
-        }
 	)
 
     const cost = calculateUserOperationMaxGasCost(userOperation)
