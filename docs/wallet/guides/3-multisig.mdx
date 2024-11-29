@@ -187,7 +187,10 @@ console.log("Please fund the sender account : " + userOperation.sender +" with m
 
 ```ts title="index.ts"
 const chainId = BigInt(process.env.CHAIN_ID as string);
-const privateKey = process.env.PRIVATE_KEY as string;
+// highlight-start
+const privateKey1 = process.env.PRIVATE_KEY1 as string;
+const privateKey2 = process.env.PRIVATE_KEY2 as string;
+// highlight-end
 
 userOperation.signature = smartAccount.signUserOperation(
   userOperation,
