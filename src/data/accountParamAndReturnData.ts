@@ -1050,7 +1050,7 @@ export const createSwapOwnerMetaTransactionsParams = [
   },
   {
     key: "newOwner",
-    type: "Signer",
+    type: signerType,
     description: "The public address of the new owner to be added.",
   },
   {
@@ -1129,7 +1129,7 @@ export const createRemoveOwnerMetaTransactionParams = [
   },
   {
     key: "ownerToDelete",
-    type: "Signer",
+    type: signerType,
     description: "The public address of the owner to be deleted.",
   },
   {
