@@ -140,8 +140,8 @@ const sidebars = {
       className: "category-not-collapsible",
       items: [
         "wallet/plugins/passkeys",
-        "wallet/plugins/allowance",
         "wallet/plugins/recovery-with-guardians",
+        "wallet/plugins/allowance",
       ],
     },
     {
