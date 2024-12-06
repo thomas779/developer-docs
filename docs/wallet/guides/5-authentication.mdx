@@ -93,11 +93,11 @@ const smartAccount = SafeAccount.initializeNewAccount([signerAddress]);
 import { SafeAccountV0_3_0 as SafeAccount, EIP712_SAFE_OPERATION_V7_TYPE } from "abstractionkit";
 import { createWalletClient, custom } from "viem";
 
-const client = createWalletClient({
+const walletClient = createWalletClient({
   transport: custom(window.ethereum!),
 });
 
-const signerAddresses = await client.requestAddresses();
+const signerAddresses = await walletClient.requestAddresses();
 const signerAddress = signerAddresses[0];
 
 const smartAccount = SafeAccount.initializeNewAccount([signerAddress]);
@@ -116,24 +116,10 @@ Format the signature to a userOperation signature using [formatEip712SignaturesT
 ```ts
 let userOperation = ... // Use createUserOperation() to help you construct the userOp below
 
-const domain = {
-  chainId: process.env.CHAIN_ID,
-  verifyingContract: smartAccount.safe4337ModuleAddress,
-};
+const safeUserOperation = SafeAccount.getUserOperationEip712Hash(userOperation, chainId);
 
-const types = EIP712_SAFE_OPERATION_V7_TYPE;
+const signature = signer.signingKey.sign(safeUserOperation).serialized;
 
-// formate according to EIP712 Safe Operation Type
-const { sender, ...userOp } = userOperation;
-const safeUserOperation = {
-  ...userOp,
-  safe: userOperation.sender,
-  validUntil: BigInt(0),
-  validAfter: BigInt(0),
-  entryPoint: smartAccount.entrypointAddress,
-};
-
-const signature = await signer.signTypedData(domain, types, safeUserOperation);
 const formatedSig = SafeAccount.formatEip712SignaturesToUseroperationSignature([signer.address], [signature]);
 userOperation.signature = formatedSig;
 ```
@@ -144,29 +130,13 @@ userOperation.signature = formatedSig;
 ```ts
 let userOperation = ... // Use createUserOperation() to help you construct the userOp below
 
-const domain = {
-  chainId: process.env.CHAIN_ID,
-  verifyingContract: smartAccount.safe4337ModuleAddress,
-};
+const safeUserOperation = SafeAccount.getUserOperationEip712Hash(
+  userOperation,
+  chainId
+) as `0x${string}`;
 
-const types = EIP712_SAFE_OPERATION_V7_TYPE;
+const signature = await walletClient.sign({ hash: safeUserOperation });
 
-// formate according to EIP712 Safe Operation Type
-const { sender, ...userOp } = userOperation;
-const safeUserOperation = {
-  ...userOp,
-  safe: userOperation.sender,
-  validUntil: BigInt(0),
-  validAfter: BigInt(0),
-  entryPoint: smartAccount.entrypointAddress,
-};
-
-const signature = await signer.signTypedData({
-  domain,
-  types,
-  primaryType: 'SafeOp',
-  message: safeUserOperation,
-});
 const formatedSig = SafeAccount.formatEip712SignaturesToUseroperationSignature([signer.address], [signature]);
 userOperation.signature = formatedSig;
 ```
