@@ -783,7 +783,18 @@ Create a userOperation eip712 hash
   <TabItem value="example" label="example">
 
 ```ts title="example"
-console.log("Hello world");
+import { 
+  SafeAccountV0_3_0 as SafeAccount, 
+  UserOperationV7
+} from "abstractionkit";
+
+const userOperation: UserOperationV7 = smartAccount.createUserOperation(..)
+
+// highlight-start
+const safeUserOpHash = SafeAccount.getUserOperationEip712Hash(userOperation, chainId);
+// highlight-end
+
+console.log(safeUserOpHash);
 ```
 
   </TabItem>
@@ -809,34 +820,20 @@ A static method to format a list of eip712 signatures to a userOperation signatu
 <TabItem value="ethers" label="ethers example">
 
 ```ts
-import { SafeAccountV0_2_0 as SafeAccount, EIP712_SAFE_OPERATION_V6_TYPE } from "abstractionkit";
+import { SafeAccountV0_2_0 as SafeAccount } from "abstractionkit";
 import { Wallet } from "ethers";
-
-const ownerPublicAddress = process.env.PUBLIC_ADDRESS as string;
-const smartAccount = SafeAccount.initializeNewAccount([ownerPublicAddress]);
-
-let userOperation = ... // Use createUserOperation() to help you construct the userOp below
-
-const domain = {
-  chainId: process.env.CHAIN_ID,
-  verifyingContract: smartAccount.safe4337ModuleAddress,
-};
-
-const types = EIP712_SAFE_OPERATION_V6_TYPE;
-
-// formate according to EIP712 Safe Operation Type
-const { sender, ...userOp } = userOperation;
-const safeUserOperation = {
-  ...userOp,
-  safe: userOperation.sender,
-  validUntil: BigInt(0),
-  validAfter: BigInt(0),
-  entryPoint: smartAccount.entrypointAddress,
-};
 
 const ownerPrivateKey = process.env.PRIVATE_KEY as string;
 const signer = new Wallet(ownerPrivateKey);
-const signature = await signer.signTypedData(domain, types, safeUserOperation);
+const ownerPublicAddress = signer.address;
+
+const smartAccount = SafeAccount.initializeNewAccount([ownerPublicAddress]);
+
+let userOperation = ... // smartAccount.createUserOperation(..)
+
+const safeUserOpHash = SafeAccount.getUserOperationEip712Hash(userOperation, chainId);
+const signature = signer.signingKey.sign(safeUserOpHash).serialized;
+
 const formatedSig = SafeAccount.formatEip712SignaturesToUseroperationSignature([ownerPublicAddress], [signature]);
 userOperation.signature = formatedSig;
 ```
@@ -845,39 +842,25 @@ userOperation.signature = formatedSig;
 <TabItem value="viem" label="viem example">
 
 ```ts
-import { SafeAccountV0_2_0 as SafeAccount, EIP712_SAFE_OPERATION_V6_TYPE } from "abstractionkit";
+import { SafeAccountV0_2_0 as SafeAccount } from "abstractionkit";
 import { privateKeyToAccount } from "viem";
 
-const ownerPublicAddress = process.env.PUBLIC_ADDRESS as string;
+const ownerPrivateKey = process.env.PRIVATE_KEY as string;
+const signer = privateKeyToAccount(process.env.PRIVATE_KEY1 as `0x${string}`);
+const ownerPublicAddress = signer.address;
+
 const smartAccount = SafeAccount.initializeNewAccount([ownerPublicAddress]);
 
-let userOperation = ... // Use createUserOperation() to help you construct the userOp below
+let userOperation = ... // smartAccount.createUserOperation(..)
 
-const domain = {
-  chainId: process.env.CHAIN_ID,
-  verifyingContract: smartAccount.safe4337ModuleAddress,
-};
+const chainId = BigInt(process.env.CHAIN_ID as string);
+const safeUserOpHash = SafeAccount.getUserOperationEip712Hash(
+  userOperation,
+  chainId
+) as `0x${string}`;
 
-const types = EIP712_SAFE_OPERATION_V6_TYPE;
+const signature = await signer.sign({ hash: safeUserOpHash });
 
-// formate according to EIP712 Safe Operation Type
-const { sender, ...userOp } = userOperation;
-const safeUserOperation = {
-  ...userOp,
-  safe: userOperation.sender,
-  validUntil: BigInt(0),
-  validAfter: BigInt(0),
-  entryPoint: smartAccount.entrypointAddress,
-};
-
-const ownerPrivateKey = process.env.PRIVATE_KEY as string;
-const signer = privateKeyToAccount(ownerPrivateKey);
-const signature = await signer.signTypedData({
-  domain,
-  types,
-  primaryType: 'SafeOp',
-  message: safeUserOperation,
-});
 const formatedSig = SafeAccount.formatEip712SignaturesToUseroperationSignature([ownerPublicAddress], [signature]);
 userOperation.signature = formatedSig;
 ```

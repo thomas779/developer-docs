@@ -90,7 +90,7 @@ const smartAccount = SafeAccount.initializeNewAccount([signerAddress]);
 <TabItem value="viem" label="viem example">
 
 ```ts
-import { SafeAccountV0_3_0 as SafeAccount, EIP712_SAFE_OPERATION_V7_TYPE } from "abstractionkit";
+import { SafeAccountV0_3_0 as SafeAccount } from "abstractionkit";
 import { createWalletClient, custom } from "viem";
 
 const walletClient = createWalletClient({
@@ -116,9 +116,9 @@ Format the signature to a userOperation signature using [formatEip712SignaturesT
 ```ts
 let userOperation = ... // Use createUserOperation() to help you construct the userOp below
 
-const safeUserOperation = SafeAccount.getUserOperationEip712Hash(userOperation, chainId);
+const safeUserOpHash = SafeAccount.getUserOperationEip712Hash(userOperation, chainId);
 
-const signature = signer.signingKey.sign(safeUserOperation).serialized;
+const signature = signer.signingKey.sign(safeUserOpHash).serialized;
 
 const formatedSig = SafeAccount.formatEip712SignaturesToUseroperationSignature([signer.address], [signature]);
 userOperation.signature = formatedSig;
@@ -130,12 +130,12 @@ userOperation.signature = formatedSig;
 ```ts
 let userOperation = ... // Use createUserOperation() to help you construct the userOp below
 
-const safeUserOperation = SafeAccount.getUserOperationEip712Hash(
+const safeUserOpHash = SafeAccount.getUserOperationEip712Hash(
   userOperation,
   chainId
 ) as `0x${string}`;
 
-const signature = await walletClient.sign({ hash: safeUserOperation });
+const signature = await walletClient.sign({ hash: safeUserOpHash });
 
 const formatedSig = SafeAccount.formatEip712SignaturesToUseroperationSignature([signer.address], [signature]);
 userOperation.signature = formatedSig;
