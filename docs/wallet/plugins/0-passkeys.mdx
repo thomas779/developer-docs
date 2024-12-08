@@ -206,6 +206,19 @@ const userOperationReceiptResult = await sendUserOperationResponse.included();
 
 ## Additional Notes
 
+### Security Consideration
+It’s important to consider a multisig setup or the recovery module when using Passkeys. 
+In this demo, we demonstrated a simple setup by creating a 1/1 Safe with a passkey as the only signer. 
+While straightforward, this approach is not suitable for production environments. 
+Passkeys are tied to specific domain names and, in some cases, associated with particular 
+hardware manufacturers. This dependency introduces several vulnerabilities that could make 
+user accounts inaccessible under certain circumstances, such as: 
+
+1. **Device Migration**: Users switching from iPhone to Android, Windows to macOS, or vice versa, may lose access if the Passkey is tied to a specific device or ecosystem.
+2. **Domain Issues**: If your domain is compromised, becomes unavailable, or is no longer maintained, Passkey authentication may fail.
+
+**Our recommendation**: include at lest a second way to access Safe. Either adding a different backup signer (1/2 Safe), or add a Recovery method using the recovery module.
+
 ### Saving Public Credentials  
 It's crucial to store the Passkey's public credentials, specifically the *x, y, and rawId*, 
 in a retrievable location. Losing this data would mean users can't recover their accounts 
