@@ -124,7 +124,7 @@ let userOperation = await smartAccount.createUserOperation(
     jsonRpcNodeProvider, //The Node rpc endpoint.
     bundlerUrl, //The Bundler rpc endpoint.
     {
-        dummySignatures: [WebauthDummySignerSignaturePair]
+        dummySignerSignaturePairs: [WebauthDummySignerSignaturePair]
     },
 )
 ```

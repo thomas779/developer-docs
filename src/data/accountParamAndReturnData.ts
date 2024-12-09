@@ -682,7 +682,7 @@ export const createBaseUserOperationOverrides = [
     description: "Pass state overrides",
   },
   {
-    key: "dummySignatures[]",
+    key: "dummySignerSignaturePairs[]",
     type: signerTypePairType,
     description: "Provide dummy signatures for the operation",
   },
@@ -904,7 +904,7 @@ export const estimateUserOperationGasParamV6 = [
         description: "Timestamp the signature will be valid after",
       },
       {
-        key: "dummySignatures[]?",
+        key: "dummySignerSignaturePairs[]?",
         type: signerTypePairType,
         description: "Provide dummy signatures for the operation",
       },
@@ -933,7 +933,7 @@ export const estimateUserOperationGasParamV7 = [
         description: "Timestamp the signature will be valid after",
       },
       {
-        key: "dummySignatures?",
+        key: "dummySignerSignaturePairs?",
         type: signerTypePairType,
         description: "Provide dummy signatures for the operation",
       },
