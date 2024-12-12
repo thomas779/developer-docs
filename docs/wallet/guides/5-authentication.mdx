@@ -44,24 +44,30 @@ authentication through familiar methods such as email magic links, social logins
 
 - Candide's AbstractionKit is highly adaptable, supporting any third-party Signer service. 
 The process for assigning the smart account owner and signing a User Operation is consistent 
-across all services. For details on how to integrate as third-parties as main signer, 
-refer to the [guide for EOA wallets](./#eoa-wallets).
+across all services. These services generate an EOA wallet for each user in their backend and 
+provide authentication via social logins (e.g., Twitter), email, or a backend passkey. 
+
+- Since the service provides the EOA public address, it can be easily assigned as the owner of the 
+smart wallet in AbstractionKit. The authentication method does not affect integration, ensuring a 
+consistent process for assigning  smart account ownership and signing User Operations. For details 
+on how to integrate as third-parties as main signer, you can refer to the [guide for EOA wallets](./#eoa-wallets).
 
 - However, it is important to note that using third-party services as the primary signer of 
-the account makes the wallet you are offering ** custodial.** Candide recommends using Passkeys as 
-the main signer, while offering third-parties as recovery options via the 
-on-chain [Guardian Recovery](../plugins/1-recovery-with-guardians.mdx). This approach ensures 
-progressive self-custody, allowing users to modify recovery options as needed.
+the account makes the wallet you are offering ** custodial.** Candide recommends using onchain 
+[Safe Passkeys](/wallet/plugins/passkeys) as the main signer, while offering third-parties as 
+recovery options via the onchain [Guardian Recovery](../plugins/1-recovery-with-guardians.mdx). 
+This approach ensures progressive self-custody, allowing users to modify their recovery options as needed.
 
 Below are some third-party recovery options that you can consider. Candide does not endorse any of these options; the guides are provided for educational purposes only.
 
 | Service      | Key Management Method                   | Authentication Methods        | Plug-n-play Front End? | Guide                     |
 | ------------ | --------------------------------------- | ----------------------------- | ---------------------- | ------------------------- |
-| Dynamic      | MPC (Turnkey under the hood)            | Email, Social, Wallets        | Yes                    |
+| Dfns         | HSM, MPC                                | Custom                        | No                     |                           |
+| Dynamic      | MPC (Turnkey under the hood)            | Email, Social, Wallets        | Yes                    |                           |
 | Fireblocks   | MPC                                     | Custom                        | No                     |                           |
 | Lit Protocol | MPC                                     | Email, Social, Phone          | No                     | [Add a Google Account as a Recovery Method using Lit](/wallet/guides/recovery-with-google-using-lit)|
 | Magic.link   | AWS KMS                                 | Email, Social                 | Yes                    | [Add an Social Account as a Recovery Method using Magic](./magic.mdx)|
-| Privy        | MPC                                     | Email, Social, Wallets        | Yes                    | |
+| Privy        | MPC                                     | Email, Social, Wallets        | Yes                    |                           |
 | Turnkey      | AWS KMS                                 | Custom                        | No                     | [Use Turnkey with AbstractionKit](./turnkey.mdx)|
 | Web3Auth     | MPC, key sharding                       | Social, Email                 | Yes                    |  |
 
