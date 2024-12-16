@@ -44,6 +44,8 @@ import {
   createRemoveOwnerMetaTransactionReturn,
   createAddOwnerWithThresholdMetaTransactionsParams,
   createAddOwnerWithThresholdMetaTransactionsReturn,
+  verifyWebAuthnSignatureForMessageHashParam,
+  verifyWebAuthnSignatureForMessageHashReturn,
 } from "../../../src/data/accountParamAndReturnData";
 import { userOperationParamV07, userOperationReceiptResultType } from "/src/data/userOperation";
 import {
@@ -898,6 +900,19 @@ Creates a meta-transaction to remove an owner from the Safe account, fetching th
 </TabItem>
 <TabItem value="Return type" label="Return Types">
   <DataTable items={createRemoveOwnerMetaTransactionReturn} />
+</TabItem>
+</Tabs>
+
+### verifyWebAuthnSignatureForMessageHash
+
+A static method that verifies a webAuthn signed hash message for Passkeys, and can be also used even if the safe account hasn't been deplpyed yet.
+
+<Tabs>
+<TabItem value="Param type" label="Param Types">
+  <DataTable items={verifyWebAuthnSignatureForMessageHashParam} />
+</TabItem>
+<TabItem value="Return type" label="Return Types">
+  <DataTable items={verifyWebAuthnSignatureForMessageHashReturn} />
 </TabItem>
 </Tabs>
 

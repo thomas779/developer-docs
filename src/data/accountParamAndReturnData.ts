@@ -687,6 +687,12 @@ export const createBaseUserOperationOverrides = [
     description: "Provide dummy signatures for the operation",
   },
   {
+    key: "expectedSigners[]",
+    type: signerType,
+    description:
+      "A array of expected signers that will sign over the transaction. This improves the gas estimates.",
+  },
+  {
     key: "webAuthnSharedSigner",
     type: "string",
     description: "Specify the WebAuthn shared signer",
@@ -908,6 +914,12 @@ export const estimateUserOperationGasParamV6 = [
         type: signerTypePairType,
         description: "Provide dummy signatures for the operation",
       },
+      {
+        key: "expectedSigners?",
+        type: signerType,
+        description:
+          "The expected signers that will sign over the transaction. This improves the gas estimates.",
+      },
     ],
     description: "overrides for the default values",
   },
@@ -936,6 +948,12 @@ export const estimateUserOperationGasParamV7 = [
         key: "dummySignerSignaturePairs?",
         type: signerTypePairType,
         description: "Provide dummy signatures for the operation",
+      },
+      {
+        key: "expectedSigners?",
+        type: signerType,
+        description:
+          "The expected signers that will sign over the transaction. This improves the gas estimates.",
       },
     ],
     description: "overrides for the default values",
@@ -1270,5 +1288,70 @@ export const createAddOwnerWithThresholdMetaTransactionsReturn = [
     ],
     description:
       "The meta-transaction object for adding a new owner with the specified threshold.",
+  },
+];
+
+export const webAuthnPublicKeyType = [
+  {
+    key: "x",
+    type: "bigint",
+    description: "The x coordinate of the webAuthn public key",
+  },
+  {
+    key: "y",
+    type: "bigint",
+    description: "The y coordinate of the webAuthn public key",
+  },
+];
+
+export const verifyWebAuthnSignatureForMessageHashParam = [
+  {
+    key: "nodeRpcUrl",
+    type: "string",
+    description: "The JSON-RPC API url for the target chain.",
+  },
+  {
+    key: "webAuthnPublicKey",
+    type: webAuthnPublicKeyType,
+    description: "The x and y coordinates of the webAuthn public key",
+  },
+  {
+    key: "message",
+    type: "string",
+    description: "The hashed message to verify",
+  },
+  {
+    key: "signature",
+    type: "string",
+    description: "The signed message",
+  },
+  {
+    key: "overrides",
+    type: [
+      {
+        key: "webAuthnSignerSingleton",
+        type: "string",
+        description: "Specify the WebAuthn signer singleton",
+      },
+      {
+        key: "eip7212WebAuthnPrecompileVerifier",
+        type: "string",
+        description: "Specify the EIP-7212 WebAuthn precompile verifier",
+      },
+      {
+        key: "eip7212WebAuthnContractVerifier",
+        type: "string",
+        description: "Specify the EIP-7212 WebAuthn contract verifier",
+      },
+    ],
+    description: "Optional overrides for webAuthn verify signature message",
+  },
+];
+
+export const verifyWebAuthnSignatureForMessageHashReturn = [
+  {
+    key: "isValid",
+    type: "Promise<boolean>",
+    description: "Returns true if the message is valid signature",
   },
 ];

@@ -16,11 +16,10 @@ In the context of an Ethereum wallet, **Passkeys** serve as substitutes for trad
 ## Safe Passkeys
 
 The Safe Passkeys contracts are developed by the Safe Protocol Team. 
+The contracts and their audits are available on the [Safe-Modules repo](https://github.com/safe-global/safe-modules/tree/main/modules/passkey). 
+The deployment addresses can be found in our [contract deployment](/wallet/technical-reference/deployments/#safe-passkeys) page.
 
-The contracts and its audits are available on the [Safe-Modules repo](https://github.com/safe-global/safe-modules/tree/main/modules/passkey). 
-The deployment addresses can be found in our [Contracts Deployment](/wallet/technical-reference/deployments/#safe-passkeys)
 ## Demo
- 
 These example showcases a Safe Smart Account deployment utilizing 4337 and Passkeys, and minting an NFT.
 
 - **Safe Passkeys WebApp**:
@@ -30,27 +29,33 @@ These example showcases a Safe Smart Account deployment utilizing 4337 and Passk
 - **Node script simulated Passkeys**
     - [Source Code](https://github.com/candidelabs/abstractionkit/tree/main/examples/SafeAccountExamples/WebAuthnCreateAccountAndSendTransaction)
 
+## Quick start
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/Xh7ZJ3oeOu8?si=UUARp_pt_cjebiop" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 ## Create Passkeys Account
 
 <Tabs>
 <TabItem value="npm" label="npm">
 
 ```bash
-npm i abstractionkit
+npm i abstractionkit cbor
 ```
 
 </TabItem>
 <TabItem value="yarn" label="yarn">
 
 ```bash
-yarn add abstractionkit
+yarn add abstractionkit cbor
 ```
 
 </TabItem>
 </Tabs>
 
 :::note 
-We will often import WebAuthn API helper functions and classes from [/webauthn](https://github.com/candidelabs/abstractionkit/blob/main/examples/SafeAccountExamples/WebAuthnCreateAccountAndSendTransaction/src/webauthn.ts). Make sure to copy it and using it during your developement. 
+We will often import WebAuthn API helper functions and classes from 
+[/webauthn](https://github.com/candidelabs/abstractionkit/blob/main/examples/SafeAccountExamples/WebAuthnCreateAccountAndSendTransaction/src/webauthn.ts). 
+Make sure to copy it and using it during your developement. That's why we also installed `cbor`, 
+as some of the methods in this file uses this library. 
 :::
 
 ### Step 1: Create WebAuthn credentials
@@ -108,24 +113,20 @@ import { SafeAccountV0_3_0 as SafeAccount } from "abstractionkit";
 const smartAccount = SafeAccount.initializeNewAccount([webauthPublicKey])
 ```
 
-:::info Combine Signature Types
-You can combine an EOA public address and a webauthPublicKey in the initializing function 
-to create a multisig secured by both types.
-:::
-
 ## Create Passkey UserOp
-This step follows the same flow as the normal Safe flow with  [createUserOperation](../../abstractionkit/safe-account/#createuseroperation), with the addition of the webauthn dummy signature. 
+This step follows the same flow as the normal Safe flow with  [createUserOperation](../../abstractionkit/safe-account/#createuseroperation), with the addition of the `expectedSigners` overrides 
 
 ```ts
-import { WebauthDummySignerSignaturePair } from "abstractionkit";
 
 let userOperation = await smartAccount.createUserOperation(
     [transaction] // constructed your MetaTranasction 
     jsonRpcNodeProvider, //The Node rpc endpoint.
     bundlerUrl, //The Bundler rpc endpoint.
+    // highlight-start
     {
-        dummySignerSignaturePairs: [WebauthDummySignerSignaturePair]
+        expectedSigners: [webauthPublicKey]
     },
+    // highlight-end
 )
 ```
 
@@ -136,7 +137,7 @@ let userOperation = await smartAccount.createUserOperation(
 Calculate the Safe EIP712 hash for the UserOp
 
 ```ts
-const safeInitOpHash = SafeAccount.getUserOperationEip712Hash(
+const userOpHash = SafeAccount.getUserOperationEip712Hash(
     userOperation,
     chainId,
 );
@@ -151,7 +152,7 @@ import { UserVerificationRequirement } from "./webauthn";
 
 const assertion = navigator.credentials.get({
     publicKey: {
-        challenge: ethers.getBytes(safeInitOpHash),
+        challenge: ethers.getBytes(userOpHash),
         rpId: 'candide.dev',
         allowCredentials: [{ type: 'public-key', id: new Uint8Array(credential.rawId) }],
         userVerification: UserVerificationRequirement.required,
@@ -164,16 +165,16 @@ const assertion = navigator.credentials.get({
 Extract WebAuthn signature data from the assertion response and create a signature from the extracted signature data
 
 ```ts
-import { WebauthSignatureData } from "abstractionkit";
+import { WebauthnSignatureData } from "abstractionkit";
 import { extractClientDataFields, extractSignature } from "./webauthn";
 
-const webauthSignatureData: WebauthSignatureData = {
+const webauthnSignatureData: WebauthnSignatureData = {
     authenticatorData: assertion.response.authenticatorData,
     clientDataFields: extractClientDataFields(assertion.response),
     rs: extractSignature(assertion.response),
 }
 
-const webauthSignature: string = SafeAccount.createWebAuthnSignature(webauthSignatureData)
+const webauthnSignature: string = SafeAccount.createWebAuthnSignature(webauthnSignatureData)
 ```
 
 ### Step 4: Create a Signer Signature Pair and Format
@@ -185,7 +186,7 @@ import { SignerSignaturePair } from "abstractionkit";
 
 const signerSignaturePair: SignerSignaturePair = {
     signer: webauthPublicKey,
-    signature: webauthSignature,
+    signature: webauthnSignature,
 }
 
 userOperation.signature = SafeAccount.formatSignaturesToUseroperationSignature(
@@ -204,10 +205,199 @@ const sendUserOperationResponse = await smartAccount.sendUserOperation(
 const userOperationReceiptResult = await sendUserOperationResponse.included();
 ```
 
+
+## Advanced
+
+### Multisig
+
+#### New Account
+To initialize a smart account with multiple signer types, provide both a WebAuthn public key 
+and an EOA public key to the initialization function, ensuring the WebAuthn public key is listed first. 
+If you need to add two Passkey signers, start by initializing and deploying the account with a single 
+Passkey signer. Then, use the [`addOwnerWithThreshold`](/wallet/abstractionkit/safe-account-v3/#createaddownerwiththresholdmetatransactions) 
+function to add the second Passkey signer.
+
+```ts
+import { SafeAccountV0_3_0 as SafeAccount } from "abstractionkit";
+import { Wallet } from 'ethers'
+
+const webauthPublicKey = .. // see above
+
+// EOA Signer
+const eoaSigner = Wallet.createRandom();
+const eoaPublicKey = eoaSigner.address;
+
+let smartAccount = SafeAccount.initializeNewAccount(
+    // highlight-start
+    [webauthPublicKey, eoaPublicKey],
+    { threshold: 2 } 
+    // highlight-end
+)
+```
+
+#### Existing account
+
+- Add a Passkeys owner to an existing account using [`addOwnerWithThreshold`](/wallet/abstractionkit/safe-account-v3/#createaddownerwiththresholdmetatransactions)
+
+```ts
+import { MetaTransaction } from "abstractionkit"
+
+const addPasskeysOwner: MetaTransaction = await smartAccount.createAddOwnerWithThresholdMetaTransactions(
+    webauthPublicKey, // the x and y webAuthn publickey
+    1, // threshold
+);
+```
+
+- Swap an existing owner to a Passkeys owner using [`createSwapOwnerMetaTransactions`](/wallet/abstractionkit/safe-account-v3/#createswapownermetatransactions)
+
+```ts
+import { MetaTransaction } from "abstractionkit"
+
+const swapOwnerWithPasskeys: MetaTransaction = await smartAccount.createSwapOwnerMetaTransactions(
+    nodeUrl, 
+    webauthPublicKey, // the x and y webAuthn publickey
+    oldOwnerPublicKey, // the old owner to replace
+);
+```
+
+#### Create UserOp
+
+To get proper gas estimates, you can pass the expected signers that will sign over the userOp in the 
+overrides of `createUserOperation`.
+
+```ts
+let userOperation = await smartAccount.createUserOperation(
+    [metaTransaction],
+    jsonRpcNodeProvider, 
+    bundlerUrl, 
+    {
+       // highlight-start
+       expectedSigners:[webauthPublicKey, eoaPublicKey],
+       // highlight-end
+    }
+)
+```
+
+#### Signature
+
+To sign a transaction with multiple signers, you will need to pass in the sign signature 
+pair in the `formatSignaturesToUseroperationSignature`.
+
+```ts
+const eoaSignature = eoaSigner.signingKey.sign(userOpHash).serialized;
+const eoaSignerSignaturePair: SignerSignaturePair = {
+    signer: eoaPublicKey,
+    signature: eoaSignature,
+}
+
+userOperation.signature = SafeAccount.formatSignaturesToUseroperationSignature(
+    // highlight-start
+    [webAuthnSignerSignaturePair, eoaSignerSignaturePair],
+    // highlight-end
+    { isInit: userOperation.nonce == 0n }
+);
+```
+
+### Gas savings with Precompiles
+
+You can leverage Native Passkeys with [RIP-7212](https://github.com/ethereum/RIPs/blob/master/RIPS/rip-7212.md) 
+when supported, as it offers the lowest gas costs. You can import the default precompile address and pass it in the overrides. 
+We recommend verifying whether the chain you are using has adopted the same address as specified in the standard. 
+
+#### New Account
+
+```ts
+import { SafeAccountV0_3_0 as SafeAccount } from "abstractionkit";
+
+let smartAccount = SafeAccount.initializeNewAccount(
+    [webauthPublicKey],
+    // highlight-start
+    { eip7212WebAuthnPrecompileVerifierForSharedSigner: SafeAccount.DEFAULT_SECP256R1_PRECOMPILE_ADDRESS } 
+    // highlight-end
+)
+```
+
+#### Create UserOp
+
+```ts
+let userOperation = await smartAccount.createUserOperation(
+    [metaTransaction],
+    nodeRPC,
+    bundlerURL,
+    {
+        expectedSigners:[webauthPublicKey],
+        // highlight-start
+        eip7212WebAuthnPrecompileVerifier: SafeAccount.DEFAULT_SECP256R1_PRECOMPILE_ADDRESS
+        // highlight-end
+    }
+);
+```
+
+#### Signature
+
+```ts
+userOperation.signature = SafeAccount.formatSignaturesToUseroperationSignature(
+    [webauthnSignerSignaturePair],
+    {
+        isInit: userOperation.nonce == 0n,
+        // highlight-start
+        eip7212WebAuthnPrecompileVerifier: SafeAccount.DEFAULT_SECP256R1_PRECOMPILE_ADDRESS,
+        // highlight-end
+    }
+);
+```
+
+### Verifying a WebAuthn Signature
+You can validate webAuthn signature to verify whether a signature on a behalf of a given Safe Account 
+is valid, similar to EOA owners.
+
+- Signing a message hash is as usual
+
+```ts
+import { hashMessage } from "ethers";
+
+// highlight-start
+const messageHashed = hashMessage("Hello World");
+// highlight-end
+
+const assertion = navigator.credentials.get({
+  publicKey: {
+    // highlight-start
+    challenge: ethers.getBytes(messageHashed),
+    // highlight-end
+    rpId: "candide.dev",
+    allowCredentials: [
+    { type: "public-key", id: new Uint8Array(credential.rawId) },
+    ],
+    userVerification: UserVerificationRequirement.required,
+  },
+});
+
+const webauthSignatureData: WebauthnSignatureData = {
+    authenticatorData: assertion.response.authenticatorData,
+    clientDataFields: extractClientDataFields(assertion.response),
+    rs: extractSignature(assertion.response),
+};
+
+const webauthnSignature: string = SafeAccount.createWebAuthnSignature(webauthSignatureData);
+```
+
+- Validating a signed webAuthn message [`verifyWebAuthnSignatureForMessageHashParam`](/wallet/abstractionkit/safe-account-v3/#verifywebauthnsignatureformessagehash)
+
+```ts
+const isSignatureValid: boolean =
+    await SafeAccount.verifyWebAuthnSignatureForMessageHash(
+        nodeURL, // node url from a json rpc provider 
+        webauthPublicKey, // the x and y webAuthn publickey 
+        messageHashed,  
+        webauthnSignature 
+    );
+```
+
 ## Additional Notes
 
 ### Security Consideration
-It’s important to consider a multisig setup or the recovery module when using Passkeys. 
+It’s important to consider a [multisig setup](#multisig) or the [recovery module](/wallet/plugins/recovery-with-guardians/) when using Passkeys. 
 In this demo, we demonstrated a simple setup by creating a 1/1 Safe with a passkey as the only signer. 
 While straightforward, this approach is not suitable for production environments. 
 Passkeys are tied to specific domain names and, in some cases, associated with particular 
@@ -258,6 +448,3 @@ Passkeys are widely available across devices such as:
 - Linux: Supported on Chrome, Firefox, Edge, and Brave browsers
 
 For a comprehensive list of supported systems, please visit [passkeys.dev/device-support](https://passkeys.dev/device-support/)
-
-
-
