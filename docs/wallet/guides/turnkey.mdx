@@ -1,6 +1,6 @@
 ---
 title: Turnkey
-description: Learn how to offer a recovery option for your user using Turkey and AbstractinKit
+description: Learn how to offer a recovery option for your user using Turnkey and AbstractinKit
 keywords: ["turnkey", "email recovery", "smart wallet recovery"]
 ---
 import Tabs from "@theme/Tabs";
@@ -8,7 +8,7 @@ import TabItem from "@theme/TabItem";
 
 # Use Turnkey with AbstractionKit
 
-[Turkey](https://turnkey.com) offers a flexible private key management solution that leverages  AWS Nitros Systems to secure users keys.
+[Turnkey](https://turnkey.com) offers a flexible private key management solution that leverages  AWS Nitros Systems to secure users keys.
 
 To fully leverage the potential of Account Abstraction, consider combining Turnkey with AbstractionKit to enable a trusted recoverer. Enabling the Account recovery module will require an onchain transaction. To add convenience for your users, you can batch the recovery transactions and sponsor their gas fees. 
 
@@ -39,21 +39,21 @@ npm i abstractionkit && @turnkey/http && @turnkey/api-key-stamper && @turnkey/vi
 </TabItem>
 </Tabs>
 
-### Create a Turkey account
+### Create a Turnkey account
 
 Create an account and get the API keys on [Turnkey's Dashboard](https://app.turnkey.com). You will need:
 - Organization ID
 - Public API Key
 - Private API Key
-- Create a private/public key pair on Turkey dashboard. This is Guardian Account.
+- Create a private/public key pair on Turnkey dashboard. This is Guardian Account.
 
 ### Configure .env file
-Configure the values you created from Turkey dashboard in an .env file, along with a node endpoint.
+Configure the values you created from Turnkey dashboard in an .env file, along with a node endpoint.
 
 ```ts 
 // turnkey guardian
 TURNKEY_PUBLIC_KEY=
-TURNKEY_PRIVATE_KEY= // For this demo, we exported the private key of the guardian account. In production, use turkey api
+TURNKEY_PRIVATE_KEY= // For this demo, we exported the private key of the guardian account. In production, use Turnkey api
 TURNKEY_ORG_ID=
 TURNKEY_WALLET_ADDRESS=
 
@@ -147,14 +147,14 @@ const turnkeyClient = new TurnkeyClient(
     apiPrivateKey: process.env.TURNKEY_PRIVATE_KEY as string,
   }),
 );
-const turkeyAccount = await createAccount({
+const turnkeyAccount = await createAccount({
   client: turnkeyClient,
   organizationId: process.env.TURNKEY_ORG_ID as string,
   signWith: process.env.TURNKEY_WALLET_ADDRESS as string, // for this example, we manually generated the signer on turnkey dashboard
 });
 
 const guardianSigner = createWalletClient({
-  account: turkeyAccount,
+  account: turnkeyAccount,
   transport: http(process.env.JSON_RPC_NODE_PROVIDER as string),
 });
 
