@@ -47,7 +47,9 @@ import {
   createAddOwnerWithThresholdMetaTransactionsParams,
   createAddOwnerWithThresholdMetaTransactionsReturn,
   verifyWebAuthnSignatureForMessageHashParam,
-  verifyWebAuthnSignatureForMessageHashReturn
+  verifyWebAuthnSignatureForMessageHashReturn,
+  getUserOperationEip712DataV6Param,
+  getUserOperationEip712DataReturn
 } from "../../../src/data/accountParamAndReturnData";
 import { userOperationReturnParamsV06, userOperationReceiptResultType } from "/src/data/userOperation";
 import {
@@ -950,6 +952,19 @@ A static method that verifies a webAuthn signed hash message for Passkeys, and c
 </TabItem>
 <TabItem value="Return type" label="Return Types">
   <DataTable items={verifyWebAuthnSignatureForMessageHashReturn} />
+</TabItem>
+</Tabs>
+
+### getUserOperationEip712Data
+
+A static method that returns the EIP-712 domain data for a userOp
+
+<Tabs>
+<TabItem value="Param type" label="Param Types">
+  <DataTable items={getUserOperationEip712DataV6Param} />
+</TabItem>
+<TabItem value="Return type" label="Return Types">
+  <DataTable items={getUserOperationEip712DataReturn} />
 </TabItem>
 </Tabs>
 

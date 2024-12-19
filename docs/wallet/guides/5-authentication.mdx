@@ -71,10 +71,10 @@ Below are some third-party recovery options that you can consider. Candide does 
 | Turnkey      | AWS KMS                                 | Custom                        | No                     | [Use Turnkey with AbstractionKit](./turnkey.mdx)|
 | Web3Auth     | MPC, key sharding                       | Social, Email                 | Yes                    |  |
 
-### EOA Wallets
+### EOA Wallets & Third-party signers
 
-You can allow users to use MetaMask, or any other EOA wallet as the signer to the Smart Account.
-EOAs exposes a JavaScript Ethereum Provider API. 
+You can allow users to use MetaMask, or any other EOA wallet, or third-party signers to be the owner of 
+the Smart Account.EOAs exposes a JavaScript Ethereum Provider API. 
 
 #### Setup Account Owner
 
@@ -99,11 +99,11 @@ const smartAccount = SafeAccount.initializeNewAccount([signerAddress]);
 import { SafeAccountV0_3_0 as SafeAccount } from "abstractionkit";
 import { createWalletClient, custom } from "viem";
 
-const walletClient = createWalletClient({
+const viemWalletClient = createWalletClient({
   transport: custom(window.ethereum!),
 });
 
-const signerAddresses = await walletClient.requestAddresses();
+const signerAddresses = await viemWalletClient.requestAddresses();
 const signerAddress = signerAddresses[0];
 
 const smartAccount = SafeAccount.initializeNewAccount([signerAddress]);
@@ -112,9 +112,16 @@ const smartAccount = SafeAccount.initializeNewAccount([signerAddress]);
 </TabItem>
 </Tabs>
 
-#### Sign UserOperation
+#### Signing a UserOperation with EIP-712
 
-Format the signature to a userOperation signature using [formatEip712SignaturesToUseroperationSignature](../../abstractionkit/safe-account/#formateip712signaturestouseroperationsignature).
+When signing a `userOperation` using `abstractionkit`, you have two options based on your use case. 
+Regardless of the approach you choose, you must format the resulting signature into a `userOperation`
+compatible signature using [`formatEip712SignaturesToUserOperationSignature()`](../../abstractionkit/safe-account-v3/#formateip712signaturestouseroperationsignature).
+
+1. **Direct Signing of the EIP-712 Hash**
+
+Use this method if you won't displayed more information for the user to validate. This approach is quick using
+[`getUserOperationEip712Hash()`](/wallet/abstractionkit/safe-account-v3/#getuseroperationeip712hash).
 
 <Tabs queryString="library">
 <TabItem value="ethers" label="ethers">
@@ -126,8 +133,7 @@ const safeUserOpHash = SafeAccount.getUserOperationEip712Hash(userOperation, cha
 
 const signature = signer.signingKey.sign(safeUserOpHash).serialized;
 
-const formatedSig = SafeAccount.formatEip712SignaturesToUseroperationSignature([signer.address], [signature]);
-userOperation.signature = formatedSig;
+userOperation.signature = SafeAccount.formatEip712SignaturesToUseroperationSignature([signer.address], [signature]);
 ```
 
 </TabItem>
@@ -141,10 +147,58 @@ const safeUserOpHash = SafeAccount.getUserOperationEip712Hash(
   chainId
 ) as `0x${string}`;
 
-const signature = await walletClient.account.sign({ hash: safeUserOpHash });
+const signature = await viemWalletClient.account.sign({ hash: safeUserOpHash });
 
-const formatedSig = SafeAccount.formatEip712SignaturesToUseroperationSignature([signer.address], [signature]);
-userOperation.signature = formatedSig;
+userOperation.signature = SafeAccount.formatEip712SignaturesToUseroperationSignature(
+  [signer.address], 
+  [signature]
+);
+```
+
+</TabItem>
+</Tabs>
+
+2. **Signing with EIP-712 Typed Data**
+
+This method involves retrieving the EIP-712 typed data using 
+[`getUserOperationEip712Data()`](/wallet/abstractionkit/safe-account-v3/#getuseroperationeip712data), 
+displaying it to the user for review, and then signing the typed data. It allows the user to verify 
+the data before signing. 
+
+<Tabs queryString="library">
+<TabItem value="ethers" label="ethers">
+
+```ts
+let userOperation = ... // Use createUserOperation() to help you construct the userOp below
+
+const { domain, types, messageValue } = SafeAccount.getUserOperationEip712Data(userOperation, chainId);
+
+const signature = await wallet.signTypedData(domain, types, messageValue);
+userOperation.signature = SafeAccount.formatEip712SignaturesToUseroperationSignature(
+  [signer.address], 
+  [signature]
+);
+```
+
+</TabItem>
+<TabItem value="viem" label="viem">
+
+```ts
+let userOperation = ... // Use createUserOperation() to help you construct the userOp below
+
+const { domain, types, messageValue } = SafeAccount.getUserOperationEip712Data(userOperation, chainId);
+
+const signedTypedData = await viemWalletClient.signTypedData({
+  domain,
+  types,
+  message: messageValue,
+  primaryType: "SafeOp",
+} as any);
+
+userOperation.signature = SafeAccount.formatEip712SignaturesToUseroperationSignature(
+    [viemWalletClient.account.address],
+    [signedTypedData],
+  );
 ```
 
 </TabItem>

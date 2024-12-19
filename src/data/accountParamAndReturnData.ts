@@ -1355,3 +1355,120 @@ export const verifyWebAuthnSignatureForMessageHashReturn = [
     description: "Returns true if the message is valid signature",
   },
 ];
+
+export const getUserOperationEip712DataV7Param = [
+  {
+    key: "userOperation",
+    type: userOperationParamV07,
+    description: "UserOp to hash",
+  },
+  {
+    key: "chainId",
+    type: "bigint",
+    description: "target chain id",
+  },
+  {
+    key: "overrides?",
+    description: "optional overrides",
+    type: [
+      {
+        key: "validAfter?",
+        type: "bigint",
+        description: "Timestamp the signature will be valid after",
+      },
+      {
+        key: "validUntil?",
+        type: "bigint",
+        description: "Timestamp the signature will be valid until",
+      },
+      {
+        key: "entrypointAddress?",
+        type: "string",
+        description: "Address of the entrypoint contract",
+      },
+      {
+        key: "safe4337ModuleAddress?",
+        type: "string",
+        description: "Address of the Safe 4337 module.",
+      },
+    ],
+  },
+];
+
+export const getUserOperationEip712DataV6Param = [
+  {
+    key: "userOperation",
+    type: userOperationReturnParamsV06,
+    description: "UserOp to hash",
+  },
+  {
+    key: "chainId",
+    type: "bigint",
+    description: "target chain id",
+  },
+  {
+    key: "overrides?",
+    type: [
+      {
+        key: "validAfter?",
+        type: "bigint",
+        description: "Timestamp the signature will be valid after",
+      },
+      {
+        key: "validUntil?",
+        type: "bigint",
+        description: "Timestamp the signature will be valid until",
+      },
+      {
+        key: "entrypointAddress?",
+        type: "string",
+        description: "Address of the entrypoint contract",
+      },
+      {
+        key: "safe4337ModuleAddress?",
+        type: "string",
+        description: "Address of the Safe 4337 module.",
+      },
+    ],
+  },
+];
+
+export const safeUserOperationTypedDataDomainType = [
+  {
+    key: "chainId",
+    type: "number",
+    description: "target chain id",
+  },
+  {
+    key: "verifyingContract",
+    type: "string",
+    description: "safe 4337 module contract on traget entrypoint",
+  },
+];
+
+export const safeUserOperationTypedMessageValueType = [
+  {
+    key: "safe",
+    type: "string",
+    description: "the userop sender address of the safe account",
+  },
+  ...userOperationReturnParamsV06.filter((item) => item.key !== "sender"),
+];
+
+export const getUserOperationEip712DataReturn = [
+  {
+    key: "domain",
+    type: safeUserOperationTypedDataDomainType,
+    description: "Safe userOperation typed data domain",
+  },
+  {
+    key: "types",
+    type: "Record<string, {name: string;type: string;}[]>",
+    description: "The Safe Typed structured data to be signed",
+  },
+  {
+    key: "messageValue",
+    type: safeUserOperationTypedMessageValueType,
+    description: "Safe userOperation typed message value",
+  },
+];
