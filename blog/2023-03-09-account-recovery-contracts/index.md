@@ -11,6 +11,8 @@ tags: [wallet]
 
 Securing private keys is a major challenge in making Ethereum wallets accessible to everyone. With the constant threat of phishing and targeted attacks, how do we make it easy to manage private keys, and prevent them from being lost and stolen? By abstracting away seed phrases and introducing an account recovery module, Ethereum wallets could reach the same level of security as a multisig wallet, making it easier for both Ethereum pros and the average joe to manage their account security. This model of security has been highlighted in Vitalik's [blog post](https://vitalik.ca/general/2021/01/11/recovery.html).
 
+<!-- truncate -->
+
 ## How it works
 
 We introduce a new Account Recovery module for Candide Wallet. The Account Recovery module is designed to work for both a single-owner account and an N by M multi-sig account. In the case of the single-owner account, the signer key is typically stored on the user's device. More specifically, an owner can add recovery methods (also known as Guardians) to change the ownership of the account, in case their signer key is lost or compromised.

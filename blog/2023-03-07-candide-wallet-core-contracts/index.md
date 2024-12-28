@@ -11,6 +11,8 @@ tags: [wallet]
 
 Candide Wallet released its second version of its core contract on testnet, addressing key issues from its previous version. The new contract is simple and doesn't require complex fallbacks or delegate calls like the previous one. Only four methods are added to Safe Contracts, allowing it to be ERC-4337 compatible.
 
+<!-- truncate -->
+
 Candide Wallet is an [EIP-4337](https://eips.ethereum.org/EIPS/eip-4337) Smart Wallet. This ERC is a specification to add account abstraction functionality to Ethereum and EVM-compatible chains without modifying the consensus rules.
 
 To understand Candide Contracts, it is vital to know the key component that the Global ERC-4337 EntryPoint contract needs from a Smart Account. A Smart Account needs 2 essential methods for the EntryPoint to interact with it: `validateUserOp` and `execute`. Candide wallet has 2 more methods for both setup and replacing the EntryPoint for upgradability.

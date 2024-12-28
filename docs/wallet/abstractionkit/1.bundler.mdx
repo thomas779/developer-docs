@@ -93,7 +93,7 @@ const getChainId = await bundler.chainId();
 
 #### JSON-RPC Method
 
-[eth_chainId](../../bundler/rpc-methods#get-chain-id)
+[eth_chainId](../../bundler/rpc-methods/#eth_chainid)
 
 ### supportedEntryPoints
 
@@ -134,7 +134,7 @@ const entrypointAddresses = await bundler.supportedEntryPoints();
 
 #### JSON-RPC Method
 
-[eth_supportedEntryPoints](../../bundler/rpc-methods#get-supported-entrypoints)
+[eth_supportedEntryPoints](../../bundler/rpc-methods#eth_supportedentrypoints)
 
 ### estimateUserOperationGas
 
@@ -189,7 +189,7 @@ const estimation = await bundler.estimateUserOperationGas(userOperation, entryPo
 
 #### JSON-RPC Method
 
-[eth_estimateUserOperationGas](../../bundler/rpc-methods#estimate-user-operation-gas)
+[eth_estimateUserOperationGas](../../bundler/rpc-methods#eth_estimateuseroperationgas)
 
 ### sendUserOperation
 Asks the bundler to sign and submit a User Operation
@@ -240,7 +240,7 @@ const userOperationHash = await bundler.sendUserOperation(userOperation, entrypo
 
 #### JSON-RPC Method
 
-[eth_sendUserOperation](../../bundler/rpc-methods#send-user-operation)
+[eth_sendUserOperation](../../bundler/rpc-methods/#eth_senduseroperation)
 
 ### getUserOperationByHash
 
@@ -304,7 +304,7 @@ const userOperation = await bundler.getUserOperationByHash(userOperationHash);
 
 #### JSON-RPC Method
 
-[eth_getUserOperationByHash](../../bundler/rpc-methods#get-user-operation-by-hash)
+[eth_getUserOperationByHash](../../bundler/rpc-methods#eth_getuseroperationbyhash)
 
 ### getUserOperationReceipt
 
@@ -371,4 +371,4 @@ const userOperationReceipt = await bundler.getUserOperationReceipt(
 
 #### JSON-RPC Method
 
-[eth_getUserOperationReceipt](../../bundler/rpc-methods#get-user-operation-receipt)
+[eth_getUserOperationReceipt](../../bundler/rpc-methods#eth_getuseroperationreceipt)

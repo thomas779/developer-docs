@@ -50,7 +50,7 @@ provide authentication via social logins (e.g., Twitter), email, or a backend pa
 - Since the service provides the EOA public address, it can be easily assigned as the owner of the 
 smart wallet in AbstractionKit. The authentication method does not affect integration, ensuring a 
 consistent process for assigning  smart account ownership and signing User Operations. For details 
-on how to integrate as third-parties as main signer, you can refer to the [guide for EOA wallets](./#eoa-wallets).
+on how to integrate as third-parties as main signer, you can refer to the [guide for EOA wallets and Third Party Signers](./#eoa-wallets--third-party-signers).
 
 - However, it is important to note that using third-party services as the primary signer of 
 the account makes the wallet you are offering ** custodial.** Candide recommends using onchain 
@@ -206,7 +206,7 @@ userOperation.signature = SafeAccount.formatEip712SignaturesToUseroperationSigna
 
 ### Private key Storage
 
-Traditional wallets encrypts the private key in local storage. In this setup, the owner of the smart account is represented by it. Use [signUserOperation](../../../wallet/abstractionkit/safe-account/#signuseroperation).
+Traditional wallets encrypts the private key in local storage. In this setup, the owner of the smart account is represented by it. Use [signUserOperation](../../../wallet/abstractionkit/safe-account-v3/#senduseroperation).
 
 #### Signup Account Owner
 

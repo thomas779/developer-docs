@@ -15,6 +15,8 @@ tags: [bundler]
 
 Voltaire ERC-4337 Bundler has undergone its largest upgrade since its first launch with the support of EntryPoint v0.7, combined with the groundbreaking performance that gives any application near-instant execution. This upgrade makes onboarding your new users more economically feasible, faster, and smoother to maintain. 
 
+<!-- truncate -->
+
 ## EntryPoint v0.7 Support and Multi-EP Architecture
 
 Voltaire v0.1.0a33 now supports multiple EntryPoints, including the newly released EP v0.7. The new EP version brings key upgrades for enhanced gas efficiency, flexibility, and security. On-chain simulation functions have been moved off-chain, and the new `delegateAndRevert()` helper supports networks without state overrides. A 10% penalty for unused gas limits optimizes bundler performance, while redundant postOp calls have been removed to simplify paymaster operations. Additional updates include ERC-165 support, improved gas limit validations, and a streamlined UserOperation structure to reduce calldata use. 

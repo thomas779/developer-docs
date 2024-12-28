@@ -12,6 +12,8 @@ tags: [wallet]
 
 Candide Wallet is an open-source, secure, self-custodial Smart Wallet built on ERC-4337. It leverages account abstraction without compromising on decentralization and censorship resistance. In practical terms, this means a Smart Wallet that doesn't depend on a centralized relayer controlled by a single entity. A gateway to undeniable free access to Ethereum for anyone with a smartphone and internet access.
 
+<!-- truncate -->
+
 Candide Wallet Mobile App is powered by a vertically integrated open-source technology stack that delivers an unmatched digital wallet user experience. We highlight the underlying technology we used to build it out. We also explore the reasons those technologies were chosen. Building on the shoulder of giants as we make use of many existing open-source libraries, as well as rolling our own.
 
 ## The Contracts
