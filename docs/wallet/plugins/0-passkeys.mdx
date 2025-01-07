@@ -307,12 +307,12 @@ We recommend verifying whether the chain you are using has adopted the same addr
 #### New Account
 
 ```ts
-import { SafeAccountV0_3_0 as SafeAccount } from "abstractionkit";
+import { SafeAccountV0_3_0 as SafeAccount, DEFAULT_SECP256R1_PRECOMPILE_ADDRESS } from "abstractionkit";
 
 let smartAccount = SafeAccount.initializeNewAccount(
     [webauthPublicKey],
     // highlight-start
-    { eip7212WebAuthnPrecompileVerifierForSharedSigner: SafeAccount.DEFAULT_SECP256R1_PRECOMPILE_ADDRESS } 
+    { eip7212WebAuthnPrecompileVerifierForSharedSigner: DEFAULT_SECP256R1_PRECOMPILE_ADDRESS } 
     // highlight-end
 )
 ```
@@ -327,7 +327,7 @@ let userOperation = await smartAccount.createUserOperation(
     {
         expectedSigners:[webauthPublicKey],
         // highlight-start
-        eip7212WebAuthnPrecompileVerifier: SafeAccount.DEFAULT_SECP256R1_PRECOMPILE_ADDRESS
+        eip7212WebAuthnPrecompileVerifier: DEFAULT_SECP256R1_PRECOMPILE_ADDRESS
         // highlight-end
     }
 );
@@ -341,7 +341,7 @@ userOperation.signature = SafeAccount.formatSignaturesToUseroperationSignature(
     {
         isInit: userOperation.nonce == 0n,
         // highlight-start
-        eip7212WebAuthnPrecompileVerifier: SafeAccount.DEFAULT_SECP256R1_PRECOMPILE_ADDRESS,
+        eip7212WebAuthnPrecompileVerifier: DEFAULT_SECP256R1_PRECOMPILE_ADDRESS,
         // highlight-end
     }
 );
