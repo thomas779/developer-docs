@@ -21,21 +21,24 @@ A set of utilities for ERC-4337 Account Abstraction to help you with your develo
 #### Source
 [createPackedUserOperationV7](https://github.com/candidelabs/abstractionkit/blob/98853f30861382a534abf667ced83d47b6c9da0b/src/utils.ts#L100C17-L100C44)
 
-### createCallData
-#### Source code
-[createCallData](https://github.com/candidelabs/abstractionkit/blob/98853f30861382a534abf667ced83d47b6c9da0b/src/utils.ts#L179)
-
 ### fetchAccountNonce
 #### Source code
 [fetchAccountNonce](https://github.com/candidelabs/abstractionkit/blob/98853f30861382a534abf667ced83d47b6c9da0b/src/utils.ts#L273)
 
-### fetchGasPrice
-#### Source code
-[fetchGasPrice](https://github.com/candidelabs/abstractionkit/blob/98853f30861382a534abf667ced83d47b6c9da0b/src/utils.ts#L333)
-
 ### calculateUserOperationMaxGasCost
 #### Source code
 [calculateUserOperationMaxGasCost](https://github.com/candidelabs/abstractionkit/blob/98853f30861382a534abf667ced83d47b6c9da0b/src/utils.ts#L349C17-L349C49)
+
+### getBalance
+Returns the balance of an account in the entrypoint contract
+
+#### Source code
+[getBalance](https://github.com/candidelabs/abstractionkit/blob/b1826217624c1f7105fef58f56c3ffab93a57a4b/src/utils.ts#L457)
+
+### getDepositInfo
+Returns the full deposit info of an account in the entrypoint contract
+#### Source code
+[getDepositInfo](https://github.com/candidelabs/abstractionkit/blob/b1826217624c1f7105fef58f56c3ffab93a57a4b/src/utils.ts#L468)
 
 ## Multicall utils
 
@@ -48,6 +51,14 @@ A set of utilities for ERC-4337 Account Abstraction to help you with your develo
 [decodeMultiSendCallData](https://github.com/candidelabs/abstractionkit/blob/98853f30861382a534abf667ced83d47b6c9da0b/src/account/Safe/multisend.ts#L33C17-L33C40)
 
 ## Generic Ethereum utils
+
+### fetchGasPrice
+#### Source code
+[fetchGasPrice](https://github.com/candidelabs/abstractionkit/blob/98853f30861382a534abf667ced83d47b6c9da0b/src/utils.ts#L333)
+
+### createCallData
+#### Source code
+[createCallData](https://github.com/candidelabs/abstractionkit/blob/98853f30861382a534abf667ced83d47b6c9da0b/src/utils.ts#L179)
 
 ### getFunctionSelector
 #### Source code
@@ -64,3 +75,4 @@ A set of utilities for ERC-4337 Account Abstraction to help you with your develo
 ### sendEthGetCodeRequest
 #### Source code
 [sendEthGetCodeRequest](https://github.com/candidelabs/abstractionkit/blob/98853f30861382a534abf667ced83d47b6c9da0b/src/utils.ts#L424)
+
