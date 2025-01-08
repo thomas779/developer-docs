@@ -33,16 +33,6 @@ const sidebars = {
   infraSideBar: [
     {
       type: "category",
-      label: "Paymaster",
-      className: "category-not-collapsible",
-      collapsible: false,
-      items: [
-        "wallet/paymaster/rpc-methods",
-        "wallet/paymaster/tokens-supported",
-      ],
-    },
-    {
-      type: "category",
       label: "Bundler",
       className: "category-not-collapsible",
       collapsible: false,
@@ -112,6 +102,16 @@ const sidebars = {
     },
     {
       type: "category",
+      label: "Paymaster",
+      className: "category-not-collapsible",
+      collapsible: false,
+      items: [
+        "wallet/paymaster/rpc-methods",
+        "wallet/paymaster/tokens-supported",
+      ],
+    },
+    {
+      type: "category",
       label: "Bundler (self-host)",
       collapsed: true,
       items: ["wallet/bundler/erc-4337-intro", "wallet/bundler/installation"],
@@ -177,6 +177,18 @@ const sidebars = {
       ],
     },
   ],
+  experimentalSideBar: [
+    {
+      type: "category",
+      collapsible: false,
+      className: "category-not-collapsible",
+      label: "EIP-7702",
+      items: [
+        "experimental/7702/overview",
+        "experimental/7702/delegation"
+      ],
+    }
+  ]
 };
 
 module.exports = sidebars;

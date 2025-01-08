@@ -131,6 +131,11 @@ const config = {
             position: 'left',
             label: 'API',
           },
+          {
+            to: '/experimental/7702/overview',
+            position: 'left',
+            label: 'Experimental',
+          },
           // {
           //   to: '/dapps/getting-started',
           //   position: 'left',
